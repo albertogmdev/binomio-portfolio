@@ -1,0 +1,94 @@
+/**
+ * Content Component Styles
+ */
+
+.component-content {
+    padding: 60px 20px;
+}
+
+.component-content__container {
+    margin: 0 auto;
+}
+
+/* Anchos */
+.component-content--narrow .component-content__container {
+    max-width: 700px;
+}
+
+.component-content--medium .component-content__container {
+    max-width: 1000px;
+}
+
+.component-content--wide .component-content__container {
+    max-width: 1400px;
+}
+
+/* Colores de fondo */
+.component-content--bg-white {
+    background: #ffffff;
+}
+
+.component-content--bg-gray {
+    background: #f5f5f5;
+}
+
+.component-content--bg-dark {
+    background: #1a1a1a;
+}
+
+.component-content--bg-dark .component-content__title,
+.component-content--bg-dark .component-content__text {
+    color: #ffffff;
+}
+
+/* Título */
+.component-content__title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    line-height: 1.3;
+    color: #1a1a1a;
+}
+
+/* Texto */
+.component-content__text {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #333;
+}
+
+.component-content--bg-dark .component-content__text {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.component-content__text p {
+    margin-bottom: 16px;
+}
+
+.component-content__text h2,
+.component-content__text h3,
+.component-content__text h4 {
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+.component-content__text ul,
+.component-content__text ol {
+    margin-bottom: 16px;
+    padding-left: 24px;
+}
+
+.component-content__text li {
+    margin-bottom: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .component-content {
+        padding: 40px 20px;
+    }
+    
+    .component-content__title {
+        font-size: 28px;
+    }
+}
