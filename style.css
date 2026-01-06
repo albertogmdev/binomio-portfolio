@@ -1,9 +1,459 @@
-/*
-Theme Name:     Binomio
-Theme URI:      
-Description:    Blankslate child theme.
-Author:         Chirais
-Author URI:     
-Template:       blankslate
-Version:        0.1.0
-*/
+:root {
+  --backgroundPrimary: #FFFFFF;
+  --backgroundInverted: var(--color-500);
+  --backgroundHover: var(--color-100);
+  --cta-backgroundPrimary: var(--color-500);
+  --cta-backgroundHover: var(--color-400);
+  --cta-backgroundInverted: #FFFFFF;
+  --cardBackground: var(--color-50);
+  --pdpBackground: var(--color-200);
+  --assetBackground: var(--color-50);
+  --textPrimary: #151515;
+  --textSeconday: #555555;
+  --textCTA: var(--color-500);
+  --textInverted: #FFFFFF;
+  --strokePrimary: var(--color-500);
+  --strokeSecondary: var(--color-200);
+  --strokeTertiary: var(--color-300);
+  --strokeDivider: var(--color-50);
+  --fillPrimary: var(--color-500);
+  --fillSecondary: var(--color-300);
+  --fillTertiary: var(--color-200);
+  --fillQuaternary: var(--color-100);
+  --bannerCompliance: #64B22D;
+  --bannerInstructions: #114482;
+  --bannerContraindications: #579B27;
+}
+:root .theme--dark {
+  --backgroundPrimary: var(--color-500);
+  --backgroundInverted: #151515;
+  --backgroundHover: var(--color-500);
+  --cta-backgroundPrimary: #FFFFFF;
+  --cta-backgroundHover: var(--color-100);
+  --cta-backgroundInverted: var(--color-500);
+  --cardBackground: var(--color-400);
+  --pdpBackground: var(--color-50);
+  --assetBackground: var(--color-400);
+  --textPrimary: #FFFFFF;
+  --textSeconday: var(--color-50);
+  --textCTA: var(--color-50);
+  --textInverted: #151515;
+  --strokePrimary: var(--color-50);
+  --strokeSecondary: var(--color-50);
+  --strokeTertiary: var(--color-50);
+  --strokeDivider: var(--color-50);
+  --fillPrimary: #FFFFFF;
+  --fillSecondary: var(--color-100);
+  --fillTertiary: var(--color-200);
+  --fillQuaternary: var(--color-100);
+}
+
+:root {
+  --base-font-size: $base-font-size;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+body.modal-open, body.noscroll {
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0px 80px;
+}
+@media screen and (max-width: 1024px) {
+  .container {
+    padding: 0px 64px;
+  }
+}
+@media screen and (max-width: 744px) {
+  .container {
+    padding: 0px 40px;
+  }
+}
+@media screen and (max-width: 375px) {
+  .container {
+    padding: 0px 16px;
+  }
+}
+
+.text-xxl {
+  font-family: "Roboto", sans-serif;
+  line-height: 120%;
+  font-size: 2.25rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.text-xl {
+  font-family: "Roboto", sans-serif;
+  line-height: 120%;
+  font-size: 2rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.text-lg {
+  font-family: "Roboto", sans-serif;
+  line-height: 120%;
+  font-size: 1.625rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.text-sm {
+  font-family: "Roboto", sans-serif;
+  line-height: 140%;
+  font-size: 1.375rem;
+  font-weight: 500;
+}
+
+.text-md {
+  font-family: "Roboto", sans-serif;
+  line-height: 140%;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.text-s {
+  font-family: "Roboto", sans-serif;
+  line-height: 140%;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.text-xs {
+  font-family: "Roboto", sans-serif;
+  line-height: 140%;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.text-xxs {
+  font-family: "Roboto", sans-serif;
+  line-height: 140%;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.body-1,
+.body1 {
+  font-family: "Roboto", sans-serif;
+  line-height: 140%;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.body-2,
+.body2 {
+  font-family: "Roboto", sans-serif;
+  line-height: 140%;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.text-button {
+  font-family: "Roboto", sans-serif;
+  line-height: 140%;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.text-overline {
+  font-family: "Roboto", sans-serif;
+  line-height: 140%;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 5%;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 1024px) {
+  .text-xxl {
+    font-size: 2rem;
+  }
+  .text-xl {
+    font-size: 1.75rem;
+  }
+  .text-lg {
+    font-size: 1.5rem;
+  }
+  .text-md {
+    font-size: 1.125rem;
+  }
+  .text-sm {
+    font-size: 1rem;
+  }
+  .text-s {
+    font-size: 1rem;
+  }
+  .text-xs {
+    font-size: 0.875rem;
+  }
+  .body-1, .body1 {
+    font-size: 1rem;
+  }
+  .body-2, .body2 {
+    font-size: 0.875rem;
+  }
+  .text-button {
+    font-size: 0.875rem;
+  }
+  .text-overline {
+    font-size: 0.75rem;
+  }
+}
+@media screen and (max-width: 744px) {
+  .text-xxl {
+    font-size: 1.75rem;
+  }
+  .text-xl {
+    font-size: 1.5rem;
+  }
+  .text-lg {
+    font-size: 1.25rem;
+  }
+  .text-md {
+    font-size: 1.125rem;
+  }
+  .text-sm {
+    font-size: 1rem;
+  }
+  .text-s {
+    font-size: 1rem;
+  }
+  .text-xs {
+    font-size: 0.875rem;
+  }
+  .body-1, .body1 {
+    font-size: 1rem;
+  }
+  .body-2, .body2 {
+    font-size: 0.875rem;
+  }
+  .text-button {
+    font-size: 0.875rem;
+  }
+  .text-overline {
+    font-size: 0.75rem;
+  }
+}
+.icon {
+  display: block;
+}
+
+.icon-arrowup {
+  -webkit-mask-image: url("/app/themes/cinfa/assets/img/icon-arrowup.svg");
+  mask-image: url("/app/themes/cinfa/assets/img/icon-arrowup.svg");
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.icon-arrowdown {
+  -webkit-mask-image: url("/app/themes/cinfa/assets/img/icon-arrowdown.svg");
+  mask-image: url("/app/themes/cinfa/assets/img/icon-arrowdown.svg");
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.icon-arrowright {
+  -webkit-mask-image: url("/app/themes/cinfa/assets/img/icon-arrowright.svg");
+  mask-image: url("/app/themes/cinfa/assets/img/icon-arrowright.svg");
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.icon-arrowleft {
+  -webkit-mask-image: url("/app/themes/cinfa/assets/img/icon-arrowleft.svg");
+  mask-image: url("/app/themes/cinfa/assets/img/icon-arrowleft.svg");
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.icon-arrowlink {
+  -webkit-mask-image: url("/app/themes/cinfa/assets/img/icon-arrowlink.svg");
+  mask-image: url("/app/themes/cinfa/assets/img/icon-arrowlink.svg");
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.icon-chevronup {
+  -webkit-mask-image: url("/app/themes/cinfa/assets/img/icon-chevronup.svg");
+  mask-image: url("/app/themes/cinfa/assets/img/icon-chevronup.svg");
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.icon-chevrondown {
+  -webkit-mask-image: url("/app/themes/cinfa/assets/img/icon-chevrondown.svg");
+  mask-image: url("/app/themes/cinfa/assets/img/icon-chevrondown.svg");
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.icon-chevronright {
+  -webkit-mask-image: url("/app/themes/cinfa/assets/img/icon-chevronright.svg");
+  mask-image: url("/app/themes/cinfa/assets/img/icon-chevronright.svg");
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.icon-chevronleft {
+  -webkit-mask-image: url("/app/themes/cinfa/assets/img/icon-chevronleft.svg");
+  mask-image: url("/app/themes/cinfa/assets/img/icon-chevronleft.svg");
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.icon-close {
+  -webkit-mask-image: url("/app/themes/cinfa/assets/img/icon-close.svg");
+  mask-image: url("/app/themes/cinfa/assets/img/icon-close.svg");
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.icon-menuburger {
+  -webkit-mask-image: url("/app/themes/cinfa/assets/img/icon-menuburger.svg");
+  mask-image: url("/app/themes/cinfa/assets/img/icon-menuburger.svg");
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.icon-check {
+  -webkit-mask-image: url("/app/themes/cinfa/assets/img/icon-check.svg");
+  mask-image: url("/app/themes/cinfa/assets/img/icon-check.svg");
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+.grid.grid-onerow .grid-item {
+  flex: 1 0;
+  width: 0;
+}
+.grid.grid-twocol .grid-item {
+  width: 50%;
+}
+.grid.grid-threecol .grid-item {
+  width: 33.3333333333%;
+}
+.grid.grid-fourcol .grid-item {
+  width: 25%;
+}
+
+@media screen and (max-width: 1024px) {
+  .grid {
+    flex-direction: column;
+  }
+  .grid.grid-border .grid-item {
+    border: none;
+  }
+  .grid .grid-item {
+    border-right: none;
+  }
+  .grid.grid-onerow .grid-item {
+    width: 100%;
+  }
+  .grid.grid-twocol .grid-item {
+    width: 100%;
+  }
+  .grid.grid-threecol .grid-item {
+    width: 100%;
+  }
+  .grid.grid-fourcol .grid-item {
+    width: 100%;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */

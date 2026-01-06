@@ -1,0 +1,68 @@
+@use '../abstracts' as *;
+
+:root {
+  --base-font-size: $base-font-size;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: $base-font-size;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+
+  &.modal-open,
+  &.noscroll {
+    overflow: hidden;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: 0px 80px;
+
+  @media screen and (max-width: 1024px) {
+    padding: 0px 64px;
+  }
+
+  @media screen and (max-width: 744px) {
+    padding: 0px 40px; 
+  }
+
+  @media screen and (max-width: 375px) {
+    padding: 0px 16px;
+  }
+}

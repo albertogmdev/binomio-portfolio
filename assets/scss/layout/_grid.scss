@@ -1,0 +1,72 @@
+@use "../abstracts/" as *;
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+
+    &.grid-onerow {
+        .grid-item {
+            flex: 1 0;
+            width: 0;
+        }
+    }
+
+    &.grid-twocol {
+        .grid-item {
+            width: calc(100% / 2);
+        }
+    }
+
+    &.grid-threecol {
+        .grid-item {
+            width: calc(100% / 3);
+        }
+    }
+
+    &.grid-fourcol {
+        .grid-item {
+            width: calc(100% / 4);
+        }
+    }
+}
+
+@media screen and (max-width: $tablet) {
+    .grid {
+        flex-direction: column;
+
+        &.grid-border {
+            .grid-item {
+                border: none;
+            }
+        }
+
+        .grid-item {
+            border-right: none;
+        }
+
+        &.grid-onerow {
+            .grid-item {
+                width: 100%;
+            }
+        }
+
+        &.grid-twocol {
+            .grid-item {
+                width: 100%;
+            }
+        }
+
+        &.grid-threecol {
+            .grid-item {
+                width: 100%;
+            }
+        }
+
+        &.grid-fourcol {
+            .grid-item {
+                width: 100%;
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+@use "sass:meta";
+@use "sass:math";
+
+// Pixels to rem funtion
+// usage: rem(16) or rem(16px)
+@function rem($pixels) {
+  @if math.is-unitless($pixels) { @return calc($pixels / 16 * 1rem); }
+  @return calc($pixels / 16px * 1rem);
+}

@@ -1,0 +1,120 @@
+@use '../abstracts' as *;
+
+.text-xxl {
+    font-family: $font-neueStd;
+    line-height: 120%;
+    font-size: rem(36px);
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.text-xl {
+    font-family: $font-neueStd;
+    line-height: 120%;
+    font-size: rem(32px);
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.text-lg {
+    font-family: $font-neueStd;
+    line-height: 120%;
+    font-size: rem(26px);
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.text-sm {
+    font-family: $font-neueStd;
+    line-height: 140%;
+    font-size: rem(22px);
+    font-weight: 500;
+}
+
+.text-md {
+    font-family: $font-neue;
+    line-height: 140%;
+    font-size: rem(20px);
+    font-weight: 500;
+}
+
+.text-s {
+    font-family: $font-neueStd;
+    line-height: 140%;
+    font-size: rem(18px);
+    font-weight: 500;
+}
+
+.text-xs {
+    font-family: $font-neueStd;
+    line-height: 140%;
+    font-size: rem(16px);
+    font-weight: 500;
+}
+
+.text-xxs {
+    font-family: $font-neueStd;
+    line-height: 140%;
+    font-size: rem(14px);
+    font-weight: 500;
+}
+
+.body-1,
+.body1 {
+    font-family: $font-neue;
+    line-height: 140%;
+    font-size: rem(18px);
+    font-weight: 500;
+}
+
+.body-2,
+.body2 {
+    font-family: $font-neue;
+    line-height: 140%;
+    font-size: rem(16px);
+    font-weight: 500;
+}
+
+.text-button {
+    font-family: $font-neueStd;
+    line-height: 140%;
+    font-size: rem(16px);
+    font-weight: 400;
+}
+
+.text-overline {
+    font-family: $font-neueStd;
+    line-height: 140%;
+    font-size: rem(14px);
+    font-weight: 500;
+    letter-spacing: 5%;
+    text-transform: uppercase;
+}
+
+@media screen and (max-width: $tablet) {
+    .text-xxl { font-size: rem(32px); }
+    .text-xl { font-size: rem(28px); }
+    .text-lg { font-size: rem(24px); }
+    .text-md { font-size: rem(18px); }
+    .text-sm { font-size: rem(16px); }
+    .text-s { font-size: rem(16px); }
+    .text-xs { font-size: rem(14px); }
+    .body-1, .body1 { font-size: rem(16px); }
+    .body-2, .body2 { font-size: rem(14px); }
+    .text-button { font-size: rem(14px); }
+    .text-overline { font-size: rem(12px); }
+}
+
+@media screen and (max-width: $mobile) {
+    .text-xxl { font-size: rem(28px); }
+    .text-xl { font-size: rem(24px); }
+    .text-lg { font-size: rem(20px); }
+    .text-md { font-size: rem(18px); }
+    .text-sm { font-size: rem(16px); }
+    .text-s { font-size: rem(16px); }
+    .text-xs { font-size: rem(14px); }
+    .body-1, .body1 { font-size: rem(16px); }
+    .body-2, .body2 { font-size: rem(14px); }
+    .text-button { font-size: rem(14px); }
+    .text-overline { font-size: rem(12px); }
+}

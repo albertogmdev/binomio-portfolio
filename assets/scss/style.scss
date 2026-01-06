@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+// 1. Base stuff
+@use 'base/base';
+@use 'base/fonts';
+@use 'base/typography';
+@use 'base/icons';
+
+// 2. Layout-related sections
+@use 'layout/footer';
+@use 'layout/header';
+@use 'layout/grid';
