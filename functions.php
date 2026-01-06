@@ -22,9 +22,21 @@ function binomio_hide_editor_on_pages() {
     remove_post_type_support('page', 'editor');
 }
 
-// Cargar estilos de componentes
+// Cargar estilos y scripts de componentes
 add_action('wp_enqueue_scripts', 'binomio_enqueue_components_styles');
 function binomio_enqueue_components_styles() {
+    // Cargar jQuery (incluido en WordPress)
+    wp_enqueue_script('jquery');
+    
+    // Cargar script principal
+    wp_enqueue_script(
+        'binomio-main',
+        get_stylesheet_directory_uri() . '/assets/js/main.js',
+        array('jquery'),
+        '1.0',
+        true
+    );
+    
     $components_dir = get_stylesheet_directory() . '/components/templates';
     
     if (is_dir($components_dir)) {
