@@ -42,5 +42,6 @@ function binomio_check_svg_filetype($data, $file, $filename, $mimes) {
 // Cargar estilos
 add_action('wp_enqueue_scripts', 'binomio_enqueue_components_styles');
 function binomio_enqueue_components_styles() {
-    
+    // Cargar jQuery (incluido en WordPress)
+    wp_enqueue_script('jquery');
 }
