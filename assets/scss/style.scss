@@ -10,3 +10,8 @@
 @use 'layout/footer';
 @use 'layout/header';
 @use 'layout/grid';
+
+// 3. Components
+@use 'components/button';
+@use 'components/link';
+@use 'components/tab';

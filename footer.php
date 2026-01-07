@@ -1,9 +1,14 @@
 </main>
 </div>
 <footer id="footer" role="contentinfo">
-    <h3>FOOTER</h3>
-    <div id="copyright">
-        &copy; <?php echo esc_html(date_i18n(__('Y', 'blankslate'))); ?> <?php echo esc_html(get_bloginfo('name')); ?>
+    <div class="footer-socials">
+        <a href="#" class="social-link">
+            <span class="icon icon-instagram"></span>
+            <p class="social-text">@BNOMIO</p>
+        </a>
+    </div>
+    <div class="footer-info">
+        <p>BNOMIO | ©COPYRIGHT 2025 ALL RIGHTS RESERVED</p>
     </div>
 </footer>
 </div>

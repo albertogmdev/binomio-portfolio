@@ -1,35 +1,24 @@
-/// Fonts
+/// Colors
 /// @type color
-// Neutral color
-$neutral-500: #151515;
-$neutral-400: #555555;
-$neutral-00: #FFFFFF;
+$charcoal: #1E1E1E;
+$midgrey: #CED0CE;
+$grey: #E7E7E7;
+$emphasis: #6D6D6D;
+$emphasis3: #303030;
 $white: #FFFFFF;
-// Base color
-$color-600: var(--color-600);
-$color-500: var(--color-500);
-$color-400: var(--color-400);
-$color-300: var(--color-300);
-$color-200: var(--color-200);
-$color-100: var(--color-100);
-$color-50: var(--color-50);
+$red: #D9003C;
 
 /// Container
 $container-width: 1440px;
 
 /// Transiciones
-$transition: .5s linear;
-$marqueeSpeed: 20s;
-$marqueeDirection: scroll-left;
-
-/// Base font size
-/// @type Number
-$base-font-size: 16px;
+$transition: .3s linear;
 
 /// Fonts
 /// @type String
-$font-neueStd: 'Roboto', sans-serif;
-$font-neue: 'Roboto', sans-serif;
+$jetbrains: 'JetBrains Mono', monospace;
+$druk: 'Druk Wide', sans-serif;
+$base-font-size: 16px;
 
 /// Breakpoints
 /// @type Number
@@ -38,100 +27,52 @@ $tablet: 1024px;
 
 /// Navigation
 /// @type Number
-$navbarHeight: 70px;
-$navbarHeight--mobile: 70px;
+$navbarHeight: 60px;
+$navbarHeight--mobile: 60px;
 
 /// Relative or absolute URL where all assets are served from
 /// @type String
-$base-url: '/app/themes/cinfa/assets' !default;
+$base-url: '/wp-content/themes/binomio/assets' !default;
 
 /// Theme colors
 :root {
-    // Background color
-    --backgroundPrimary: #{$neutral-00};
-    --backgroundInverted: #{$color-500};
-    --backgroundHover: #{$color-100};
-    --cta-backgroundPrimary: #{$color-500};
-    --cta-backgroundHover: #{$color-400};
-    --cta-backgroundInverted: #{$neutral-00};
-    --cardBackground: #{$color-50};
-    --pdpBackground: #{$color-200};
-    --assetBackground: #{$color-50};
-    // Text color
-    --textPrimary: #{$neutral-500};
-    --textSeconday: #{$neutral-400};
-    --textCTA: #{$color-500};
-    --textInverted: #{$neutral-00};
-    // Stroke color
-    --strokePrimary: #{$color-500};
-    --strokeSecondary: #{$color-200};
-    --strokeTertiary: #{$color-300};
-    --strokeDivider: #{$color-50};
-    // Fill
-    --fillPrimary: #{$color-500};
-    --fillSecondary: #{$color-300};
-    --fillTertiary: #{$color-200};
-    --fillQuaternary: #{$color-100};
-    // Banner
-    --bannerCompliance: #64B22D;
-    --bannerInstructions: #114482;
-    --bannerContraindications: #579B27;
+    --textPrimary: #{$midgrey};
+    --textSecondary: #{$emphasis};
+    --textCTA: #{$white};
+    --textLink: #{$emphasis};
+    --background: #{$charcoal};
+    --decoration: #{$emphasis};
+    --highlight: #{$red};
+    --inverted: #{$white};
 
-    .theme--dark {
-        // Background color
-        --backgroundPrimary: #{$color-500};
-        --backgroundInverted: #{$neutral-500};
-        --backgroundHover: #{$color-500};
-        --cta-backgroundPrimary: #{$neutral-00};
-        --cta-backgroundHover: #{$color-100};
-        --cta-backgroundInverted: #{$color-500};
-        --cardBackground: #{$color-400};
-        --pdpBackground: #{$color-50};
-        --assetBackground: #{$color-400};
-        // Text color
-        --textPrimary: #{$neutral-00};
-        --textSeconday: #{$color-50};
-        --textCTA: #{$color-50};
-        --textInverted: #{$neutral-500};
-        // Stroke color
-        --strokePrimary: #{$color-50};
-        --strokeSecondary: #{$color-50};
-        --strokeTertiary: #{$color-50};
-        --strokeDivider: #{$color-50};
-        // Fill
-        --fillPrimary: #{$neutral-00};
-        --fillSecondary: #{$color-100};
-        --fillTertiary: #{$color-200};
-        --fillQuaternary: #{$color-100};
+    .theme--artist {
+        --background: #{$charcoal};
+        --textPrimary: #{$midgrey};
+        --textSecondary: #{$emphasis};
+        --textCTA: #{$white};
+        --textLink: #{$emphasis};
+        --decoration: #{$emphasis};
+        --highlight: #{$red};
+        --inverted: #{$white};
+    }
+
+    .theme--studio {
+        --background: #{$midgrey};
+        --textPrimary: #{$charcoal};
+        --textSecondary: #{$charcoal};
+        --textCTA: #{$charcoal};
+        --textLink: #{$emphasis3};
+        --decoration: #{$emphasis};
+        --highlight: #{$red};
+        --inverted: #{$charcoal};
     }
 }
 
-// Background color
-$backgroundPrimary: var(--backgroundPrimary);
-$backgroundInverted: var(--backgroundInverted);
-$backgroundHover: var(--backgroundHover);
-$ctaBackgroundPrimary: var(--cta-backgroundPrimary);
-$ctaBackgroundInverted: var(--cta-backgroundInverted);
-$ctaBackgroundHover: var(--cta-backgroundHover);
-$cardBackground: var(--cardBackground);
-$pdpBackground: var(--pdpBackground);
-$assetBackground: var(--assetBackground);
-// Text color
 $textPrimary: var(--textPrimary);
-$textSeconday: var(--textSeconday);
+$textSecondary: var(--textSecondary);
 $textCTA: var(--textCTA);
-$textInverted: var(--textInverted);
-// Stroke color
-$strokePrimary: var(--strokePrimary);
-$strokeSecondary: var(--strokeSecondary);
-$strokeTertiary: var(--strokeTertiary);
-$strokeDivider: var(--strokeDivider);
-// Fill
-$fillPrimary: var(--fillPrimary);
-$fillSecondary: var(--fillSecondary);
-$fillTertiary: var(--fillTertiary);
-$fillQuaternary: var(--fillQuaternary);
-// Banner
-$bannerCompliance: var(--bannerCompliance);
-$bannerInstructions: var(--bannerInstructions);
-$bannerContraindications: var(--bannerContraindications);
+$textLink: var(--textLink);
+$background: var(--background);
+$decoration: var(--decoration);
+$highlight: var(--highlight);
+$inverted: var(--inverted);

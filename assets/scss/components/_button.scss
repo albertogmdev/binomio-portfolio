@@ -1,0 +1,46 @@
+@use '../abstracts' as *;
+@use '../base/typography' as *;
+
+.button {
+    appearance: none;
+    background: none;
+    text-decoration: none;
+    border: none;
+    
+    display: block;
+    @extend .text-button;
+    color: $textCTA;
+    border: 1px solid $decoration;
+    padding: 10px 24px;
+    cursor: pointer;
+    max-width: max-content;
+    transition: all $transition;
+
+    &.button-icon {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+
+        &:not(:has(.text)) {
+            padding: 10px;
+        }
+
+        .icon {
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
+            background-color: $textCTA;
+        }
+    }
+
+    &:hover {
+        background-color: $textCTA;
+        border-color: $textCTA;
+        color: $background;
+
+        .icon {
+            background-color: $background;
+        }
+    }
+}

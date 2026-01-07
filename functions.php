@@ -22,31 +22,25 @@ function binomio_hide_editor_on_pages() {
     remove_post_type_support('page', 'editor');
 }
 
-// Cargar estilos de componentes
-add_action('wp_enqueue_scripts', 'binomio_enqueue_components_styles');
-function binomio_enqueue_components_styles() {
-    $components_dir = get_stylesheet_directory() . '/components/templates';
-    
-    if (is_dir($components_dir)) {
-        $css_files = glob($components_dir . '/*.css');
-        
-        foreach ($css_files as $css_file) {
-            $component_name = basename($css_file, '.css');
-            wp_enqueue_style(
-                'component-' . $component_name,
-                get_stylesheet_directory_uri() . '/components/templates/' . basename($css_file),
-                array(),
-                filemtime($css_file)
-            );
-        }
-    }
+// Permitir subida de archivos SVG
+add_filter('upload_mimes', 'binomio_allow_svg_upload');
+function binomio_allow_svg_upload($mimes) {
+    $mimes['svg'] = 'image/svg+xml';
+    return $mimes;
 }
 
-// Theme Options (ejemplo)
-add_action( 'carbon_fields_register_fields', 'crb_attach_theme_options' );
-function crb_attach_theme_options() {
-    Container::make( 'theme_options', __( 'Theme Options' ) )
-        ->add_fields( array(
-            Field::make( 'text', 'crb_text', 'Text Field' ),
-        ) );
+// Validar archivos SVG al subir
+add_filter('wp_check_filetype_and_ext', 'binomio_check_svg_filetype', 10, 4);
+function binomio_check_svg_filetype($data, $file, $filename, $mimes) {
+    if (strlen($filename) > 4 && strtolower(substr($filename, -4)) === '.svg') {
+        $data['type'] = 'image/svg+xml';
+        $data['ext'] = 'svg';
+    }
+    return $data;
+}
+
+// Cargar estilos
+add_action('wp_enqueue_scripts', 'binomio_enqueue_components_styles');
+function binomio_enqueue_components_styles() {
+    
 }

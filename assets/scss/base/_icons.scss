@@ -5,50 +5,58 @@
 }
 
 .icon-arrowup {
-    @include mask-icon(url("#{$base-url}/img/icon-arrowup.svg"));
+    @include mask-icon(url("#{$base-url}/images/icon-arrowup.svg"));
 }
 
 .icon-arrowdown {
-    @include mask-icon(url("#{$base-url}/img/icon-arrowdown.svg"));
+    @include mask-icon(url("#{$base-url}/images/icon-arrowdown.svg"));
 }
 
 .icon-arrowright {
-    @include mask-icon(url("#{$base-url}/img/icon-arrowright.svg"));   
+    @include mask-icon(url("#{$base-url}/images/icon-arrowright.svg"));   
 }
 
 .icon-arrowleft {
-    @include mask-icon(url("#{$base-url}/img/icon-arrowleft.svg"));
+    @include mask-icon(url("#{$base-url}/images/icon-arrowleft.svg"));
 }
 
 .icon-arrowlink {
-    @include mask-icon(url("#{$base-url}/img/icon-arrowlink.svg"));
+    @include mask-icon(url("#{$base-url}/images/icon-arrowlink.svg"));
 }
 
 .icon-chevronup {
-    @include mask-icon(url("#{$base-url}/img/icon-chevronup.svg"));
+    @include mask-icon(url("#{$base-url}/images/icon-chevronup.svg"));
 }
 
 .icon-chevrondown {
-    @include mask-icon(url("#{$base-url}/img/icon-chevrondown.svg"));
+    @include mask-icon(url("#{$base-url}/images/icon-chevrondown.svg"));
 }
 
 .icon-chevronright {
-    @include mask-icon(url("#{$base-url}/img/icon-chevronright.svg"));
+    @include mask-icon(url("#{$base-url}/images/icon-chevronright.svg"));
 }
 
 .icon-chevronleft {
-    @include mask-icon(url("#{$base-url}/img/icon-chevronleft.svg"));
+    @include mask-icon(url("#{$base-url}/images/icon-chevronleft.svg"));
 }
 
 .icon-close {
-    @include mask-icon(url("#{$base-url}/img/icon-close.svg"));
+    @include mask-icon(url("#{$base-url}/images/icon-close.svg"));
 }
 
-.icon-menuburger {
-    @include mask-icon(url("#{$base-url}/img/icon-menuburger.svg"));
+.icon-burger {
+    @include mask-icon(url("#{$base-url}/images/icon-burger.svg"));
 }
 
 .icon-check {
-    @include mask-icon(url("#{$base-url}/img/icon-check.svg"));
+    @include mask-icon(url("#{$base-url}/images/icon-check.svg"));
+}
+
+.icon-binomio {
+    @include mask-icon(url("#{$base-url}/images/icon-binomio.svg"));
+}
+
+.icon-instagram {
+    @include mask-icon(url("#{$base-url}/images/icon-instagram.svg"));
 }
 

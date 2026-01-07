@@ -1,0 +1,22 @@
+@use '../abstracts' as *;
+@use '../base/typography' as *;
+
+.link {
+    appearance: none;
+    background: none;
+    text-decoration: none;
+    border: none;
+    
+    display: inline-block;
+    @extend .text-button;
+    color: $textLink;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    cursor: pointer;
+    transition: all $transition;
+
+    &:hover {
+        color: $textCTA;
+        border-color: $textCTA;
+    }
+}
