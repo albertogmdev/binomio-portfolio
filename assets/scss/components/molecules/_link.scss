@@ -6,7 +6,7 @@
     background: none;
     text-decoration: none;
     border: none;
-    
+
     display: inline-block;
     @extend .text-button;
     color: $textLink;
@@ -16,11 +16,66 @@
     transition: all $transition;
 
     &--active {
-        color: $textCTA;
+        color: $inverted;
     }
 
     &:hover {
-        color: $textCTA;
-        border-color: $textCTA;
+        color: $inverted;
+        border-color: $inverted;
+    }
+}
+
+.link-info {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 8px;
+
+    &:before {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: -100vw;
+        width: 200vw;
+        height: 1px;
+        opacity: 0;
+        background-color: $inverted;
+        z-index: -1;
+        transition: all $transition;
+    }
+
+    .info-item {
+        @extend .text-button;
+        color: $textLink;
+        text-align: left;
+        transition: all $transition;
+
+        &--first {
+            width: calc(25% - (20px / 3));
+        }
+
+        &--second {
+            width: calc(65% - (20px / 3));
+        }
+
+        &--third {
+            width: calc(10% - (20px / 3));
+        }
+    }
+
+    &--active {
+        color: $inverted;
+    }
+
+    &:hover {
+        .info-item {
+            color: $inverted;
+        }
+
+        &:before {
+            opacity: 1;
+        }
     }
 }

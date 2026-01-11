@@ -1,46 +1,40 @@
 @use '../../abstracts' as *;
 
-.section-collection_grid {
-    .container {
-        .items-grid {
-            display: flex;
-            gap: 20px;
-            padding: 40px 0px;
-            align-items: stretch;
-            flex-wrap: wrap;
+.section-collection_grid {}
 
-            .item {
-                display: block;
-                height: auto;
+.collection-grid {
+    display: flex;
+    gap: 20px;
+    padding: 40px 0px;
+    align-items: stretch;
+    flex-wrap: wrap;
 
-                &--onecol {
-                    flex: 0 1 calc(25% - 15px);
-                    aspect-ratio: 258 / 376;
+    .item {
+        display: block;
+        height: auto;
 
-                }
+        &--onecol {
+            flex: 0 1 calc(25% - 15px);
+            aspect-ratio: 258 / 376;
 
-                &--twocol {
-                    flex: 0 1 calc(50% - 10px);
-                    aspect-ratio: 590 / 376;
-                }
-            }
+        }
+
+        &--twocol {
+            flex: 0 1 calc(50% - 10px);
+            aspect-ratio: 590 / 376;
         }
     }
 }
 
 @media screen and (max-width: $tablet) {
-    .section-collection_grid {
-        .container {
-            .items-grid {
-                .item {
-                    &--onecol {
-                        flex: 0 1 calc(50% - 10px);
-                    }
+    .collection-grid {
+        .item {
+            &--onecol {
+                flex: 0 1 calc(50% - 10px);
+            }
 
-                    &--twocol {
-                        flex: 0 1 100%;
-                    }
-                }
+            &--twocol {
+                flex: 0 1 100%;
             }
         }
     }

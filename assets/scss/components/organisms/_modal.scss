@@ -1,0 +1,114 @@
+@use '../../abstracts' as *;
+@use '../../base/typography' as *;
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 11;
+}
+
+.modal-archive {
+    width: 100vw;
+    height: 100dvh;
+    background-color: transparent;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: -1;
+    transition: visibility 0.5s linear 1s, z-index 0s linear 1.5s;
+
+    &.opened {
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 11;
+        visibility: visible;
+        pointer-events: all;
+        transition: visibility 0.5s linear 0s, z-index 0s linear 0s;
+
+        .modal-main {
+            right: 0;
+        }
+    }
+
+    .modal-main {
+        position: absolute;
+        top: 0;
+        right: -800px;
+        width: 90%;
+        max-width: 720px;
+        height: 100%;
+        padding: 40px;
+        padding-bottom: 128px;
+        background-color: $white;
+        transition: all .5s ease-in-out;
+
+        .modal-close {
+            position: absolute;
+            top: 0px;
+            left: -38px;
+
+            .icon {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        .modal-body {
+            height: 100%;
+            overflow-y: auto;
+
+            .modal-image {
+                img {
+                    display: block;
+                    width: 100%;
+                    height: auto;
+                    padding: 0 24px;
+                }
+            }
+
+            .modal-content {
+                margin: 40px 0;
+
+                .modal-title {
+                    margin-bottom: 8px;
+                    color: $charcoal;
+                }
+
+                .modal-subtitle {
+                    color: $emphasis3;
+                }
+
+                .modal-description {
+                    margin: 24px 0;
+                    color: $charcoal;
+                }
+            }
+        }
+
+        .modal-pagination {
+            position: absolute;
+            display: flex;
+            width: calc(100% - 80px);
+            bottom: 64px;
+            left: 40px;
+            justify-content: space-between;
+            padding-top: 40px;
+
+            .pagination-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: $emphasis;
+
+                .text {
+                    @extend .text-button;
+                }
+
+                .icon {
+                    width: 12px;
+                    height: 12px;
+                    background-color: $emphasis;
+                }
+            }
+        }
+    }
+}

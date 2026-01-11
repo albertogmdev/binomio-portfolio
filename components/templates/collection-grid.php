@@ -10,11 +10,11 @@ $title = $component['hero_title'] ?? '';
 <section class="section-collection_grid">
     <div class="container">
         <div class="tabs">
-            <div class="tab selected" data-panel="projects">Projects</div>
-            <div class="tab" data-panel="exhibitions">Exhibitions</div>
+            <div class="tab selected" data-panel="projects" data-group="collection-list">Projects</div>
+            <div class="tab" data-panel="exhibitions" data-group="collection-list">Exhibitions</div>
         </div>
-        <div id="projects" class="content-panel">
-            <div class="items-grid">
+        <div id="projects" class="content-panel collection-list">
+            <div class="collection-grid">
                 <div class="collection-card item item--onecol">
                     <img
                         class="card-image"
@@ -105,8 +105,8 @@ $title = $component['hero_title'] ?? '';
                 </div>
             </div>
         </div>
-        <div id="exhibitions" class="content-panel hidden-panel">
-            <div class="items-grid">
+        <div id="exhibitions" class="content-panel hidden-panel collection-list">
+            <div class="collection-grid">
                 <div class="collection-card item item--onecol">
                     <img
                         class="card-image"

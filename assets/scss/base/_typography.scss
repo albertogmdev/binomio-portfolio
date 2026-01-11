@@ -16,9 +16,25 @@
     text-transform: uppercase;
 }
 
+.text-h2 {
+    font-family: $druk;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 80%;
+    text-transform: uppercase;
+}
+
 .text-h3 {
     font-family: $druk;
     font-size: 14px;
+    font-weight: 500;
+    line-height: 125%;
+    text-transform: uppercase;
+}
+
+.text-h4 {
+    font-family: $druk;
+    font-size: 12px;
     font-weight: 500;
     line-height: 125%;
     text-transform: uppercase;

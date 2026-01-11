@@ -20,9 +20,9 @@
 
     <h2 class="druk" style="margin-top: 20px; margin-bottom: 10px">Tabs</h2>
     <div class="tabs">
-        <a class="tab selected" href="#">Tab 1</a>
-        <a class="tab" href="#">Tab 2</a>
-        <a class="tab" href="#">Tab 3</a>
+        <div class="tab selected" href="#" data-group="test">Tab 1</div>
+        <div class="tab" href="#" data-group="test">Tab 2</div>
+        <div class="tab" href="#" data-group="test">Tab 3</div>
     </div>
 
     <h2 class="druk" style="margin-top: 20px; margin-bottom: 10px">Tags</h2>
@@ -38,6 +38,9 @@
 
     <h2 class="druk" style="margin-top: 40px; margin-bottom: 10px">Components</h2>
     </div>
+    <?php
+        get_template_part( 'components/templates/item-list' );
+    ?>
     <?php
         get_template_part( 'components/templates/hero' );
     ?>
