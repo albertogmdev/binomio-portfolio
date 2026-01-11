@@ -1,0 +1,105 @@
+@use '../../abstracts' as *;
+
+.decoration-row {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.decoration {
+    position: relative;
+    display: block;
+    width: 24px;
+    height: 24px;
+
+    &:after,
+    &:before {
+        content: '';
+        position: absolute;
+        display: block;
+        background-color: $decoration;
+    }
+
+    &:after {
+        width: 20px;
+        height: 1px;
+    }
+
+    &:before {
+        width: 1px;
+        height: 20px;
+    }
+
+    &--topleft {
+        &:after {
+            bottom: 0;
+            left: 0;
+        }
+
+        &:before {
+            top: 0;
+            right: 0;
+        }
+    }
+
+    &--topright {
+        &:after {
+            bottom: 0;
+            right: 0;
+        }
+
+        &:before {
+            top: 0;
+            left: 0;
+        }
+    }
+
+    &--bottomleft {
+        &:after {
+            top: 0;
+            left: 0;
+        }
+
+        &:before {
+            bottom: 0;
+            right: 0;
+        }
+    }
+
+    &--bottomright {
+        &:after {
+            top: 0;
+            right: 0;
+        }
+
+        &:before {
+            bottom: 0;
+            left: 0;
+        }
+    }
+
+    &--midleft {
+        &:after {
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        &:before {
+            display: none;
+        }
+    }
+
+    &--midright {
+        &:after {
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+
+        &:before {
+            display: none;
+        }
+    }
+}

@@ -12,6 +12,12 @@
 @use 'layout/grid';
 
 // 3. Components
-@use 'components/button';
-@use 'components/link';
-@use 'components/tab';
+@use 'components/molecules/button';
+@use 'components/molecules/link';
+@use 'components/molecules/tab';
+@use 'components/molecules/tag';
+@use 'components/molecules/decorations';
+@use 'components/molecules/collection-card';
+@use 'components/organisms/hero';
+@use 'components/organisms/collection-grid';
+

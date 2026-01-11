@@ -1,5 +1,5 @@
-@use '../abstracts' as *;
-@use '../base/typography' as *;
+@use '../../abstracts' as *;
+@use '../../base/typography' as *;
 
 .link {
     appearance: none;
@@ -14,6 +14,10 @@
     padding-bottom: 2px;
     cursor: pointer;
     transition: all $transition;
+
+    &--active {
+        color: $textCTA;
+    }
 
     &:hover {
         color: $textCTA;

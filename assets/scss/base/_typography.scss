@@ -1,5 +1,43 @@
 @use '../abstracts' as *;
 
+.druk {
+    font-family: $druk;
+}
+
+.jetbrains {
+    font-family: $jetbrains;
+}
+
+.text-h1 {
+    font-family: $druk;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 80%;
+    text-transform: uppercase;
+}
+
+.text-h3 {
+    font-family: $druk;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 125%;
+    text-transform: uppercase;
+}
+
+.body-large {
+    font-family: $jetbrains;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 125%;
+}
+
+.body-small {
+    font-family: $jetbrains;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 145%;
+}
+
 .text-button {
     font-family: $jetbrains;
     font-size: 10px;

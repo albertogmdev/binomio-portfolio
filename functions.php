@@ -44,4 +44,7 @@ add_action('wp_enqueue_scripts', 'binomio_enqueue_components_styles');
 function binomio_enqueue_components_styles() {
     // Cargar jQuery (incluido en WordPress)
     wp_enqueue_script('jquery');
+
+    // Cargar main.js
+    wp_enqueue_script('binomio-js', get_stylesheet_directory_uri() . '/assets/js/main.js', array('jquery'), '1.0.0', true);
 }

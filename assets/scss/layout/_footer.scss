@@ -1,36 +1,53 @@
 @use '../abstracts' as *;
 
 #footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
+    .footer-main {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
 
-    .footer-socials {
-        .social-link {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .footer-socials {
+            .social-link {
+                display: flex;
+                align-items: center;
+                gap: 8px;
 
-            .social-text {
-                font-size: 10px;
-                font-family: $jetbrains;
-                font-weight: 400;
-                color: $inverted;
+                .social-text {
+                    font-size: 10px;
+                    font-family: $jetbrains;
+                    font-weight: 400;
+                    color: $inverted;
+                }
+
+                .icon {
+                    width: 20px;
+                    height: 20px;
+                    background-color: $textPrimary;
+                }
             }
+        }
 
-            .icon {
-                width: 20px;
-                height: 20px;
-                background-color: $textPrimary;
-            }
+        .footer-info {
+            font-size: 10px;
+            font-family: $jetbrains;
+            font-weight: 400;
+            color: $inverted;
         }
     }
 
-    .footer-info {
-        font-size: 10px;
-        font-family: $jetbrains;
-        font-weight: 400;
-        color: $inverted;
+    .footer-navigation {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        background-color: #000000;
+
+        .navigation-left,
+        .navigation-right {
+            display: flex;
+            align-self: center;
+            gap: 24px;
+        }
     }
 }
