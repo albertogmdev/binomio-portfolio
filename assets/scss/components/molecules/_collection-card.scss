@@ -5,6 +5,10 @@
     padding: 10px;
     z-index: 2;
 
+    >a {
+        pointer-events: none;
+    }
+
     .card-image {
         display: block;
         width: 100%;
@@ -61,6 +65,27 @@
         .card-info {
             opacity: 1;
             pointer-events: all;
+        }
+    }
+}
+
+@media screen and (max-width: $tablet) {
+    .collection-card {
+        cursor: pointer;
+
+        >a {
+            pointer-events: auto;
+        }
+
+        .card-info {
+            display: none;
+        }
+
+        &:hover,
+        &.showing {
+            .card-image {
+                filter: none;
+            }
         }
     }
 }

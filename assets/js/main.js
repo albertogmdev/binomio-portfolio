@@ -6,17 +6,6 @@
         initCards();
         initModals();
 
-        const isTouchDevice = () => {
-            return (
-                (typeof window !== 'undefined' &&
-                    ('ontouchstart' in window ||
-                        (typeof window.DocumentTouch !== 'undefined' &&
-                            document instanceof window.DocumentTouch))) ||
-                navigator.maxTouchPoints > 0 ||
-                navigator.msMaxTouchPoints > 0
-            );
-        };
-
         function initModals() {
             const toggleModal = (modal) => {
                 modal.toggleClass('opened');
@@ -50,13 +39,7 @@
         }
 
         function initCards() {
-            // Detectar si es dispositivo táctil o móvil
-            $('.collection-card').on('click', function (e) {
-                if (!isTouchDevice() || $(this).hasClass('showing')) return;
-
-                $('.collection-card').not(this).removeClass('showing');
-                $(this).toggleClass('showing');
-            });
+            
         }
 
         function initTabs() {

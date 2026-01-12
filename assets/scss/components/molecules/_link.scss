@@ -37,8 +37,9 @@
         content: '';
         position: absolute;
         bottom: 4px;
-        left: -100vw;
-        width: 200vw;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100vw;
         height: 1px;
         opacity: 0;
         background-color: $inverted;

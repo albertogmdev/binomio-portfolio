@@ -7,6 +7,14 @@
 html {
   box-sizing: border-box;
   font-size: $base-font-size;
+
+  @media screen and (max-width: 782px) {
+    margin-top: 0 !important;
+
+    #header {
+      top: 0 !important;
+    }
+  }
 }
 
 *,

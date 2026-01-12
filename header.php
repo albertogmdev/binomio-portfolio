@@ -25,6 +25,7 @@
                     class="logo"
                 >
             </a>
+            <button class="header-burger icon icon-burger"></button>
             <div class="header-links">
                 <a class="link" href="/artistas">Collections</a>
                 <a class="link" href="/estudio">Archive</a>

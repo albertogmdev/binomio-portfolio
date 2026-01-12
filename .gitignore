@@ -10,6 +10,7 @@ assets/css/*.css
 assets/css/*.map
 .map
 ..map
+style.css
 
 # OS generated files
 .DS_Store

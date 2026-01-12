@@ -98,6 +98,19 @@
                 align-items: center;
                 gap: 8px;
                 color: $emphasis;
+                cursor: pointer;
+                transition: all $transition;
+
+                &:hover {
+                    .text {
+                        color: $charcoal;
+                        text-decoration: underline;
+                    }
+
+                    .icon {
+                        background-color: $charcoal;
+                    }
+                }
 
                 .text {
                     @extend .text-button;
@@ -108,6 +121,24 @@
                     height: 12px;
                     background-color: $emphasis;
                 }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $mobile) {
+    .modal-archive {
+        .modal-main {
+            right: -100%;
+            width: calc(100% - 40px);
+            padding: 24px;
+            padding-bottom: 80px;
+
+            .modal-pagination {
+                width: calc(100% - 48px);
+                bottom: 40px;
+                left: 24px;
+                padding-top: 24px;
             }
         }
     }

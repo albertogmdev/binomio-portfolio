@@ -26,9 +26,29 @@
         display: flex;
         align-items: center;
         gap: 24px;
-        
+
         .link {
             color: $textCTA;
+        }
+    }
+
+    .header-burger {
+        display: none;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        background-color: $inverted;
+    }
+}
+
+@media screen and (max-width: $mobile) {
+    #header {
+        .header-links {
+            display: none;
+        }
+
+        .header-burger {
+            display: block;
         }
     }
 }
