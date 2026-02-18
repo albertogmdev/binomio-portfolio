@@ -2,9 +2,59 @@
     $(document).ready(function () {
         console.log("Main JS loaded");
 
+        const tablet = 1024;
+        const mobile = 768;
+
         initTabs();
         initCards();
         initModals();
+        initHero();
+
+        function initHero() {
+            const centerImages = () => {
+                const studioImage = $('.studio-hero .hero-image')
+                const artistImage = $('.artist-hero .hero-image')
+
+                studioImage.css('left', `-${studioImage.width() / 2}px`);
+                studioImage.css('right', 'unset');
+                artistImage.css('right', `-${artistImage.width() / 2}px`);
+                artistImage.css('left', 'unset');
+            }
+
+            $('.binomio-hero--half').hover(function() {
+                if (window.innerWidth <= 1024) return;
+
+                $('.binomio-hero--half').removeClass('active');
+                $('.binomio-hero--half').addClass('noactive');
+                $(this).removeClass('noactive');
+                $(this).addClass('active');
+
+                const studioImage = $('.studio-hero .hero-image')
+                const artistImage = $('.artist-hero .hero-image')
+                if ($(this).hasClass('studio-hero')) {
+                    studioImage.css('left', `calc(33% - ${$(studioImage).width() / 2}px)`);
+                    studioImage.css('right', 'unset');
+                    artistImage.css('right', `calc(-${$(artistImage).width()}px)`);
+                    artistImage.css('left', 'unset');
+
+                } else {
+                    artistImage.css('right', `calc(33% - ${$(artistImage).width() / 2}px)`);
+                    artistImage.css('left', 'unset');
+                    studioImage.css('left', `calc(-${$(studioImage).width()}px)`);
+                    studioImage.css('right', 'unset');
+                }
+            }, function() {
+                if (window.innerWidth <= 1024) return;
+
+                $('.binomio-hero--half').removeClass('noactive');
+                $(this).removeClass('active');
+
+                centerImages();
+            })
+
+            centerImages();
+            $(window).on('resize', centerImages);
+        }
 
         function initModals() {
             const toggleModal = (modal) => {

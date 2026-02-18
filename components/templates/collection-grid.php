@@ -80,7 +80,7 @@ $title = $component['hero_title'] ?? '';
                         <a href="#" class="button item-button">See project</a>
                     </div>
                 </div>
-                <div class="collection-card item item--onecol">ç
+                <div class="collection-card item item--onecol">
                     <a href="#">
                         <img
                             class="card-image"

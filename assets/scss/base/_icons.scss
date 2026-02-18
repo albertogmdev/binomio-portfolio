@@ -52,8 +52,14 @@
     @include mask-icon(url("#{$base-url}/images/icon-check.svg"));
 }
 
-.icon-binomio {
-    @include mask-icon(url("#{$base-url}/images/icon-binomio.svg"));
+.icon-bnomio {
+    aspect-ratio: 110 / 17;
+    @include mask-icon(url("#{$base-url}/images/icon-bnomio.svg"));
+}
+
+.icon-bnomiostudio {
+    aspect-ratio: 210 / 17;
+    @include mask-icon(url("#{$base-url}/images/icon-bnomiostudio.svg"));
 }
 
 .icon-instagram {

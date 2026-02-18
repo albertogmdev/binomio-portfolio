@@ -65,6 +65,16 @@ p, h1, h2, h3, h4, h5, h6 {
   z-index: 10;
 }
 
+.separation-line {
+  position: fixed;
+  width: 1px;
+  height: 100%;
+  background-color: red;
+  top: 0;
+  left: 50dvw;
+  z-index: 99;
+}
+
 .container {
   width: 100%;
   max-width: $container-width;
