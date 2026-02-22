@@ -1,6 +1,6 @@
 </main>
 </div>
-<footer id="footer" role="contentinfo">
+<footer id="footer" class="" role="contentinfo">
     <div class="footer-main">
         <div class="footer-socials">
             <a href="#" class="social-link">
@@ -12,16 +12,18 @@
             <p>BNOMIO | ©COPYRIGHT 2025 ALL RIGHTS RESERVED</p>
         </div>
     </div>
-    <div class="footer-navigation theme--artist">
-        <ul class="navigation-left">
-            <li><a class="link" href="#">Studio zone</a></li>
-            <li><a class="link link--active" href="#">Artist zone</a></li>
-        </ul>
-        <ul class="navigation-right">
-            <li><a class="link" href="#">ESP</a></li>
-            <li><a class="link link--active" href="#">ENG</a></li>
-        </ul>
-    </div>
+    <?php if (!is_front_page()) : ?>
+        <div class="footer-navigation theme--artist">
+            <ul class="navigation-left">
+                <li><a class="link" href="#">Studio zone</a></li>
+                <li><a class="link link--active" href="#">Artist zone</a></li>
+            </ul>
+            <ul class="navigation-right">
+                <li><a class="link" href="#">ESP</a></li>
+                <li><a class="link link--active" href="#">ENG</a></li>
+            </ul>
+        </div>
+    <?php endif; ?>
 </footer>
 </div>
 <?php wp_footer(); ?>

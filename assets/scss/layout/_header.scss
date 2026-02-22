@@ -1,5 +1,52 @@
 @use '../abstracts' as *;
 
+.front-page {
+    #header,
+    #footer {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    &.studio-entered,
+    &.artist-entered {
+        #header,
+        #footer {
+            opacity: 1;
+            pointer-events: all;
+            transition-delay: 0.5s;
+        }
+    }
+}
+
+.studio-entered {
+    #header {
+        .header-logo {
+            .icon-bnomio {
+                display: none;
+            }
+
+            .icon-bnomiostudio {
+                display: block;
+            }
+        }
+    }
+}
+
+.artist-entered {
+    #header {
+        .header-logo {
+            .icon-bnomio {
+                display: block;
+            }
+
+            .icon-bnomiostudio {
+                display: none;
+            }
+        }
+    }
+}
+
 #header {
     position: fixed;
     top: 0;
@@ -10,15 +57,19 @@
     justify-content: space-between;
     padding: 20px;
     backdrop-filter: blur(15px);
+    mix-blend-mode: difference;
     z-index: 10;
 
     .header-logo {
+        max-width: 100%;
+        padding-right: 10px;
         display: block;
 
-        .logo {
+        .icon {
+            background-color: $inverted;
             display: block;
             height: 20px;
-            width: auto;
+            width: 100%;
         }
     }
 
@@ -36,6 +87,7 @@
         display: none;
         width: 24px;
         height: 24px;
+        flex-shrink: 0;
         cursor: pointer;
         background-color: $inverted;
     }

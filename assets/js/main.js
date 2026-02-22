@@ -11,18 +11,37 @@
         initHero();
 
         function initHero() {
-            const centerImages = () => {
-                const studioImage = $('.studio-hero .hero-image')
-                const artistImage = $('.artist-hero .hero-image')
+            let resizeTimeout;
+            let isExiting = false;
 
-                studioImage.css('left', `-${studioImage.width() / 2}px`);
-                studioImage.css('right', 'unset');
-                artistImage.css('right', `-${artistImage.width() / 2}px`);
-                artistImage.css('left', 'unset');
+            const centerImages = () => {
+                console.log('Centering images');
+                // Centrar las imagenes cuando se ha seleccionado un lado
+                if ($('.binomio-hero--half.entered').length > 0) {
+                    const hero = $(`.binomio-hero--half.entered`);
+                    const heroImage = hero.find('.hero-image');
+
+                    // Desktop > izquierda, Mobile > centro
+                    heroImage.css('left', window.innerWidth <= tablet ?
+                        `calc(50% - ${heroImage.width() / 2}px)`
+                        :
+                        '0'
+                    );
+                    heroImage.css('right', 'unset');
+                }
+                else {
+                    const studioImage = $('.studio-hero .hero-image')
+                    const artistImage = $('.artist-hero .hero-image')
+
+                    studioImage.css('left', `-${studioImage.width() / 2}px`);
+                    studioImage.css('right', 'unset');
+                    artistImage.css('right', `-${artistImage.width() / 2}px`);
+                    artistImage.css('left', 'unset');
+                }
             }
 
-            $('.binomio-hero--half').hover(function() {
-                if (window.innerWidth <= 1024) return;
+            $('.binomio-hero--half').hover(function () {
+                if (window.innerWidth <= tablet || $(this).hasClass('entered') || isExiting) return;
 
                 $('.binomio-hero--half').removeClass('active');
                 $('.binomio-hero--half').addClass('noactive');
@@ -43,8 +62,8 @@
                     studioImage.css('left', `calc(-${$(studioImage).width()}px)`);
                     studioImage.css('right', 'unset');
                 }
-            }, function() {
-                if (window.innerWidth <= 1024) return;
+            }, function () {
+                if (window.innerWidth <= tablet || $(this).hasClass('entered') || isExiting) return;
 
                 $('.binomio-hero--half').removeClass('noactive');
                 $(this).removeClass('active');
@@ -52,8 +71,47 @@
                 centerImages();
             })
 
-            centerImages();
-            $(window).on('resize', centerImages);
+            $('#enter-studio').on('click', function () {
+                const hero = $('.studio-hero');
+
+                $('.binomio-hero--half').removeClass('active');
+
+                hero.addClass('entered');
+                $('body').addClass('studio-entered');
+                centerImages();
+
+                // Agregar listener para scroll horizontal con rueda
+                const enteredElement = hero[0];
+                enteredElement.addEventListener('wheel', function (e) {
+                    if (window.innerWidth <= tablet) return;
+
+                    e.preventDefault();
+                    enteredElement.scrollLeft += e.deltaY;
+                }, { passive: false });
+            })
+
+            $('#enter-artist').on('click', function () {
+                // TODO - Coming soon, remove when implemented
+                return;
+            })
+            
+
+            setTimeout(centerImages, 500);
+
+            $(window).on('resize', function () {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(centerImages, 500);
+            });
+
+            // TODO - Borrar solo para debug
+            $('.exit-button').on('click', function () {
+                $('body').removeClass('studio-entered artist-entered');
+                $('.binomio-hero--half').removeClass('entered noactive active');
+                centerImages();
+
+                isExiting = true;
+                setTimeout(() => { isExiting = false }, 1000);
+            });
         }
 
         function initModals() {
@@ -67,7 +125,7 @@
             $('.modal .modal-close').on('click', function (e) {
                 e.preventDefault();
                 const modal = $(this).closest('.modal');
-                
+
                 toggleModal(modal);
             });
             // Cerrar modal clickando fuera del contenido
@@ -83,13 +141,13 @@
             $('.item-list .link-info').on('click', function (e) {
                 e.preventDefault();
                 const modal = $('#archive-modal');
-                
+
                 toggleModal(modal);
             });
         }
 
         function initCards() {
-            
+
         }
 
         function initTabs() {

@@ -11,7 +11,7 @@
     <?php wp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
+<body <?php body_class(is_front_page() ? 'front-page' : ''); ?>>
     <?php 
         $assets_url = get_stylesheet_directory_uri() . '/assets';
     ?>
@@ -19,11 +19,8 @@
     <div id="wrapper" class="hfeed">
         <nav id="header" role="navigation" <?php echo is_admin_bar_showing() ? 'style="top: 32px;"' : '' ?>>
             <a href="<?php echo home_url(); ?>" class="header-logo">
-                <img 
-                    src="<?php echo $assets_url; ?>/images/binomio-logo.png" 
-                    alt="Binomio Studio Logo" 
-                    class="logo"
-                >
+                <span class="icon icon-bnomio"></span>
+                <span class="icon icon-bnomiostudio"></span>
             </a>
             <button class="header-burger icon icon-burger"></button>
             <div class="header-links">

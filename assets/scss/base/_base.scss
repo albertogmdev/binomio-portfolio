@@ -29,7 +29,6 @@ body {
   overflow-x: hidden;
   background-color: $background;
   color: $textPrimary;
-  padding-top: $navbarHeight;
 
   &.modal-open,
   &.noscroll {
