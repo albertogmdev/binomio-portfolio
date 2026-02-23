@@ -23,8 +23,12 @@
         max-width: 168px;
         top: 50%;
         left: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
         transform: translate(-50%, -50%);
-        color: $background;
+        color: $white;
         opacity: 0;
         pointer-events: none;
         transition: opacity .1s ease-in-out;
@@ -36,18 +40,21 @@
             font-weight: 500;
             line-height: 105%;
             text-transform: uppercase;
-            color: $inverted;
+            color: $white;
         }
 
+        .item-subtitle,
         .item-description {
             text-align: center;
             font-family: $jetbrains;
             font-size: 10px;
             font-weight: 400;
             line-height: 125%;
+            color: $white;
+        }
+
+        .item-subtitle {
             text-transform: uppercase;
-            margin: 16px 0px;
-            color: $inverted;
         }
 
         .item-button {
@@ -69,9 +76,44 @@
     }
 }
 
+// Hero specific styles
+.bnomio-hero {
+    .collection-card {
+        aspect-ratio: 258 / 376;
+        height: 100%;
+        width: auto;
+        height: 60dvh;
+        max-height: 60dvh;
+    }
+}
+
 @media screen and (max-width: $tablet) {
     .collection-card {
         cursor: pointer;
+
+        &.collection-card--displayed {
+            .card-info {
+                position: relative;
+                top: auto;
+                left: auto;
+                display: flex;
+                width: 100%;
+                margin: 0 auto;
+                margin-top: 20px;
+                opacity: 1;
+                pointer-events: all;
+                transform: translate(0, 0);
+
+                .item-title,
+                .item-description {
+                    color: $textPrimary;
+                }
+
+                .item-subtitle {
+                    color: $textSecondary;
+                }
+            }
+        }
 
         >a {
             pointer-events: auto;
@@ -85,6 +127,23 @@
         &.showing {
             .card-image {
                 filter: none;
+            }
+        }
+    }
+
+    // Hero specific styles
+    .bnomio-hero {
+        .collection-card {
+            aspect-ratio: unset;
+            max-height: unset;
+            height: 100%;
+            width: 100%;
+
+            .card-image {
+                height: auto;
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
             }
         }
     }

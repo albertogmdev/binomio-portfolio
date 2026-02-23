@@ -15,10 +15,9 @@
             let isExiting = false;
 
             const centerImages = () => {
-                console.log('Centering images');
                 // Centrar las imagenes cuando se ha seleccionado un lado
-                if ($('.binomio-hero--half.entered').length > 0) {
-                    const hero = $(`.binomio-hero--half.entered`);
+                if ($('.bnomio-hero--half.entered').length > 0) {
+                    const hero = $(`.bnomio-hero--half.entered`);
                     const heroImage = hero.find('.hero-image');
 
                     // Desktop > izquierda, Mobile > centro
@@ -35,16 +34,18 @@
 
                     studioImage.css('left', `-${studioImage.width() / 2}px`);
                     studioImage.css('right', 'unset');
+                    studioImage.css('opacity', '1');
                     artistImage.css('right', `-${artistImage.width() / 2}px`);
                     artistImage.css('left', 'unset');
+                    artistImage.css('opacity', '1');
                 }
             }
 
-            $('.binomio-hero--half').hover(function () {
+            $('.bnomio-hero--half').hover(function () {
                 if (window.innerWidth <= tablet || $(this).hasClass('entered') || isExiting) return;
 
-                $('.binomio-hero--half').removeClass('active');
-                $('.binomio-hero--half').addClass('noactive');
+                $('.bnomio-hero--half').removeClass('active');
+                $('.bnomio-hero--half').addClass('noactive');
                 $(this).removeClass('noactive');
                 $(this).addClass('active');
 
@@ -65,7 +66,7 @@
             }, function () {
                 if (window.innerWidth <= tablet || $(this).hasClass('entered') || isExiting) return;
 
-                $('.binomio-hero--half').removeClass('noactive');
+                $('.bnomio-hero--half').removeClass('noactive');
                 $(this).removeClass('active');
 
                 centerImages();
@@ -74,10 +75,11 @@
             $('#enter-studio').on('click', function () {
                 const hero = $('.studio-hero');
 
-                $('.binomio-hero--half').removeClass('active');
+                $('.bnomio-hero--half').removeClass('active');
 
                 hero.addClass('entered');
                 $('body').addClass('studio-entered');
+                $('body').addClass('theme--studio');
                 centerImages();
 
                 // Agregar listener para scroll horizontal con rueda
@@ -96,7 +98,7 @@
             })
             
 
-            setTimeout(centerImages, 500);
+            setTimeout(centerImages, 1000);
 
             $(window).on('resize', function () {
                 clearTimeout(resizeTimeout);
@@ -106,7 +108,7 @@
             // TODO - Borrar solo para debug
             $('.exit-button').on('click', function () {
                 $('body').removeClass('studio-entered artist-entered');
-                $('.binomio-hero--half').removeClass('entered noactive active');
+                $('.bnomio-hero--half').removeClass('entered noactive active');
                 centerImages();
 
                 isExiting = true;

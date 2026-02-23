@@ -1,16 +1,16 @@
 @use '../abstracts' as *;
 
-#footer {
+#footer,
+.hero-footer {
     position: relative;
     z-index: 10;
-    margin-top: -$footerMainHeight;
-    mix-blend-mode: difference;
 
     .footer-main {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 20px;
+        mix-blend-mode: difference;
 
         .footer-socials {
             .social-link {
@@ -22,13 +22,19 @@
                     font-size: 10px;
                     font-family: $jetbrains;
                     font-weight: 400;
-                    color: $inverted;
+                    color: $textPrimary;
                 }
 
                 .icon {
                     width: 20px;
                     height: 20px;
                     background-color: $textPrimary;
+                }
+
+                &:hover {
+                    .social-text {
+                        text-decoration: underline;
+                    }
                 }
             }
         }
@@ -37,7 +43,7 @@
             font-size: 10px;
             font-family: $jetbrains;
             font-weight: 400;
-            color: $inverted;
+            color: $textPrimary;
         }
     }
 
@@ -53,6 +59,26 @@
             display: flex;
             align-self: center;
             gap: 24px;
+        }
+    }
+}
+
+@media screen and (max-width: $mobile) {
+    #footer,
+    .hero-footer {
+        .footer-main {
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .footer-navigation {
+            flex-direction: column;
+            gap: 20px;
+
+            .navigation-left,
+            .navigation-right {
+                justify-content: center;
+            }
         }
     }
 }

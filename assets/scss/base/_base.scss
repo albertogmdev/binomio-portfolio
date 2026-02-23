@@ -55,7 +55,13 @@ ol {
   padding: 0;
 }
 
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
   padding: 0;
 }
@@ -85,10 +91,61 @@ p, h1, h2, h3, h4, h5, h6 {
   }
 
   @media screen and (max-width: 744px) {
-    padding: 0px 40px; 
+    padding: 0px 40px;
   }
 
   @media screen and (max-width: 375px) {
     padding: 0px 16px;
+  }
+}
+
+.front-page {
+  #header,
+  #footer,
+  .hero-footer {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0s ease-in-out;
+  }
+
+  &.studio-entered,
+  &.artist-entered {
+
+    #header,
+    #footer,
+    .hero-footer {
+      opacity: 1;
+      pointer-events: all;
+      transition: opacity 0.5s ease-in-out;
+      transition-delay: 0.5s;
+    }
+  }
+}
+
+.studio-entered {
+  #header {
+    .header-logo {
+      .icon-bnomio {
+        display: none;
+      }
+
+      .icon-bnomiostudio {
+        display: block;
+      }
+    }
+  }
+}
+
+.artist-entered {
+  #header {
+    .header-logo {
+      .icon-bnomio {
+        display: block;
+      }
+
+      .icon-bnomiostudio {
+        display: none;
+      }
+    }
   }
 }

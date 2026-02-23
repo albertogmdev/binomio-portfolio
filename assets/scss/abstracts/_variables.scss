@@ -60,7 +60,7 @@ $base-url: '/wp-content/themes/binomio/assets' !default;
     .theme--studio {
         --background: #{$midgrey};
         --textPrimary: #{$charcoal};
-        --textSecondary: #{$charcoal};
+        --textSecondary: #{$emphasis};
         --textCTA: #{$charcoal};
         --textLink: #{$emphasis3};
         --decoration: #{$emphasis};
