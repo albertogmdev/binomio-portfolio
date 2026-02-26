@@ -1,0 +1,145 @@
+@use '../abstracts' as *;
+
+.page-project {
+    $sectionSpacing: 80px;
+    padding-top: calc($navbarHeight + 40px);
+
+    .section-hero {
+        margin-bottom: $sectionSpacing;
+    }
+
+    .section-frontimage {
+        margin-bottom: $sectionSpacing;
+
+        .frontimage {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    }
+
+    .section-fullgallery {
+        margin-bottom: $sectionSpacing;
+
+        .gallery-grid {
+            display: flex;
+            flex-direction: column;
+            gap: calc($sectionSpacing - 20px);
+
+            .gallery-item {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+        }
+    }
+
+    .section-gallery {
+        .container {
+            .gallery-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                align-items: stretch;
+
+                .gallery-item {
+                    display: block;
+                    height: auto;
+                    margin-bottom: calc($sectionSpacing - 20px);
+
+                    .image-item {
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+
+                    &--video {
+                        flex: 0 1 100%;
+                        max-width: 800px;
+                        margin: 0 auto;
+                        margin-bottom: calc($sectionSpacing - 20px);
+                    }
+
+                    &--image {
+                        flex: 0 1 calc(50% - 10px);
+                        aspect-ratio: 590 / 790;
+                    }
+                }
+            }
+        }
+    }
+
+    .section-credits {
+        padding: $sectionSpacing 0px;
+
+        .container {
+            .tag-container {
+                justify-content: center;
+            }
+
+            .credits-title,
+            .credits-content {
+                color: $textPrimary;
+                text-align: center;
+            }
+
+            .credits-title {
+                margin: 40px auto;
+            }
+        }
+    }
+
+    .section-related {
+        padding: $sectionSpacing 0px;
+        border-top: 1px solid $decoration;
+    }
+}
+
+@media screen and (max-width: $mobile) {
+    .page-project {
+        $sectionSpacing: 40px;
+        
+        .section-hero {
+            margin-bottom: $sectionSpacing;
+        }
+
+        .section-frontimage {
+            margin-bottom: $sectionSpacing;
+        }
+
+        .section-fullgallery {
+            margin-bottom: $sectionSpacing;
+
+            .gallery-grid {
+                gap: calc($sectionSpacing - 20px);
+            }
+        }
+
+        .section-gallery {
+            .container {
+                .gallery-grid {
+                    .gallery-item {
+                        margin-bottom: calc($sectionSpacing - 20px);
+
+
+                        &--image {
+                            flex: 0 1 100%;
+                            aspect-ratio: 590 / 790;
+                        }
+                    }
+                }
+            }
+        }
+
+        .section-credits {
+            padding: $sectionSpacing 0px;
+        }
+
+        .section-related {
+            padding: $sectionSpacing 0px;
+        }
+    }
+}

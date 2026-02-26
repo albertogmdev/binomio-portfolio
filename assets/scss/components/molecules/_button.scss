@@ -6,15 +6,26 @@
     background: none;
     text-decoration: none;
     border: none;
-    
+
     display: block;
     @extend .text-button;
     color: $textCTA;
     border: 1px solid $decoration;
-    padding: 10px 24px;
+    padding: 16px 24px;
     cursor: pointer;
     max-width: max-content;
     transition: all $transition;
+
+    &.button--secondary {
+        color: $textCTASecondary;
+        background-color: $buttonBackground;
+
+        &.button-icon {
+            .icon {
+                background-color: $textCTASecondary;
+            }
+        }
+    }
 
     &.button-icon {
         display: flex;
@@ -40,7 +51,7 @@
         color: $background;
 
         .icon {
-            background-color: $background;
+            background-color: $textCTA;
         }
     }
 }

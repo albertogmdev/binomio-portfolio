@@ -5,10 +5,17 @@
         const tablet = 1024;
         const mobile = 768;
 
+        initTheme();
         initTabs();
         initCards();
         initModals();
         initHero();
+
+        function initTheme() {
+            if (window.location.pathname === '/') return
+            else if (window.location.pathname.includes('/studio')) $('body').addClass('theme--studio');
+            else $('body').addClass('theme--artist');
+        }
 
         function initHero() {
             let resizeTimeout;
@@ -39,6 +46,31 @@
                     artistImage.css('left', 'unset');
                     artistImage.css('opacity', '1');
                 }
+            }
+
+            const enableHorizontalScroll = (element) => {
+                element.addEventListener('wheel', function (e) {
+                    if (window.innerWidth <= tablet) return;
+
+                    const absX = Math.abs(e.deltaX);
+                    const absY = Math.abs(e.deltaY);
+
+                    // Scroll horizontal (trackpad)
+                    if (absX > absY) return;
+
+                    // Comprobar si es scroll vertical
+                    const maxScrollLeft = element.scrollWidth - element.clientWidth;
+                    const currentScrollLeft = element.scrollLeft;
+                    const scrollingToRight = e.deltaY > 0;
+                    const scrollingToLeft = e.deltaY < 0;
+                    const canScrollRight = currentScrollLeft < maxScrollLeft;
+                    const canScrollLeft = currentScrollLeft > 0;
+
+                    if ((scrollingToRight && canScrollRight) || (scrollingToLeft && canScrollLeft)) {
+                        e.preventDefault();
+                        element.scrollLeft += e.deltaY;
+                    }
+                }, { passive: false });
             }
 
             $('.bnomio-hero--half').hover(function () {
@@ -83,13 +115,8 @@
                 centerImages();
 
                 // Agregar listener para scroll horizontal con rueda
-                const enteredElement = hero[0];
-                enteredElement.addEventListener('wheel', function (e) {
-                    if (window.innerWidth <= tablet) return;
-
-                    e.preventDefault();
-                    enteredElement.scrollLeft += e.deltaY;
-                }, { passive: false });
+                const element = hero[0];
+                enableHorizontalScroll(element);
             })
 
             $('#enter-artist').on('click', function () {

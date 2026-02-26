@@ -86,16 +86,12 @@ h6 {
   margin: 0 auto;
   padding: 0px 80px;
 
-  @media screen and (max-width: 1024px) {
-    padding: 0px 64px;
-  }
-
-  @media screen and (max-width: 744px) {
+  @media screen and (max-width: $tablet) {
     padding: 0px 40px;
   }
 
-  @media screen and (max-width: 375px) {
-    padding: 0px 16px;
+  @media screen and (max-width: $mobile) {
+    padding: 0px 24px;
   }
 }
 
@@ -122,7 +118,8 @@ h6 {
   }
 }
 
-.studio-entered {
+.studio-entered,
+.theme--studio {
   #header {
     .header-logo {
       .icon-bnomio {
@@ -136,7 +133,8 @@ h6 {
   }
 }
 
-.artist-entered {
+.artist-entered,
+.theme--artist {
   #header {
     .header-logo {
       .icon-bnomio {

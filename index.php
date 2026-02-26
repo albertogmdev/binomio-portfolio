@@ -6,7 +6,7 @@ get_header();
 <section class="bnomio-hero">
     <div class="bnomio-hero--half artist-hero theme--artist">
         <img
-            src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/artist-head.png"
+            src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/studio-head.png"
             alt="bnomio Studio"
             class="hero-image"
             style="right: -1000px;">

@@ -67,7 +67,7 @@ class Binomio_Component_Loader {
             $complex_field->add_fields($slug, $component['name'], $component['fields']);
         }
         
-        // Registrar el campo en TODAS las páginas
+        // Registrar el campo solo en páginas
         \Carbon_Fields\Container\Container::make('post_meta', __('Constructor de Página', 'binomio'))
             ->where('post_type', '=', 'page')
             ->add_fields(array(

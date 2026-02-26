@@ -9,6 +9,7 @@
 // 2. Layout-related sections
 @use 'layout/footer';
 @use 'layout/header';
+@use 'layout/projects';
 @use 'layout/grid';
 
 // 3. Components
@@ -24,4 +25,5 @@
 @use 'components/organisms/collection-grid';
 @use 'components/organisms/item-list';
 @use 'components/organisms/bnomio-hero';
+@use 'components/organisms/related-projects';
 

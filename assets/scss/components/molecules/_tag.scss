@@ -8,14 +8,16 @@
     border: none;
 
     display: block;
-    @extend .body-large;
+    @extend .text-button;
     color: $textPrimary;
     border: 1px solid $decoration;
+    background-color: $tagBackground;
     padding: 10px 12px;
     text-transform: uppercase;
 }
 
-.tag-list {
+.tag-list,
+.tag-container {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;

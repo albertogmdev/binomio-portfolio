@@ -15,8 +15,8 @@
         </div>
         <div class="footer-navigation theme--artist">
             <ul class="navigation-left">
-                <li><a class="link" href="#">Studio zone</a></li>
-                <li><a class="link link--active" href="#">Artist zone</a></li>
+                <li><a class="link <?= is_studio() ? 'link--active' : '' ?>" href="#">Studio zone</a></li>
+                <li><a class="link <?= is_artist() ? 'link--active' : '' ?>" href="#">Artist zone</a></li>
             </ul>
             <ul class="navigation-right">
                 <li><a class="link" href="#">ESP</a></li>

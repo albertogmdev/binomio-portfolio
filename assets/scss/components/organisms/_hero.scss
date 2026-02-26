@@ -36,6 +36,18 @@
                 /* Extra content */
                 &.content-bottomright {
                     color: $textSecondary;
+                    padding-top: 24px;
+
+                    .tag-container,
+                    .link-container {
+                        margin-bottom: 24px;
+                    }
+
+                    .link-container {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                    }
                 }
 
                 .hero-button {

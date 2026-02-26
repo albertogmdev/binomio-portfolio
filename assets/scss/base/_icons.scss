@@ -52,6 +52,10 @@
     @include mask-icon(url("#{$base-url}/images/icon-check.svg"));
 }
 
+.icon-link {
+    @include mask-icon(url("#{$base-url}/images/icon-link.svg"));
+}
+
 .icon-bnomio {
     aspect-ratio: 110 / 17;
     @include mask-icon(url("#{$base-url}/images/icon-bnomio.svg"));
