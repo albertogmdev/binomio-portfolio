@@ -1,5 +1,66 @@
 <?php
 get_header();
+
+$projects_post_type = post_type_exists('projects') ? 'projects' : 'proyectos';
+
+$get_featured_projects_by_division = function ($division_slug) use ($projects_post_type) {
+    $query = new WP_Query(array(
+        'post_type' => $projects_post_type,
+        'post_status' => 'publish',
+        'posts_per_page' => 12,
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'division',
+                'field' => 'slug',
+                'terms' => $division_slug,
+            ),
+        ),
+        'meta_query' => array(
+            array(
+                'key' => 'proyecto_featured_home',
+                'value' => array('1', 'true', 'yes', 'on'),
+                'compare' => 'IN',
+            ),
+        ),
+    ));
+
+    $projects = $query->posts;
+
+    usort($projects, function ($first_project, $second_project) {
+        $first_order_raw = carbon_get_post_meta($first_project->ID, 'proyecto_featured_order');
+        $second_order_raw = carbon_get_post_meta($second_project->ID, 'proyecto_featured_order');
+
+        $first_order_value = trim((string) $first_order_raw);
+        $second_order_value = trim((string) $second_order_raw);
+
+        $first_has_order = $first_order_value !== '';
+        $second_has_order = $second_order_value !== '';
+
+        if ($first_has_order && !$second_has_order) {
+            return -1;
+        }
+
+        if (!$first_has_order && $second_has_order) {
+            return 1;
+        }
+
+        if ($first_has_order && $second_has_order) {
+            $first_order_number = is_numeric($first_order_value) ? (int) $first_order_value : PHP_INT_MAX;
+            $second_order_number = is_numeric($second_order_value) ? (int) $second_order_value : PHP_INT_MAX;
+
+            if ($first_order_number !== $second_order_number) {
+                return $first_order_number <=> $second_order_number;
+            }
+        }
+
+        return strcasecmp(get_the_title($first_project->ID), get_the_title($second_project->ID));
+    });
+
+    return $projects;
+};
+
+$studio_featured_projects = $get_featured_projects_by_division('studio');
+$artist_featured_projects = $get_featured_projects_by_division('artist');
 ?>
 
 
@@ -14,6 +75,60 @@ get_header();
             <p class="link-text">Creative </br>Consultant</p>
             <span class="link-icon icon icon-bnomio"></span>
             <button id="enter-artist" class="link-button button">Coming soon</button>
+        </div>
+        <div class="hero-content">
+            <img
+                src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/studio-head.png"
+                alt="Bnomio Artist"
+                class="content-image">
+            <div class="content-projectlist">
+                <h2 class="list-title">Recent Projects</h2>
+                <ul class="projectlist">
+                    <?php foreach ($artist_featured_projects as $project) : ?>
+                        <li class="project-item">
+                            <a href="<?php echo esc_url(get_permalink($project->ID)); ?>" class="link"><?php echo esc_html(get_the_title($project->ID)); ?></a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+                <a href="<?php echo esc_url(home_url('/projects/')); ?>" class="button">All projects</a>
+            </div>
+            <div class="content-projects">
+                <?php foreach (array_slice($artist_featured_projects, 0, 6) as $project) : ?>
+                    <?php
+                    $project_title = get_the_title($project->ID);
+                    $project_permalink = get_permalink($project->ID);
+                    $project_featured_image = carbon_get_post_meta($project->ID, 'proyecto_featured_image');
+                    $project_portada = carbon_get_post_meta($project->ID, 'proyecto_portada');
+                    $project_image_id = !empty($project_featured_image) ? $project_featured_image : $project_portada;
+                    $project_image_url = !empty($project_image_id) ? wp_get_attachment_url($project_image_id) : '';
+                    $project_tags = carbon_get_post_meta($project->ID, 'proyecto_tags');
+                    $project_subtitle = is_array($project_tags) ? implode(' · ', $project_tags) : '';
+                    $project_description = carbon_get_post_meta($project->ID, 'proyecto_descripcion');
+                    $project_description_text = wp_trim_words(wp_strip_all_tags((string) $project_description), 16, '...');
+                    ?>
+                    <div class="collection-card collection-card--displayed">
+                        <a href="<?php echo esc_url($project_permalink); ?>">
+                            <?php if (!empty($project_image_url)) : ?>
+                                <img
+                                    class="card-image"
+                                    src="<?php echo esc_url($project_image_url); ?>"
+                                    alt="<?php echo esc_attr($project_title); ?>">
+                            <?php endif; ?>
+                        </a>
+                        <div class="card-info">
+                            <h3 class="item-title"><?php echo esc_html($project_title); ?></h3>
+                            <?php if (!empty($project_subtitle)) : ?>
+                                <p class="item-subtitle"><?php echo esc_html($project_subtitle); ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($project_description_text)) : ?>
+                                <p class="item-description"><?php echo esc_html($project_description_text); ?></p>
+                            <?php endif; ?>
+                            <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button">See project</a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <button class="exit-button button">Go Back</button>
         </div>
     </div>
     <div class="nointeract-zone"></div>
@@ -35,118 +150,49 @@ get_header();
             <div class="content-projectlist">
                 <h2 class="list-title">Recent Projects</h2>
                 <ul class="projectlist">
-                    <li class="project-item">
-                        <a href="#" class="link">La tulipana</a>
-                    </li>
-                    <li class="project-item">
-                        <a href="#" class="link">Del mazo tattoo</a>
-                    </li>
-                    <li class="project-item">
-                        <a href="#" class="link">Quantum Hair</a>
-                    </li>
-                    <li class="project-item">
-                        <a href="#" class="link">Esquina Común</a>
-                    </li>
-                    <li class="project-item">
-                        <a href="#" class="link">parson</a>
-                    </li>
-                    <li class="project-item">
-                        <a href="#" class="link">Ovnnie</a>
-                    </li>
-                    <li class="project-item">
-                        <a href="#" class="link">Mercado de ibiza</a>
-                    </li>
-                    <li class="project-item">
-                        <a href="#" class="link">Yatai Market</a>
-                    </li>
+                    <?php foreach ($studio_featured_projects as $project) : ?>
+                        <li class="project-item">
+                            <a href="<?php echo esc_url(get_permalink($project->ID)); ?>" class="link"><?php echo esc_html(get_the_title($project->ID)); ?></a>
+                        </li>
+                    <?php endforeach; ?>
                 </ul>
-                <a href="#" class="button">All projects</a>
+                <a href="<?php echo esc_url(home_url('/studio/projects/')); ?>" class="button">All projects</a>
             </div>
             <div class="content-projects">
-                <div class="collection-card collection-card--displayed">
-                    <a href="#">
-                        <img
-                            class="card-image"
-                            src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/collection-test2.png"
-                            alt="Collection Card Placeholder">
-                    </a>
-                    <div class="card-info">
-                        <h3 class="item-title">fightzilla</h3>
-                        <p class="item-subtitle">branding · ux/UI · development</p>
-                        <p class="item-description">DATA: JULY 25</br>Limited Edition 3/3 of this Sofubi call Fightzilla</p>
-                        <a href="/hola" class="button item-button">See project</a>
+                <?php foreach (array_slice($studio_featured_projects, 0, 6) as $project) : ?>
+                    <?php
+                    $project_title = get_the_title($project->ID);
+                    $project_permalink = get_permalink($project->ID);
+                    $project_featured_image = carbon_get_post_meta($project->ID, 'proyecto_featured_image');
+                    $project_portada = carbon_get_post_meta($project->ID, 'proyecto_portada');
+                    $project_image_id = !empty($project_featured_image) ? $project_featured_image : $project_portada;
+                    $project_image_url = !empty($project_image_id) ? wp_get_attachment_url($project_image_id) : '';
+                    $project_tags = carbon_get_post_meta($project->ID, 'proyecto_tags');
+                    $project_subtitle = is_array($project_tags) ? implode(' · ', $project_tags) : '';
+                    $project_description = carbon_get_post_meta($project->ID, 'proyecto_descripcion');
+                    $project_description_text = wp_trim_words(wp_strip_all_tags((string) $project_description), 16, '...');
+                    ?>
+                    <div class="collection-card collection-card--displayed">
+                        <a href="<?php echo esc_url($project_permalink); ?>">
+                            <?php if (!empty($project_image_url)) : ?>
+                                <img
+                                    class="card-image"
+                                    src="<?php echo esc_url($project_image_url); ?>"
+                                    alt="<?php echo esc_attr($project_title); ?>">
+                            <?php endif; ?>
+                        </a>
+                        <div class="card-info">
+                            <h3 class="item-title"><?php echo esc_html($project_title); ?></h3>
+                            <?php if (!empty($project_subtitle)) : ?>
+                                <p class="item-subtitle"><?php echo esc_html($project_subtitle); ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($project_description_text)) : ?>
+                                <p class="item-description"><?php echo esc_html($project_description_text); ?></p>
+                            <?php endif; ?>
+                            <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button">See project</a>
+                        </div>
                     </div>
-                </div>
-                <div class="collection-card collection-card--displayed">
-                    <a href="#">
-                        <img
-                            class="card-image"
-                            src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/collection-test2.png"
-                            alt="Collection Card Placeholder">
-                    </a>
-                    <div class="card-info">
-                        <h3 class="item-title">fightzilla</h3>
-                        <p class="item-subtitle">branding · ux/UI · development</p>
-                        <p class="item-description">DATA: JULY 25</br>Limited Edition 3/3 of this Sofubi call Fightzilla</p>
-                        <a href="/hola" class="button item-button">See project</a>
-                    </div>
-                </div>
-                <div class="collection-card collection-card--displayed">
-                    <a href="#">
-                        <img
-                            class="card-image"
-                            src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/collection-test2.png"
-                            alt="Collection Card Placeholder">
-                    </a>
-                    <div class="card-info">
-                        <h3 class="item-title">fightzilla</h3>
-                        <p class="item-subtitle">branding · ux/UI · development</p>
-                        <p class="item-description">DATA: JULY 25</br>Limited Edition 3/3 of this Sofubi call Fightzilla</p>
-                        <a href="/hola" class="button item-button">See project</a>
-                    </div>
-                </div>
-                <div class="collection-card collection-card--displayed">
-                    <a href="#">
-                        <img
-                            class="card-image"
-                            src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/collection-test2.png"
-                            alt="Collection Card Placeholder">
-                    </a>
-                    <div class="card-info">
-                        <h3 class="item-title">fightzilla</h3>
-                        <p class="item-subtitle">branding · ux/UI · development</p>
-                        <p class="item-description">DATA: JULY 25</br>Limited Edition 3/3 of this Sofubi call Fightzilla</p>
-                        <a href="/hola" class="button item-button">See project</a>
-                    </div>
-                </div>
-                <div class="collection-card collection-card--displayed">
-                    <a href="#">
-                        <img
-                            class="card-image"
-                            src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/collection-test2.png"
-                            alt="Collection Card Placeholder">
-                    </a>
-                    <div class="card-info">
-                        <h3 class="item-title">fightzilla</h3>
-                        <p class="item-subtitle">branding · ux/UI · development</p>
-                        <p class="item-description">DATA: JULY 25</br>Limited Edition 3/3 of this Sofubi call Fightzilla</p>
-                        <a href="/hola" class="button item-button">See project</a>
-                    </div>
-                </div>
-                <div class="collection-card collection-card--displayed">
-                    <a href="#">
-                        <img
-                            class="card-image"
-                            src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/collection-test2.png"
-                            alt="Collection Card Placeholder">
-                    </a>
-                    <div class="card-info">
-                        <h3 class="item-title">fightzilla</h3>
-                        <p class="item-subtitle">branding · ux/UI · development</p>
-                        <p class="item-description">DATA: JULY 25</br>Limited Edition 3/3 of this Sofubi call Fightzilla</p>
-                        <a href="/hola" class="button item-button">See project</a>
-                    </div>
-                </div>
+                <?php endforeach; ?>
                 <div class="about-card theme--artist">
                     <div class="card-image">
                     <img

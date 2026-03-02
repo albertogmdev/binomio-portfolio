@@ -1,0 +1,26 @@
+@use '../abstracts' as *;
+
+.archive-cases {
+    $sectionSpacing: 80px;
+    padding-top: calc($navbarHeight + 40px);
+    min-height: calc(100dvh - $navbarHeight - $footerHeight);
+
+    .section-hero {
+        margin-bottom: $sectionSpacing;
+    }
+}
+
+.page-case {}
+
+@media screen and (max-width: $mobile) {
+    .archive-cases {
+        min-height: calc(100dvh - $navbarHeight--mobile - $footerHeight--mobile);
+        $sectionSpacing: 40px;
+
+        .section-hero {
+            margin-bottom: $sectionSpacing;
+        }
+    }
+
+    .page-case {}
+}

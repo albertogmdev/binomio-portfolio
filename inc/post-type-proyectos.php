@@ -30,11 +30,11 @@ function binomio_register_post_type_proyectos() {
         'show_in_rest' => false,
         'has_archive' => true,
         'menu_icon' => 'dashicons-portfolio',
-        'rewrite' => array('slug' => 'proyectos'),
+        'rewrite' => array('slug' => 'projects'),
         'supports' => array(),
     );
 
-    register_post_type('proyectos', $args);
+    register_post_type('projects', $args);
 }
 
 add_action('init', 'binomio_register_taxonomy_division_for_proyectos');
@@ -51,7 +51,7 @@ function binomio_register_taxonomy_division_for_proyectos() {
         'menu_name' => __('División', 'binomio'),
     );
 
-    register_taxonomy('division', array('proyectos'), array(
+    register_taxonomy('division', array('projects'), array(
         'labels' => $labels,
         'public' => true,
         'show_ui' => true,
@@ -74,45 +74,33 @@ function binomio_register_taxonomy_division_for_proyectos() {
 add_action('init', 'binomio_register_proyectos_division_rewrites', 20);
 function binomio_register_proyectos_division_rewrites() {
     add_rewrite_rule(
-        '^proyectos/?$',
-        'index.php?post_type=proyectos&division=artist',
+        '^projects/?$',
+        'index.php?post_type=projects&division=artist',
         'top'
     );
 
     add_rewrite_rule(
-        '^proyectos/([^/]+)/?$',
-        'index.php?post_type=proyectos&name=$matches[1]&division=artist',
+        '^projects/([^/]+)/?$',
+        'index.php?post_type=projects&name=$matches[1]&division=artist',
         'top'
     );
 
     add_rewrite_rule(
-        '^studio/proyectos/?$',
-        'index.php?post_type=proyectos&division=studio',
+        '^studio/projects/?$',
+        'index.php?post_type=projects&division=studio',
         'top'
     );
 
     add_rewrite_rule(
-        '^artist/proyectos/?$',
-        'index.php?post_type=proyectos&division=artist',
-        'top'
-    );
-
-    add_rewrite_rule(
-        '^studio/proyectos/([^/]+)/?$',
-        'index.php?post_type=proyectos&name=$matches[1]&division=studio',
-        'top'
-    );
-
-    add_rewrite_rule(
-        '^artist/proyectos/([^/]+)/?$',
-        'index.php?post_type=proyectos&name=$matches[1]&division=artist',
+        '^studio/projects/([^/]+)/?$',
+        'index.php?post_type=projects&name=$matches[1]&division=studio',
         'top'
     );
 }
 
 add_filter('post_type_link', 'binomio_proyectos_division_permalink', 10, 2);
 function binomio_proyectos_division_permalink($post_link, $post) {
-    if ($post->post_type !== 'proyectos') {
+    if ($post->post_type !== 'projects') {
         return $post_link;
     }
 
@@ -120,10 +108,10 @@ function binomio_proyectos_division_permalink($post_link, $post) {
     $division_slug = (!is_wp_error($terms) && !empty($terms)) ? $terms[0]->slug : 'artist';
 
     if ($division_slug === 'studio') {
-        return home_url(user_trailingslashit('studio/proyectos/' . $post->post_name));
+        return home_url(user_trailingslashit('studio/projects/' . $post->post_name));
     }
 
-    return home_url(user_trailingslashit('proyectos/' . $post->post_name));
+    return home_url(user_trailingslashit('projects/' . $post->post_name));
 }
 
 add_action('pre_get_posts', 'binomio_filter_proyectos_by_division');
@@ -132,11 +120,24 @@ function binomio_filter_proyectos_by_division($query) {
         return;
     }
 
-    if ($query->get('post_type') !== 'proyectos') {
+    $post_type = $query->get('post_type');
+    $is_projects_query = ($post_type === 'projects') || (is_array($post_type) && in_array('projects', $post_type, true)) || $query->is_post_type_archive('projects');
+
+    if (!$is_projects_query) {
         return;
     }
 
     $division = $query->get('division');
+
+    if (empty($division)) {
+        $request_path = trim(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH), '/');
+
+        if (preg_match('#^projects(/|$)#', $request_path)) {
+            $division = 'artist';
+            $query->set('division', $division);
+        }
+    }
+
     if (empty($division)) {
         return;
     }
@@ -152,7 +153,7 @@ function binomio_filter_proyectos_by_division($query) {
 
 add_action('template_redirect', 'binomio_validate_proyectos_division_url');
 function binomio_validate_proyectos_division_url() {
-    if (!is_singular('proyectos')) {
+    if (!is_singular('projects')) {
         return;
     }
 
@@ -166,11 +167,9 @@ function binomio_validate_proyectos_division_url() {
 
     $request_path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
-    if (preg_match('#^studio/proyectos/#', $request_path)) {
+    if (preg_match('#^studio/projects/#', $request_path)) {
         $requested_division = 'studio';
-    } elseif (preg_match('#^artist/proyectos/#', $request_path)) {
-        $requested_division = 'artist';
-    } elseif (preg_match('#^proyectos/#', $request_path)) {
+    } elseif (preg_match('#^projects/#', $request_path)) {
         $requested_division = 'artist';
     } else {
         return;
@@ -188,7 +187,7 @@ function binomio_validate_proyectos_division_url() {
 
 add_action('init', 'binomio_flush_proyectos_rewrites_once', 30);
 function binomio_flush_proyectos_rewrites_once() {
-    $rewrite_version = 'proyectos_division_rewrite_v3';
+    $rewrite_version = 'projects_division_rewrite_v6';
 
     if (get_option('binomio_rewrite_version') === $rewrite_version) {
         return;
@@ -201,14 +200,15 @@ function binomio_flush_proyectos_rewrites_once() {
 add_action('carbon_fields_register_fields', 'binomio_register_proyectos_fields');
 function binomio_register_proyectos_fields() {
     Container::make('post_meta', __('Destacado', 'binomio'))
-        ->where('post_type', '=', 'proyectos')
+        ->where('post_type', '=', 'projects')
         ->add_fields(array(
             Field::make('checkbox', 'proyecto_featured_home', __('Mostrar en home (featured)', 'binomio')),
             Field::make('image', 'proyecto_featured_image', __('Imagen destacada', 'binomio')),
+            Field::make('text', 'proyecto_featured_order', __('Orden en home', 'binomio')),
         ));
 
     Container::make('post_meta', __('Datos del Proyecto', 'binomio'))
-        ->where('post_type', '=', 'proyectos')
+        ->where('post_type', '=', 'projects')
         ->add_fields(array(
             Field::make('text', 'proyecto_subtitulo', __('Subtítulo', 'binomio')),
             Field::make('rich_text', 'proyecto_descripcion', __('Descripción', 'binomio')),
@@ -239,7 +239,7 @@ function binomio_register_proyectos_fields() {
                 ->set_types(array(
                     array(
                         'type' => 'post',
-                        'post_type' => 'proyectos',
+                        'post_type' => 'projects',
                     ),
                 ))
                 ->set_max(3),
@@ -248,7 +248,7 @@ function binomio_register_proyectos_fields() {
 
 add_filter('use_block_editor_for_post_type', 'binomio_disable_gutenberg_for_proyectos', 10, 2);
 function binomio_disable_gutenberg_for_proyectos($use_block_editor, $post_type) {
-    if ($post_type === 'proyectos') {
+    if ($post_type === 'projects') {
         return false;
     }
 
@@ -257,5 +257,24 @@ function binomio_disable_gutenberg_for_proyectos($use_block_editor, $post_type) 
 
 add_action('admin_init', 'binomio_remove_editor_support_for_proyectos');
 function binomio_remove_editor_support_for_proyectos() {
-    remove_post_type_support('proyectos', 'editor');
+    remove_post_type_support('projects', 'editor');
+}
+
+add_action('init', 'binomio_migrate_proyectos_post_type_once', 40);
+function binomio_migrate_proyectos_post_type_once() {
+    $migration_version = 'projects_post_type_migration_v1';
+    if (get_option('binomio_projects_migration_version') === $migration_version) {
+        return;
+    }
+
+    global $wpdb;
+    $wpdb->update(
+        $wpdb->posts,
+        array('post_type' => 'projects'),
+        array('post_type' => 'proyectos'),
+        array('%s'),
+        array('%s')
+    );
+
+    update_option('binomio_projects_migration_version', $migration_version);
 }

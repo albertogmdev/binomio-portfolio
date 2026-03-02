@@ -1,6 +1,16 @@
 @use '../abstracts' as *;
 
+.archive-projects {
+    $sectionSpacing: 80px;
+    padding-top: calc($navbarHeight + 40px);
+
+    .section-hero {
+        margin-bottom: $sectionSpacing;
+    }
+}
+
 .page-project {
+    background-color: red;
     $sectionSpacing: 80px;
     padding-top: calc($navbarHeight + 40px);
 
@@ -99,9 +109,17 @@
 }
 
 @media screen and (max-width: $mobile) {
+    .archive-projects {
+        $sectionSpacing: 40px;
+
+        .section-hero {
+            margin-bottom: $sectionSpacing;
+        }
+    }
+
     .page-project {
         $sectionSpacing: 40px;
-        
+
         .section-hero {
             margin-bottom: $sectionSpacing;
         }

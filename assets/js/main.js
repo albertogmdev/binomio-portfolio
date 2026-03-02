@@ -7,9 +7,20 @@
 
         initTheme();
         initTabs();
-        initCards();
         initModals();
         initHero();
+
+        function openModal(modal) {
+            if (!modal.hasClass('opened')) {
+                modal.addClass('opened');
+                $('body').addClass('noscroll');
+            }
+        }
+
+        function toggleModal(modal) {
+            modal.toggleClass('opened');
+            $('body').toggleClass('noscroll');
+        }
 
         function initTheme() {
             if (window.location.pathname === '/') return
@@ -123,7 +134,7 @@
                 // TODO - Coming soon, remove when implemented
                 return;
             })
-            
+
 
             setTimeout(centerImages, 1000);
 
@@ -144,11 +155,6 @@
         }
 
         function initModals() {
-            const toggleModal = (modal) => {
-                modal.toggleClass('opened');
-                $('body').toggleClass('noscroll');
-            }
-
             /// Funcionalidad común
             // Cerrar modal clickando en boton
             $('.modal .modal-close').on('click', function (e) {
@@ -165,18 +171,7 @@
                 }
             });
 
-            /// Archive modal (item list)
-            // TODO - Logica para abrir modal con contenido correcto
-            $('.item-list .link-info').on('click', function (e) {
-                e.preventDefault();
-                const modal = $('#archive-modal');
-
-                toggleModal(modal);
-            });
-        }
-
-        function initCards() {
-
+            generateArchiveModals();
         }
 
         function initTabs() {
@@ -191,6 +186,104 @@
                 if (!panel) return;
                 $(`.content-panel.${group}`).addClass('hidden-panel');
                 $(`#${panel}`).removeClass('hidden-panel');
+            });
+        }
+
+        function generateArchiveModals() {
+            const modal = $('#archive-modal');
+            const casesModalData = window.BINOMIO_CASES_MODAL_DATA || null;
+
+            if (!casesModalData || modal.length === 0) {
+                $('.item-list .link-info').on('click', function (e) {
+                    e.preventDefault();
+                    
+                    console.warn("No data for cases modal. Check info in WP admin or contact support.");
+                });
+
+                return;
+            }
+
+            const modalImage = modal.find('.archive-modal-image');
+            const modalTitle = modal.find('.modal-title');
+            const modalSubtitle = modal.find('.modal-subtitle');
+            const modalDescription = modal.find('.modal-description');
+            const modalButtons = modal.find('.modal-buttons');
+            const modalPrev = modal.find('.modal-prev');
+            const modalNext = modal.find('.modal-next');
+
+            let activePanel = null;
+            let activeIndex = 0;
+
+            const renderCaseItem = (panelId, index) => {
+                const panelCases = Array.isArray(casesModalData[panelId]) ? casesModalData[panelId] : [];
+                if (!panelCases.length) return;
+
+                activePanel = panelId;
+                activeIndex = Math.max(0, Math.min(index, panelCases.length - 1));
+
+                const caseItem = panelCases[activeIndex];
+
+                modalTitle.text(caseItem.title || '');
+                modalSubtitle.text(caseItem.subtitle || '');
+                modalDescription.html(caseItem.content || '');
+
+                if (caseItem.image) {
+                    modalImage.attr('src', caseItem.image);
+                    modalImage.attr('alt', caseItem.title || '');
+                    modalImage.show();
+                } else {
+                    modalImage.hide();
+                }
+
+                modalButtons.empty();
+                if (Array.isArray(caseItem.links)) {
+                    caseItem.links.forEach((link) => {
+                        if (!link || !link.url) return;
+
+                        const button = $('<a></a>')
+                            .addClass('button')
+                            .attr('href', link.url)
+                            .attr('target', '_blank')
+                            .attr('rel', 'noopener noreferrer')
+                            .text(link.text || 'Ver más');
+
+                        modalButtons.append(button);
+                    });
+                }
+
+                const hasMultiple = panelCases.length > 1;
+                modalPrev.prop('disabled', !hasMultiple);
+                modalNext.prop('disabled', !hasMultiple);
+            };
+
+            $('.item-list .link-info[data-panel][data-case-index]').on('click', function (e) {
+                e.preventDefault();
+
+                const panelId = $(this).data('panel');
+                const caseIndex = parseInt($(this).data('case-index'), 10) || 0;
+
+                renderCaseItem(panelId, caseIndex);
+                openModal(modal);
+            });
+
+            modalPrev.on('click', function (e) {
+                e.preventDefault();
+
+                const panelCases = Array.isArray(casesModalData[activePanel]) ? casesModalData[activePanel] : [];
+                if (panelCases.length < 2) return;
+
+                const nextIndex = (activeIndex - 1 + panelCases.length) % panelCases.length;
+                renderCaseItem(activePanel, nextIndex);
+            });
+
+            modalNext.on('click', function (e) {
+                e.preventDefault();
+
+                const panelCases = Array.isArray(casesModalData[activePanel]) ? casesModalData[activePanel] : [];
+                if (panelCases.length < 2) return;
+
+                const nextIndex = (activeIndex + 1) % panelCases.length;
+                renderCaseItem(activePanel, nextIndex);
             });
         }
     });
