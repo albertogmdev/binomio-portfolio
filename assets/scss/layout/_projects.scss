@@ -3,6 +3,7 @@
 .archive-projects {
     $sectionSpacing: 80px;
     padding-top: calc($navbarHeight + 40px);
+    min-height: calc(100dvh - $footerHeight);
 
     .section-hero {
         margin-bottom: $sectionSpacing;
@@ -10,9 +11,9 @@
 }
 
 .page-project {
-    background-color: red;
     $sectionSpacing: 80px;
     padding-top: calc($navbarHeight + 40px);
+    min-height: calc(100dvh - $footerHeight--mobile);
 
     .section-hero {
         margin-bottom: $sectionSpacing;

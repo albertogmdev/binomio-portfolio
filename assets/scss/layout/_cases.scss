@@ -3,7 +3,7 @@
 .archive-cases {
     $sectionSpacing: 80px;
     padding-top: calc($navbarHeight + 40px);
-    min-height: calc(100dvh - $navbarHeight - $footerHeight);
+    min-height: calc(100dvh - $footerHeight);
 
     .section-hero {
         margin-bottom: $sectionSpacing;
@@ -14,7 +14,7 @@
 
 @media screen and (max-width: $mobile) {
     .archive-cases {
-        min-height: calc(100dvh - $navbarHeight--mobile - $footerHeight--mobile);
+        min-height: calc(100dvh - $footerHeight--mobile);
         $sectionSpacing: 40px;
 
         .section-hero {
