@@ -1,0 +1,96 @@
+@use '../../abstracts' as *;
+
+.section-about_info {
+    .container {
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 80px;
+
+            .image-col,
+            .content-col {
+                flex: 1 1 0;
+            }
+
+            .image-col {
+                aspect-ratio: 590 / 763;
+                height: auto;
+
+                img {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .content-col {
+                padding-right: 100px;
+                padding-left: 40px;
+
+                .content-title {
+                    text-transform: uppercase;
+                }
+
+                .content-text {
+                    margin: 40px 0px;
+                }
+
+                .content-footer {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+
+                    .footer-brand {
+                        flex-shrink: 0;
+                        width: 80px;
+                        height: 80px;
+                        border-radius: 50%;
+                        border: 1px solid $textPrimary;
+                        overflow: hidden;
+
+                        img {
+                            display: block;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+                    }
+
+                    .footer-links {
+                        width: 100%;
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: flex-end;
+                        gap: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: $tablet) {
+    .section-about_info {
+        .container {
+            .main-content {
+                flex-direction: column;
+
+                .image-col,
+                .content-col {
+                    flex: 1 1 0;
+                    width: 100%;
+                }
+
+                .image-col {
+                    aspect-ratio: 1 / 1;
+                }
+
+                .content-col {
+                    padding-right: 0px;
+                    padding-left: 0px;
+                }
+            }
+        }
+    }
+}

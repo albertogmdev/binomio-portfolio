@@ -10,6 +10,7 @@
 @use 'layout/footer';
 @use 'layout/header';
 @use 'layout/projects';
+@use 'layout/page-builder';
 @use 'layout/cases';
 @use 'layout/grid';
 
@@ -18,6 +19,7 @@
 @use 'components/molecules/link';
 @use 'components/molecules/tab';
 @use 'components/molecules/tag';
+@use 'components/molecules/input';
 @use 'components/molecules/decorations';
 @use 'components/molecules/collection-card';
 @use 'components/molecules/about-card';
@@ -26,5 +28,8 @@
 @use 'components/organisms/collection-grid';
 @use 'components/organisms/item-list';
 @use 'components/organisms/bnomio-hero';
+@use 'components/organisms/about-info';
+@use 'components/organisms/featured-links';
 @use 'components/organisms/related-projects';
+@use 'components/organisms/image';
 

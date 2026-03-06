@@ -58,6 +58,12 @@
     }
 }
 
+.section-hero--contact {
+    .content-bottomright {
+        padding-top: 0 !important;
+    }
+}
+
 @media screen and (max-width: 1200px) {
     .section-hero {
         .container {
@@ -89,6 +95,11 @@
 
                 .content-item {
                     max-width: 100%;
+                    width: 100%;
+
+                    &.content-bottomleft {
+                        display: none;
+                    }
 
                     &--empty {
                         display: none;

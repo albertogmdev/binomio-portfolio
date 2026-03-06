@@ -1,15 +1,15 @@
 <?php
+
 /**
- * Hero Component Template
+ * Hero Contact Component Template
  */
 
 $title = isset($component['hero_title']) ? (string) $component['hero_title'] : '';
 $subtitle = isset($component['hero_subtitle']) ? (string) $component['hero_subtitle'] : '';
 $text = isset($component['hero_text']) ? (string) $component['hero_text'] : '';
-$links = isset($component['hero_links']) && is_array($component['hero_links']) ? $component['hero_links'] : array();
 ?>
 
-<section class="section-hero">
+<section class="section-hero section-hero--contact">
     <div class="container">
         <div class="decoration-row">
             <span class="decoration decoration--topleft"></span>
@@ -28,6 +28,23 @@ $links = isset($component['hero_links']) && is_array($component['hero_links']) ?
                 <?php if ($text !== '') : ?>
                     <div class="body-small"><?php echo wp_kses_post($text); ?></div>
                 <?php endif; ?>
+            </div>
+        </div>
+        <div class="decoration-row">
+            <span class="decoration decoration--midleft"></span>
+            <span class="decoration decoration--midright"></span>
+        </div>
+        <div class="content-row">
+            <div class="content-item content-bottomleft">
+            </div>
+            <div class="content-item content-bottomright">
+                <form>
+                    <input type="text" class="input" placeholder="Name">
+                    <input type="text" class="input" placeholder="Company">
+                    <input type="email" class="input" placeholder="Email">
+                    <textarea class="input" name="idea" placeholder="Tell us your idea"></textarea>
+                    <button class="button">Send</button>
+                </form>
             </div>
         </div>
         <div class="decoration-row">

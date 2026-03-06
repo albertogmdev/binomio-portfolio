@@ -1,0 +1,20 @@
+@use '../../abstracts' as *;
+@use '../../base/typography' as *;
+
+.input {
+    display: block;
+    width: 100%;
+    padding: 16px 24px;
+    background-color: transparent;
+    outline: none;
+    @extend .text-button;
+    text-transform: uppercase;
+    border: 1px solid $decoration;
+    color: $textPrimary;
+    margin-bottom: 10px;
+}
+
+textarea.input {
+    min-height: 120px;
+    resize: vertical;
+}

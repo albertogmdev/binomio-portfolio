@@ -33,69 +33,58 @@
 
     &--topleft {
         &:after {
-            bottom: 0;
-            left: 0;
+            bottom: -1px;
+            left: 1px;
         }
 
         &:before {
-            top: 0;
-            right: 0;
+            top: 1px;
+            right: 1px;
         }
     }
 
     &--topright {
         &:after {
-            bottom: 0;
-            right: 0;
+            bottom: -1px;
+            right: 1px;
         }
 
         &:before {
-            top: 0;
-            left: 0;
+            top: 1px;
+            left: 1px;
         }
     }
 
     &--bottomleft {
         &:after {
-            top: 0;
-            left: 0;
+            top: 1px;
+            left: 1px;
         }
 
         &:before {
-            bottom: 0;
-            right: 0;
+            bottom: -1px;
+            right: 1px;
         }
     }
 
     &--bottomright {
         &:after {
-            top: 0;
-            right: 0;
+            top: 1px;
+            right: 1px;
         }
 
         &:before {
-            bottom: 0;
-            left: 0;
+            bottom: -1px;
+            left: 1px;
         }
     }
 
-    &--midleft {
-        &:after {
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-        }
-
-        &:before {
-            display: none;
-        }
-    }
-
+    &--midleft,
     &--midright {
         &:after {
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
+            top: 12px;
+            left: 1px;
+            transform: none;
         }
 
         &:before {
