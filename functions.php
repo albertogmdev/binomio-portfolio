@@ -16,6 +16,7 @@ function binomio_load_carbon_fields() {
 require_once get_stylesheet_directory() . '/inc/component-loader.php';
 require_once get_stylesheet_directory() . '/inc/post-type-proyectos.php';
 require_once get_stylesheet_directory() . '/inc/post-type-cases.php';
+require_once get_stylesheet_directory() . '/inc/post-type-stickers.php';
 
 // Ocultar el editor de contenido en páginas (solo usar constructor de componentes)
 add_action('admin_init', 'binomio_hide_editor_on_pages');

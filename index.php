@@ -61,6 +61,33 @@ $get_featured_projects_by_division = function ($division_slug) use ($projects_po
 
 $studio_featured_projects = $get_featured_projects_by_division('studio');
 $artist_featured_projects = $get_featured_projects_by_division('artist');
+
+$studio_stickers = array();
+if (post_type_exists('stickers')) {
+    $stickers_query = new WP_Query(array(
+        'post_type' => 'stickers',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'orderby' => 'menu_order title',
+        'order' => 'ASC',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'division',
+                'field' => 'slug',
+                'terms' => 'studio',
+            ),
+        ),
+        'meta_query' => array(
+            array(
+                'key' => 'sticker_show_in_home',
+                'value' => array('1', 'true', 'yes', 'on'),
+                'compare' => 'IN',
+            ),
+        ),
+    ));
+
+    $studio_stickers = $stickers_query->posts;
+}
 ?>
 
 
@@ -142,6 +169,40 @@ $artist_featured_projects = $get_featured_projects_by_division('artist');
             <span class="link-icon icon icon-bnomiostudio"></span>
             <button id="enter-studio" class="link-button button">Enter</button>
         </div>
+        <?php if (!empty($studio_stickers)) : ?>
+            <div class="studio-stickers" aria-hidden="true">
+                <?php foreach ($studio_stickers as $sticker) : ?>
+                    <?php
+                    $sticker_image_id = (int) carbon_get_post_meta($sticker->ID, 'sticker_image');
+                    $sticker_image_url = $sticker_image_id > 0 ? wp_get_attachment_url($sticker_image_id) : '';
+
+                    if (empty($sticker_image_url)) {
+                        continue;
+                    }
+
+                    $desktop_size = (float) carbon_get_post_meta($sticker->ID, 'sticker_size_desktop');
+                    $mobile_size = (float) carbon_get_post_meta($sticker->ID, 'sticker_size_mobile');
+                    $initial_x = (float) carbon_get_post_meta($sticker->ID, 'sticker_initial_x');
+                    $initial_y = (float) carbon_get_post_meta($sticker->ID, 'sticker_initial_y');
+                    $rotation = (float) carbon_get_post_meta($sticker->ID, 'sticker_rotation');
+                    $z_index = (int) carbon_get_post_meta($sticker->ID, 'sticker_z_index');
+
+                    $desktop_size = $desktop_size > 0 ? $desktop_size : 180;
+                    $mobile_size = $mobile_size > 0 ? $mobile_size : 120;
+                    $initial_x = ($initial_x >= 0 && $initial_x <= 100) ? $initial_x : 50;
+                    $initial_y = ($initial_y >= 0 && $initial_y <= 100) ? $initial_y : 50;
+                    $z_index = $z_index > 0 ? $z_index : 1;
+                    ?>
+                    <div
+                        class="studio-sticker"
+                        data-sticker-id="<?php echo esc_attr((string) $sticker->ID); ?>"
+                        style="--sticker-size-desktop: <?php echo esc_attr((string) $desktop_size); ?>px; --sticker-size-mobile: <?php echo esc_attr((string) $mobile_size); ?>px; --sticker-x: <?php echo esc_attr((string) $initial_x); ?>%; --sticker-y: <?php echo esc_attr((string) $initial_y); ?>%; --sticker-rotation: <?php echo esc_attr((string) $rotation); ?>deg; --sticker-z: <?php echo esc_attr((string) $z_index); ?>;"
+                    >
+                        <img src="<?php echo esc_url($sticker_image_url); ?>" alt="<?php echo esc_attr(get_the_title($sticker->ID)); ?>">
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
         <div class="hero-content">
             <img
                 src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/studio-head.png"
