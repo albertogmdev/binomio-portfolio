@@ -9,6 +9,7 @@
         initTabs();
         initModals();
         initHero();
+        initStudioStickers();
 
         function openModal(modal) {
             if (!modal.hasClass('opened')) {
@@ -284,6 +285,79 @@
 
                 const nextIndex = (activeIndex + 1) % panelCases.length;
                 renderCaseItem(activePanel, nextIndex);
+            });
+        }
+
+        function initStudioStickers() {
+            const stickersLayer = document.querySelector('.studio-hero .studio-stickers');
+            if (!stickersLayer) return;
+
+            const stickers = Array.from(stickersLayer.querySelectorAll('.studio-sticker'));
+            if (stickers.length === 0) return;
+
+            let zIndexCounter = stickers.reduce((maxZ, sticker) => {
+                const currentZ = parseInt(window.getComputedStyle(sticker).zIndex, 10);
+                return Number.isNaN(currentZ) ? maxZ : Math.max(maxZ, currentZ);
+            }, 10);
+
+            const placeSticker = (sticker, clientX, clientY, pointerOffsetX, pointerOffsetY) => {
+                const layerRect = stickersLayer.getBoundingClientRect();
+                const nextLeft = clientX - layerRect.left - pointerOffsetX;
+                const nextTop = clientY - layerRect.top - pointerOffsetY;
+                const maxLeft = Math.max(0, layerRect.width - sticker.offsetWidth);
+                const maxTop = Math.max(0, layerRect.height - sticker.offsetHeight);
+
+                const boundedLeft = Math.min(Math.max(0, nextLeft), maxLeft);
+                const boundedTop = Math.min(Math.max(0, nextTop), maxTop);
+
+                sticker.style.left = `${boundedLeft}px`;
+                sticker.style.top = `${boundedTop}px`;
+                sticker.style.setProperty('--sticker-x', 'unset');
+                sticker.style.setProperty('--sticker-y', 'unset');
+            };
+
+            stickers.forEach((sticker) => {
+                sticker.style.touchAction = 'none';
+
+                sticker.addEventListener('pointerdown', (event) => {
+                    if (event.button !== 0 && event.pointerType === 'mouse') return;
+
+                    event.preventDefault();
+
+                    // Lock current CSS position to px (offsetLeft/Top ignores transforms)
+                    const currentLeft = sticker.offsetLeft;
+                    const currentTop = sticker.offsetTop;
+                    sticker.style.left = `${currentLeft}px`;
+                    sticker.style.top = `${currentTop}px`;
+                    sticker.style.setProperty('--sticker-x', 'unset');
+                    sticker.style.setProperty('--sticker-y', 'unset');
+
+                    zIndexCounter += 1;
+                    sticker.style.zIndex = String(zIndexCounter);
+                    sticker.classList.add('is-dragging');
+
+                    // Pointer offset relative to CSS position, not visual bounding box
+                    const layerRect = stickersLayer.getBoundingClientRect();
+                    const pointerOffsetX = event.clientX - layerRect.left - currentLeft;
+                    const pointerOffsetY = event.clientY - layerRect.top - currentTop;
+
+                    const onPointerMove = (moveEvent) => {
+                        placeSticker(sticker, moveEvent.clientX, moveEvent.clientY, pointerOffsetX, pointerOffsetY);
+                    };
+
+                    const stopDragging = () => {
+                        sticker.classList.remove('is-dragging');
+                        sticker.releasePointerCapture(event.pointerId);
+                        sticker.removeEventListener('pointermove', onPointerMove);
+                        sticker.removeEventListener('pointerup', stopDragging);
+                        sticker.removeEventListener('pointercancel', stopDragging);
+                    };
+
+                    sticker.setPointerCapture(event.pointerId);
+                    sticker.addEventListener('pointermove', onPointerMove);
+                    sticker.addEventListener('pointerup', stopDragging);
+                    sticker.addEventListener('pointercancel', stopDragging);
+                });
             });
         }
     });

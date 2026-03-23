@@ -62,41 +62,33 @@ $get_featured_projects_by_division = function ($division_slug) use ($projects_po
 
 $studio_featured_projects = $get_featured_projects_by_division('studio');
 $artist_featured_projects = $get_featured_projects_by_division('artist');
-$artist_projects_url = function_exists('binomio_get_projects_archive_url') ? binomio_get_projects_archive_url('artist') : home_url('/projects/');
-$studio_projects_url = function_exists('binomio_get_projects_archive_url') ? binomio_get_projects_archive_url('studio') : home_url('/studio/projects/');
-$studio_about_url = function_exists('binomio_get_localized_page_url')
-    ? binomio_get_localized_page_url(
-        array(
-            'es' => array('sobre-mi', 'sobre-nosotros', 'acerca-de', 'about'),
-            'en' => array('about'),
-        ),
-        '/about/'
-    )
-    : home_url('/about/');
-$artist_intro_text = __('Creative Consultant', 'binomio');
-$studio_intro_text = __('Nomad Design Studio', 'binomio');
 
-$get_project_permalink = function ($post_id) {
-    if (function_exists('pll_get_post') && function_exists('pll_current_language')) {
-        $lang = pll_current_language();
-        $translated_id = pll_get_post($post_id, $lang);
-        if ($translated_id) {
-            return get_permalink($translated_id);
-        }
-        // No translation exists: swap the language prefix in the URL.
-        // site_url() is not modified by Polylang so it gives a clean base.
-        $default_lang = function_exists('pll_default_language') ? pll_default_language() : 'es';
-        if ($lang !== $default_lang) {
-            $url = get_permalink($post_id);
-            $base = untrailingslashit(site_url());
-            $prefix = $base . '/' . $default_lang . '/';
-            if (strpos($url, $prefix) === 0) {
-                return $base . '/' . $lang . '/' . substr($url, strlen($prefix));
-            }
-        }
-    }
-    return get_permalink($post_id);
-};
+$studio_stickers = array();
+if (post_type_exists('stickers')) {
+    $stickers_query = new WP_Query(array(
+        'post_type' => 'stickers',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'orderby' => 'menu_order title',
+        'order' => 'ASC',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'division',
+                'field' => 'slug',
+                'terms' => 'studio',
+            ),
+        ),
+        'meta_query' => array(
+            array(
+                'key' => 'sticker_show_in_home',
+                'value' => array('1', 'true', 'yes', 'on'),
+                'compare' => 'IN',
+            ),
+        ),
+    ));
+
+    $studio_stickers = $stickers_query->posts;
+}
 ?>
 
 
@@ -178,6 +170,40 @@ $get_project_permalink = function ($post_id) {
             <span class="link-icon icon icon-bnomiostudio"></span>
             <button id="enter-studio" class="link-button button"><?php echo esc_html__('Enter', 'binomio'); ?></button>
         </div>
+        <?php if (!empty($studio_stickers)) : ?>
+            <div class="studio-stickers" aria-hidden="true">
+                <?php foreach ($studio_stickers as $sticker) : ?>
+                    <?php
+                    $sticker_image_id = (int) carbon_get_post_meta($sticker->ID, 'sticker_image');
+                    $sticker_image_url = $sticker_image_id > 0 ? wp_get_attachment_url($sticker_image_id) : '';
+
+                    if (empty($sticker_image_url)) {
+                        continue;
+                    }
+
+                    $desktop_size = (float) carbon_get_post_meta($sticker->ID, 'sticker_size_desktop');
+                    $mobile_size = (float) carbon_get_post_meta($sticker->ID, 'sticker_size_mobile');
+                    $initial_x = (float) carbon_get_post_meta($sticker->ID, 'sticker_initial_x');
+                    $initial_y = (float) carbon_get_post_meta($sticker->ID, 'sticker_initial_y');
+                    $rotation = (float) carbon_get_post_meta($sticker->ID, 'sticker_rotation');
+                    $z_index = (int) carbon_get_post_meta($sticker->ID, 'sticker_z_index');
+
+                    $desktop_size = $desktop_size > 0 ? $desktop_size : 180;
+                    $mobile_size = $mobile_size > 0 ? $mobile_size : 120;
+                    $initial_x = ($initial_x >= 0 && $initial_x <= 100) ? $initial_x : 50;
+                    $initial_y = ($initial_y >= 0 && $initial_y <= 100) ? $initial_y : 50;
+                    $z_index = $z_index > 0 ? $z_index : 1;
+                    ?>
+                    <div
+                        class="studio-sticker"
+                        data-sticker-id="<?php echo esc_attr((string) $sticker->ID); ?>"
+                        style="--sticker-size-desktop: <?php echo esc_attr((string) $desktop_size); ?>px; --sticker-size-mobile: <?php echo esc_attr((string) $mobile_size); ?>px; --sticker-x: <?php echo esc_attr((string) $initial_x); ?>%; --sticker-y: <?php echo esc_attr((string) $initial_y); ?>%; --sticker-rotation: <?php echo esc_attr((string) $rotation); ?>deg; --sticker-z: <?php echo esc_attr((string) $z_index); ?>;"
+                    >
+                        <img src="<?php echo esc_url($sticker_image_url); ?>" alt="<?php echo esc_attr(get_the_title($sticker->ID)); ?>">
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
         <div class="hero-content">
             <img
                 src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/studio-head.png"
