@@ -5,9 +5,9 @@
  * Define los campos de Carbon Fields para el componente Hero
  */
 
-use Carbon_Fields\Field;
+use TranslatableCarbonFields\Fields\Field;
 
-return array(
+return Field::resolve(array(
     Field::make('text', 'hero_title', __('Título', 'binomio'))
         ->set_width(50),
 
@@ -18,7 +18,7 @@ return array(
 
     Field::make('complex', 'hero_links', __('Links', 'binomio'))
         ->set_layout('tabbed-vertical')
-        ->add_fields(array(
+        ->add_fields(Field::resolve(array(
             Field::make('select', 'tipo', __('Tipo de link', 'binomio'))
                 ->set_options(array(
                     'web' => __('Web', 'binomio'),
@@ -30,5 +30,5 @@ return array(
             Field::make('text', 'texto', __('Texto del link', 'binomio')),
 
             Field::make('text', 'url', __('URL', 'binomio')),
-        )),
-);
+        ))),
+));

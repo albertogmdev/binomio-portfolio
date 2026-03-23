@@ -4,7 +4,7 @@
  * Collection Grid Component Template
  */
 
-$title = $component['hero_title'] ?? '';
+$title = tcf_component($component, 'hero_title');
 ?>
 
 <section class="section-collection_grid">

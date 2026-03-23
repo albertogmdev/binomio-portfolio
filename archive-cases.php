@@ -85,8 +85,8 @@ foreach ($tipo_values as $tipo) {
 
         $case_id = $case_post->ID;
         $case_title = get_the_title($case_id);
-        $case_subtitle = (string) carbon_get_post_meta($case_id, 'case_subtitulo');
-        $case_content = (string) carbon_get_post_meta($case_id, 'case_contenido');
+        $case_subtitle = tcf_meta($case_id, 'case_subtitulo', 'case_translations');
+        $case_content = tcf_meta($case_id, 'case_contenido', 'case_translations');
         $case_category = (string) carbon_get_post_meta($case_id, 'case_categoria');
         $case_year = (string) carbon_get_post_meta($case_id, 'case_ano');
         $case_image_id = carbon_get_post_meta($case_id, 'case_imagen');
@@ -96,8 +96,8 @@ foreach ($tipo_values as $tipo) {
         $normalized_links = array();
         if (is_array($case_links)) {
             foreach ($case_links as $case_link) {
-                $link_text = isset($case_link['texto']) ? trim((string) $case_link['texto']) : '';
-                $link_url = isset($case_link['url']) ? trim((string) $case_link['url']) : '';
+                $link_text = trim(tcf_item($case_link, 'texto'));
+                $link_url = trim(tcf_url($case_link['url'] ?? ''));
 
                 if ($link_url === '') {
                     continue;
@@ -145,11 +145,11 @@ foreach ($panels as $panel) {
             </div>
             <div class="content-row">
                 <div class="content-item content-topleft">
-                    <h1 class="text-h1">Archive</h1>
-                    <h2 class="text-h3">A selection of past works</h2>
+                    <h1 class="text-h1"><?php echo esc_html__('Archive', 'binomio'); ?></h1>
+                    <h2 class="text-h3"><?php echo esc_html__('A selection of past works', 'binomio'); ?></h2>
                 </div>
                 <div class="content-item content-topright">
-                    <p class="body-small"><?php echo esc_html($current_division === 'studio' ? 'Studio archive cases' : 'Artist archive cases'); ?></p>
+                    <p class="body-small"><?php echo esc_html($current_division === 'studio' ? __('Studio archive cases', 'binomio') : __('Artist archive cases', 'binomio')); ?></p>
                 </div>
             </div>
             <div class="decoration-row">
@@ -216,10 +216,10 @@ foreach ($panels as $panel) {
             <div class="modal-pagination <?php echo esc_attr($theme_class); ?>">
                 <button class="pagination-item modal-prev">
                     <span class="icon icon-chevronleft"></span>
-                    <span class="text">Prev</span>
+                    <span class="text"><?php echo esc_html__('Prev', 'binomio'); ?></span>
                 </button>
                 <button class="pagination-item modal-next">
-                    <span class="text">Next</span>
+                    <span class="text"><?php echo esc_html__('Next', 'binomio'); ?></span>
                     <span class="icon icon-chevronright"></span>
                 </button>
             </div>

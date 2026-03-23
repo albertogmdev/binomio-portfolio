@@ -4,9 +4,9 @@
  * Hero Contact Component Template
  */
 
-$title = isset($component['hero_title']) ? (string) $component['hero_title'] : '';
-$subtitle = isset($component['hero_subtitle']) ? (string) $component['hero_subtitle'] : '';
-$text = isset($component['hero_text']) ? (string) $component['hero_text'] : '';
+$title = tcf_component($component, 'hero_title');
+$subtitle = tcf_component($component, 'hero_subtitle');
+$text = tcf_component($component, 'hero_text');
 ?>
 
 <section class="section-hero section-hero--contact">

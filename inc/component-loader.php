@@ -6,7 +6,7 @@
  * Similar a ACF Flexible Content
  */
 
-use Carbon_Fields\Field;
+use TranslatableCarbonFields\Fields\Field;
 
 class Binomio_Component_Loader {
     
@@ -70,9 +70,9 @@ class Binomio_Component_Loader {
         // Registrar el campo solo en páginas
         \Carbon_Fields\Container\Container::make('post_meta', __('Constructor de Página', 'binomio'))
             ->where('post_type', '=', 'page')
-            ->add_fields(array(
+            ->add_fields(Field::resolve(array(
                 $complex_field
-            ));
+            )));
     }
     
     /**
