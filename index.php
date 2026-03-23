@@ -8,6 +8,7 @@ $get_featured_projects_by_division = function ($division_slug) use ($projects_po
         'post_type' => $projects_post_type,
         'post_status' => 'publish',
         'posts_per_page' => 12,
+        'lang' => '',
         'tax_query' => array(
             array(
                 'taxonomy' => 'division',
@@ -99,9 +100,9 @@ if (post_type_exists('stickers')) {
             class="hero-image"
             style="right: -1000px;">
         <div class="hero-link">
-            <p class="link-text">Creative </br>Consultant</p>
+            <p class="link-text"><?php echo nl2br(esc_html($artist_intro_text)); ?></p>
             <span class="link-icon icon icon-bnomio"></span>
-            <button id="enter-artist" class="link-button button">Coming soon</button>
+            <button id="enter-artist" class="link-button button"><?php echo esc_html__('Coming soon', 'binomio'); ?></button>
         </div>
         <div class="hero-content">
             <img
@@ -109,28 +110,28 @@ if (post_type_exists('stickers')) {
                 alt="Bnomio Artist"
                 class="content-image">
             <div class="content-projectlist">
-                <h2 class="list-title">Recent Projects</h2>
+                <h2 class="list-title"><?php echo esc_html__('Recent Projects', 'binomio'); ?></h2>
                 <ul class="projectlist">
                     <?php foreach ($artist_featured_projects as $project) : ?>
                         <li class="project-item">
-                            <a href="<?php echo esc_url(get_permalink($project->ID)); ?>" class="link"><?php echo esc_html(get_the_title($project->ID)); ?></a>
+                            <a href="<?php echo esc_url($get_project_permalink($project->ID)); ?>" class="link"><?php echo esc_html(get_the_title($project->ID)); ?></a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <a href="<?php echo esc_url(home_url('/projects/')); ?>" class="button">All projects</a>
+                <a href="<?php echo esc_url($artist_projects_url); ?>" class="button"><?php echo esc_html__('All projects', 'binomio'); ?></a>
             </div>
             <div class="content-projects">
                 <?php foreach (array_slice($artist_featured_projects, 0, 6) as $project) : ?>
                     <?php
                     $project_title = get_the_title($project->ID);
-                    $project_permalink = get_permalink($project->ID);
+                    $project_permalink = $get_project_permalink($project->ID);
                     $project_featured_image = carbon_get_post_meta($project->ID, 'proyecto_featured_image');
                     $project_portada = carbon_get_post_meta($project->ID, 'proyecto_portada');
                     $project_image_id = !empty($project_featured_image) ? $project_featured_image : $project_portada;
                     $project_image_url = !empty($project_image_id) ? wp_get_attachment_url($project_image_id) : '';
                     $project_tags = carbon_get_post_meta($project->ID, 'proyecto_tags');
                     $project_subtitle = is_array($project_tags) ? implode(' · ', $project_tags) : '';
-                    $project_description = carbon_get_post_meta($project->ID, 'proyecto_descripcion');
+                    $project_description = tcf_meta($project->ID, 'proyecto_descripcion', 'proyecto_translations');
                     $project_description_text = wp_trim_words(wp_strip_all_tags((string) $project_description), 16, '...');
                     ?>
                     <div class="collection-card collection-card--displayed">
@@ -150,12 +151,12 @@ if (post_type_exists('stickers')) {
                             <?php if (!empty($project_description_text)) : ?>
                                 <p class="item-description"><?php echo esc_html($project_description_text); ?></p>
                             <?php endif; ?>
-                            <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button">See project</a>
+                            <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button"><?php echo esc_html__('See project', 'binomio'); ?></a>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
-            <button class="exit-button button">Go Back</button>
+            <button class="exit-button button"><?php echo esc_html__('Go Back', 'binomio'); ?></button>
         </div>
     </div>
     <div class="nointeract-zone"></div>
@@ -165,9 +166,9 @@ if (post_type_exists('stickers')) {
             alt="bnomio Studio"
             class="hero-image">
         <div class="hero-link">
-            <p class="link-text">Nomad Design </br>Studio</p>
+            <p class="link-text"><?php echo nl2br(esc_html($studio_intro_text)); ?></p>
             <span class="link-icon icon icon-bnomiostudio"></span>
-            <button id="enter-studio" class="link-button button">Enter</button>
+            <button id="enter-studio" class="link-button button"><?php echo esc_html__('Enter', 'binomio'); ?></button>
         </div>
         <?php if (!empty($studio_stickers)) : ?>
             <div class="studio-stickers" aria-hidden="true">
@@ -209,28 +210,28 @@ if (post_type_exists('stickers')) {
                 alt="Bnomio Studio"
                 class="content-image">
             <div class="content-projectlist">
-                <h2 class="list-title">Recent Projects</h2>
+                <h2 class="list-title"><?php echo esc_html__('Recent Projects', 'binomio'); ?></h2>
                 <ul class="projectlist">
                     <?php foreach ($studio_featured_projects as $project) : ?>
                         <li class="project-item">
-                            <a href="<?php echo esc_url(get_permalink($project->ID)); ?>" class="link"><?php echo esc_html(get_the_title($project->ID)); ?></a>
+                            <a href="<?php echo esc_url($get_project_permalink($project->ID)); ?>" class="link"><?php echo esc_html(get_the_title($project->ID)); ?></a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <a href="<?php echo esc_url(home_url('/studio/projects/')); ?>" class="button">All projects</a>
+                <a href="<?php echo esc_url($studio_projects_url); ?>" class="button"><?php echo esc_html__('All projects', 'binomio'); ?></a>
             </div>
             <div class="content-projects">
                 <?php foreach (array_slice($studio_featured_projects, 0, 6) as $project) : ?>
                     <?php
                     $project_title = get_the_title($project->ID);
-                    $project_permalink = get_permalink($project->ID);
+                    $project_permalink = $get_project_permalink($project->ID);
                     $project_featured_image = carbon_get_post_meta($project->ID, 'proyecto_featured_image');
                     $project_portada = carbon_get_post_meta($project->ID, 'proyecto_portada');
                     $project_image_id = !empty($project_featured_image) ? $project_featured_image : $project_portada;
                     $project_image_url = !empty($project_image_id) ? wp_get_attachment_url($project_image_id) : '';
                     $project_tags = carbon_get_post_meta($project->ID, 'proyecto_tags');
                     $project_subtitle = is_array($project_tags) ? implode(' · ', $project_tags) : '';
-                    $project_description = carbon_get_post_meta($project->ID, 'proyecto_descripcion');
+                    $project_description = tcf_meta($project->ID, 'proyecto_descripcion', 'proyecto_translations');
                     $project_description_text = wp_trim_words(wp_strip_all_tags((string) $project_description), 16, '...');
                     ?>
                     <div class="collection-card collection-card--displayed">
@@ -250,7 +251,7 @@ if (post_type_exists('stickers')) {
                             <?php if (!empty($project_description_text)) : ?>
                                 <p class="item-description"><?php echo esc_html($project_description_text); ?></p>
                             <?php endif; ?>
-                            <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button">See project</a>
+                            <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button"><?php echo esc_html__('See project', 'binomio'); ?></a>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -261,13 +262,13 @@ if (post_type_exists('stickers')) {
                         alt="The Studio">
                     </div>
                     <div class="card-info">
-                        <h3 class="item-title text-h1">The</br>Studio</h3>
+                        <h3 class="item-title text-h1"><?php echo nl2br(esc_html__('The\nStudio', 'binomio')); ?></h3>
                         <a href="https://www.instagram.com/bnomio.studio" class="item-link">@bnomio.studio</a>
-                        <a href="#" class="button item-button">About</a>
+                        <a href="<?php echo esc_url($studio_about_url); ?>" class="button item-button"><?php echo esc_html__('About', 'binomio'); ?></a>
                     </div>
                 </div>
             </div>
-            <button class="exit-button button">Go Back</button>
+            <button class="exit-button button"><?php echo esc_html__('Go Back', 'binomio'); ?></button>
         </div>
         <div class="hero-footer">
             <div class="footer-main">
@@ -278,7 +279,7 @@ if (post_type_exists('stickers')) {
                     </a>
                 </div>
                 <div class="footer-info">
-                    <p>BNOMIO | ©COPYRIGHT 2025 ALL RIGHTS RESERVED</p>
+                    <p><?php echo esc_html__('BNOMIO | COPYRIGHT 2025 ALL RIGHTS RESERVED', 'binomio'); ?></p>
                 </div>
             </div>
         </div>

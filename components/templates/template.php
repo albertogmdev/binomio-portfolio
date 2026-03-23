@@ -3,7 +3,7 @@
  * Section
  */
 
-$title = $component['hero_title'] ?? '';
+$title = tcf_component($component, 'hero_title');
 ?>
 
 <section class="section">

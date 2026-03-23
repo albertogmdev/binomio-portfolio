@@ -5,8 +5,8 @@
  */
 
 $image = isset($component['about_info_image']) ? $component['about_info_image'] : null;
-$title = isset($component['about_info_title']) ? $component['about_info_title'] : null;
-$content = isset($component['about_info_content']) ? $component['about_info_content'] : null;
+$title = tcf_component($component, 'about_info_title');
+$content = tcf_component($component, 'about_info_content');
 $brand_image = isset($component['about_info_brand_image']) ? $component['about_info_brand_image'] : null;
 $links = isset($component['about_info_links']) ? $component['about_info_links'] : null;
 $show_press = !empty($component['about_info_show_press']);
@@ -43,12 +43,19 @@ $show_downloads = !empty($component['about_info_show_downloads']);
                     <ul class="footer-links">
                         <?php if ($links) : ?>
                             <?php foreach ($links as $link) : ?>
+                                <?php
+                                $link_text = tcf_item($link, 'texto');
+                                $link_url = tcf_url($link['url'] ?? '');
+                                if ($link_url === '') {
+                                    continue;
+                                }
+                                ?>
                                 <li>
                                     <a
                                         class="button" 
-                                        href="<?= esc_url($link['url']) ?>"
+                                        href="<?= esc_url($link_url) ?>"
                                     >
-                                        [ <?= esc_html($link['texto']) ?> ]
+                                        [ <?= esc_html($link_text) ?> ]
                                     </a>
                                 </li>
                             <?php endforeach; ?>

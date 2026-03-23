@@ -4,7 +4,7 @@
  * Section Item List Component Template
  */
 
-$title = $component['hero_title'] ?? '';
+$title = tcf_component($component, 'hero_title');
 ?>
 
 <section class="section-item_list">
