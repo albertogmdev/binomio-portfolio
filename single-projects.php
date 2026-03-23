@@ -9,19 +9,20 @@ get_header();
 if (have_posts()) :
     while (have_posts()) : the_post();
         $post_id = get_the_ID();
+        $post_language = function_exists('binomio_get_post_language') ? binomio_get_post_language($post_id) : '';
 
         $featured_home = (bool) carbon_get_post_meta($post_id, 'proyecto_featured_home');
         $featured_image = carbon_get_post_meta($post_id, 'proyecto_featured_image');
 
         $titulo = get_the_title($post_id);
-        $subtitulo = carbon_get_post_meta($post_id, 'proyecto_subtitulo');
-        $descripcion = carbon_get_post_meta($post_id, 'proyecto_descripcion');
+        $subtitulo = tcf_meta($post_id, 'proyecto_subtitulo', 'proyecto_translations');
+        $descripcion = tcf_meta($post_id, 'proyecto_descripcion', 'proyecto_translations');
         $links = carbon_get_post_meta($post_id, 'proyecto_links');
         $tags = carbon_get_post_meta($post_id, 'proyecto_tags');
         $portada = carbon_get_post_meta($post_id, 'proyecto_portada');
         $full_gallery = carbon_get_post_meta($post_id, 'proyecto_full_assets');
         $gallery = carbon_get_post_meta($post_id, 'proyecto_galeria_assets');
-        $creditos = carbon_get_post_meta($post_id, 'proyecto_creditos');
+        $creditos = tcf_meta($post_id, 'proyecto_creditos', 'proyecto_translations');
         $related = carbon_get_post_meta($post_id, 'proyecto_related');
     endwhile;
 endif;
@@ -62,12 +63,20 @@ endif;
                     <div class="link-container">
                         <?php if (!empty($links)) : ?>
                             <?php foreach ($links as $link) : ?>
+                                <?php
+                                $link_text = tcf_item($link, 'texto');
+                                $link_url = tcf_url($link['url'] ?? '');
+
+                                if ($link_url === '') {
+                                    continue;
+                                }
+                                ?>
                                 <a
-                                    href="<?= esc_url($link['url']) ?>"
+                                    href="<?= esc_url($link_url) ?>"
                                     class="button button--secondary button-icon"
                                     target="_blank"
                                     rel="noopener noreferrer">
-                                    <span class="text"><?= esc_html($link['texto']) ?></span>
+                                    <span class="text"><?= esc_html($link_text) ?></span>
                                     <span class="icon icon-link"></span>
                                 </a>
                             <?php endforeach; ?>
@@ -165,7 +174,7 @@ endif;
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
-                <p class="credits-title body-large">[ CREDITS ]</p>
+                <p class="credits-title body-large">[ <?php echo esc_html__('CREDITS', 'binomio'); ?> ]</p>
                 <div class="credits-content body-small">
                     <?= $creditos ?>
                 </div>
@@ -175,7 +184,7 @@ endif;
     <?php if (is_array($related) && !empty($related)) : ?>
         <section class="section-related">
             <div class="container">
-                <p class="related-title text-h3">[ OTHER PROJECTS ]</p>
+                <p class="related-title text-h3">[ <?php echo esc_html__('OTHER PROJECTS', 'binomio'); ?> ]</p>
                 <div class="related-grid">
                     <?php foreach ($related as $related_item) : ?>
                         <?php
@@ -188,6 +197,14 @@ endif;
                         }
 
                         if ($related_id <= 0) {
+                            continue;
+                        }
+
+                        if (function_exists('binomio_get_translated_post_id')) {
+                            $related_id = binomio_get_translated_post_id($related_id, $post_language);
+                        }
+
+                        if ($related_id <= 0 || get_post_type($related_id) !== 'projects') {
                             continue;
                         }
 

@@ -5,9 +5,9 @@
  * Define los campos de Carbon Fields para el componente Hero Contact
  */
 
-use Carbon_Fields\Field;
+use TranslatableCarbonFields\Fields\Field;
 
-return array(
+return Field::resolve(array(
     Field::make('text', 'hero_title', __('Título', 'binomio'))
         ->set_width(50),
 
@@ -15,4 +15,4 @@ return array(
         ->set_width(50),
 
     Field::make('rich_text', 'hero_text', __('Texto', 'binomio')),
-);
+));

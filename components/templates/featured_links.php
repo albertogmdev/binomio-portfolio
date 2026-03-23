@@ -3,15 +3,15 @@
  * Featured Links Component Template
  */
 
-$title = isset($component['featured_links_title']) ? (string) $component['featured_links_title'] : '';
-$subtitle = isset($component['featured_links_subtitle']) ? (string) $component['featured_links_subtitle'] : '';
+$title = tcf_component($component, 'featured_links_title');
+$subtitle = tcf_component($component, 'featured_links_subtitle');
 $items = isset($component['featured_links_items']) && is_array($component['featured_links_items']) ? $component['featured_links_items'] : array();
 
 $normalized_items = array();
 foreach ($items as $item) {
-    $name = isset($item['name']) ? trim((string) $item['name']) : '';
-    $text = isset($item['text']) ? trim((string) $item['text']) : '';
-    $link = isset($item['link']) ? trim((string) $item['link']) : '';
+    $name = trim(tcf_item($item, 'name'));
+    $text = trim(tcf_item($item, 'text'));
+    $link = trim(tcf_url($item['link'] ?? ''));
     $year = isset($item['year']) ? trim((string) $item['year']) : '';
 
     if ($name === '' && $text === '' && $link === '' && $year === '') {

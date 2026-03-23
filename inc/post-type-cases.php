@@ -3,8 +3,8 @@
  * Registro de Custom Post Type: Cases
  */
 
+use TranslatableCarbonFields\Fields\Field;
 use Carbon_Fields\Container\Container;
-use Carbon_Fields\Field;
 
 add_action('init', 'binomio_register_post_type_cases');
 function binomio_register_post_type_cases() {
@@ -52,17 +52,22 @@ function binomio_attach_division_taxonomy_to_cases() {
 
 add_action('init', 'binomio_register_cases_division_rewrites', 25);
 function binomio_register_cases_division_rewrites() {
-    add_rewrite_rule(
-        '^cases/?$',
-        'index.php?post_type=cases&division=artist',
-        'top'
+    $artist_cases_paths = array(
+        binomio_get_route_slug('cases', 'en'),
+        binomio_get_route_slug('cases', 'es'),
+    );
+    $studio_cases_paths = array(
+        binomio_get_route_slug('studio', 'en') . '/' . binomio_get_route_slug('cases', 'en'),
+        binomio_get_route_slug('studio', 'es') . '/' . binomio_get_route_slug('cases', 'es'),
     );
 
-    add_rewrite_rule(
-        '^studio/cases/?$',
-        'index.php?post_type=cases&division=studio',
-        'top'
-    );
+    foreach (array_unique($artist_cases_paths) as $path) {
+        binomio_add_localized_rewrite_rule($path . '/?$', 'index.php?post_type=cases&division=artist', 'top');
+    }
+
+    foreach (array_unique($studio_cases_paths) as $path) {
+        binomio_add_localized_rewrite_rule($path . '/?$', 'index.php?post_type=cases&division=studio', 'top');
+    }
 }
 
 add_action('pre_get_posts', 'binomio_filter_cases_by_division');
@@ -81,12 +86,12 @@ function binomio_filter_cases_by_division($query) {
     $division = $query->get('division');
 
     if (empty($division)) {
-        $request_path = trim(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH), '/');
+        $request_path = binomio_get_request_path();
 
-        if (preg_match('#^studio/cases(/|$)#', $request_path)) {
+        if (preg_match('#^(' . preg_quote(binomio_get_route_slug('studio', 'en') . '/' . binomio_get_route_slug('cases', 'en'), '#') . '|' . preg_quote(binomio_get_route_slug('studio', 'es') . '/' . binomio_get_route_slug('cases', 'es'), '#') . ')(/|$)#', $request_path)) {
             $division = 'studio';
             $query->set('division', $division);
-        } elseif (preg_match('#^cases(/|$)#', $request_path)) {
+        } elseif (preg_match('#^' . preg_quote(binomio_get_route_slug('cases', 'en'), '#') . '(/|$)#', $request_path)) {
             $division = 'artist';
              $query->set('division', $division);
          }
@@ -121,7 +126,7 @@ function binomio_disable_single_cases() {
 
 add_action('init', 'binomio_flush_cases_rewrites_once', 40);
 function binomio_flush_cases_rewrites_once() {
-    $rewrite_version = 'cases_division_rewrite_v1';
+    $rewrite_version = 'cases_division_rewrite_v2';
 
     if (get_option('binomio_cases_rewrite_version') === $rewrite_version) {
         return;
@@ -135,7 +140,7 @@ add_action('carbon_fields_register_fields', 'binomio_register_cases_fields');
 function binomio_register_cases_fields() {
     Container::make('post_meta', __('Datos del Case', 'binomio'))
         ->where('post_type', '=', 'cases')
-        ->add_fields(array(
+        ->add_fields(Field::resolve(array(
             Field::make('text', 'case_subtitulo', __('Subtítulo', 'binomio')),
             Field::make('image', 'case_imagen', __('Imagen', 'binomio')),
             Field::make('rich_text', 'case_contenido', __('Contenido', 'binomio')),
@@ -157,7 +162,7 @@ function binomio_register_cases_fields() {
             Field::make('text', 'case_ano', __('Año', 'binomio')),
             Field::make('complex', 'case_links', __('Links', 'binomio'))
                 ->set_layout('tabbed-vertical')
-                ->add_fields(array(
+                ->add_fields(Field::resolve(array(
                     Field::make('select', 'tipo', __('Tipo de link', 'binomio'))
                         ->set_options(array(
                             'web' => __('Web', 'binomio'),
@@ -166,8 +171,8 @@ function binomio_register_cases_fields() {
                         )),
                     Field::make('text', 'texto', __('Texto del link', 'binomio')),
                     Field::make('text', 'url', __('URL', 'binomio')),
-                )),
-        ));
+                ))),
+        )));
 }
 
 add_filter('use_block_editor_for_post_type', 'binomio_disable_gutenberg_for_cases', 10, 2);

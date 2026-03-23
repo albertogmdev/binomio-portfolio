@@ -13,6 +13,7 @@ $projects_query = new WP_Query(array(
     'post_type' => $projects_post_type,
     'post_status' => 'publish',
     'posts_per_page' => -1,
+    'lang' => '',
     'orderby' => 'title',
     'order' => 'ASC',
     'tax_query' => array(
@@ -68,11 +69,11 @@ if (empty($tag_values)) {
             </div>
             <div class="content-row">
                 <div class="content-item content-topleft">
-                    <h1 class="text-h1">Works</h1>
-                    <h2 class="text-h3">Featured projects</h2>
+                    <h1 class="text-h1"><?php echo esc_html__('Works', 'binomio'); ?></h1>
+                    <h2 class="text-h3"><?php echo esc_html__('Featured projects', 'binomio'); ?></h2>
                 </div>
                 <div class="content-item content-topright">
-                    <p class="body-small">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc scelerisque varius nisi sit amet dapibus. Praesent interdum felis eget enim euismod, et fringilla massa aliquet. Mauris finibus porta porta.</p>
+                    <p class="body-small"><?php echo esc_html__('A curated selection of featured projects.', 'binomio'); ?></p>
                 </div>
             </div>
             <div class="decoration-row">
@@ -87,7 +88,7 @@ if (empty($tag_values)) {
                 <?php foreach ($tag_values as $index => $tag_value) : ?>
                     <?php
                     $panel_id = 'tag-' . sanitize_title($tag_value);
-                    $tab_label = $tag_value === 'all' ? 'All' : $format_tag_label($tag_value);
+                    $tab_label = $tag_value === 'all' ? __('All', 'binomio') : $format_tag_label($tag_value);
                     ?>
                     <div class="tab <?php echo $index === 0 ? 'selected' : ''; ?>" data-panel="<?php echo esc_attr($panel_id); ?>" data-group="collection-list"><?php echo esc_html($tab_label); ?></div>
                 <?php endforeach; ?>
@@ -114,7 +115,7 @@ if (empty($tag_values)) {
                             $project_image_id = !empty($project_featured_image) ? $project_featured_image : $project_portada;
                             $project_image_url = !empty($project_image_id) ? wp_get_attachment_url($project_image_id) : '';
 
-                            $project_description = carbon_get_post_meta($project->ID, 'proyecto_descripcion');
+                            $project_description = tcf_meta($project->ID, 'proyecto_descripcion', 'proyecto_translations');
                             $project_description_text = wp_trim_words(wp_strip_all_tags((string) $project_description), 16, '...');
 
                             $card_size_class = ($project_index % 4 === 2) ? 'item--twocol' : 'item--onecol';
@@ -134,7 +135,7 @@ if (empty($tag_values)) {
                                     <?php if (!empty($project_description_text)) : ?>
                                         <p class="item-description"><?php echo esc_html($project_description_text); ?></p>
                                     <?php endif; ?>
-                                    <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button">See project</a>
+                                    <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button"><?php echo esc_html__('See project', 'binomio'); ?></a>
                                 </div>
                             </div>
                         <?php endforeach; ?>
