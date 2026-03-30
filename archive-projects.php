@@ -69,11 +69,11 @@ if (empty($tag_values)) {
             </div>
             <div class="content-row">
                 <div class="content-item content-topleft">
-                    <h1 class="text-h1"><?php echo esc_html__('Works', 'binomio'); ?></h1>
-                    <h2 class="text-h3"><?php echo esc_html__('Featured projects', 'binomio'); ?></h2>
+                    <h1 class="text-h1"><?php echo esc_html(bnm_t('archive_works_title', 'Works')); ?></h1>
+                    <h2 class="text-h3"><?php echo esc_html(bnm_t('archive_works_subtitle', 'Featured projects')); ?></h2>
                 </div>
                 <div class="content-item content-topright">
-                    <p class="body-small"><?php echo esc_html__('A curated selection of featured projects.', 'binomio'); ?></p>
+                    <p class="body-small"><?php echo esc_html(bnm_t('archive_works_desc', 'A curated selection of featured projects.')); ?></p>
                 </div>
             </div>
             <div class="decoration-row">
@@ -88,7 +88,7 @@ if (empty($tag_values)) {
                 <?php foreach ($tag_values as $index => $tag_value) : ?>
                     <?php
                     $panel_id = 'tag-' . sanitize_title($tag_value);
-                    $tab_label = $tag_value === 'all' ? __('All', 'binomio') : $format_tag_label($tag_value);
+                    $tab_label = $tag_value === 'all' ? bnm_t('archive_works_all_tab', 'All') : $format_tag_label($tag_value);
                     ?>
                     <div class="tab <?php echo $index === 0 ? 'selected' : ''; ?>" data-panel="<?php echo esc_attr($panel_id); ?>" data-group="collection-list"><?php echo esc_html($tab_label); ?></div>
                 <?php endforeach; ?>
@@ -135,7 +135,7 @@ if (empty($tag_values)) {
                                     <?php if (!empty($project_description_text)) : ?>
                                         <p class="item-description"><?php echo esc_html($project_description_text); ?></p>
                                     <?php endif; ?>
-                                    <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button"><?php echo esc_html__('See project', 'binomio'); ?></a>
+                                    <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button"><?php echo esc_html(bnm_t('home_see_project', 'See project')); ?></a>
                                 </div>
                             </div>
                         <?php endforeach; ?>

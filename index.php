@@ -62,6 +62,39 @@ $get_featured_projects_by_division = function ($division_slug) use ($projects_po
 
 $studio_featured_projects = $get_featured_projects_by_division('studio');
 $artist_featured_projects = $get_featured_projects_by_division('artist');
+$artist_projects_url = function_exists('binomio_get_projects_archive_url') ? binomio_get_projects_archive_url('artist') : home_url('/projects/');
+$studio_projects_url = function_exists('binomio_get_projects_archive_url') ? binomio_get_projects_archive_url('studio') : home_url('/studio/projects/');
+$studio_about_url = function_exists('binomio_get_localized_page_url')
+    ? binomio_get_localized_page_url(
+        array(
+            'es' => array('sobre-mi', 'sobre-nosotros', 'acerca-de', 'about'),
+            'en' => array('about'),
+        ),
+        '/about/'
+    )
+    : home_url('/about/');
+$artist_intro_text = bnm_t('home_artist_intro', 'Creative Consultant');
+$studio_intro_text = bnm_t('home_studio_intro', 'Nomad Design Studio');
+
+$get_project_permalink = function ($post_id) {
+    if (function_exists('pll_get_post') && function_exists('pll_current_language')) {
+        $lang = pll_current_language();
+        $translated_id = pll_get_post($post_id, $lang);
+        if ($translated_id) {
+            return get_permalink($translated_id);
+        }
+        $default_lang = function_exists('pll_default_language') ? pll_default_language() : 'es';
+        if ($lang !== $default_lang) {
+            $url = get_permalink($post_id);
+            $base = untrailingslashit(site_url());
+            $prefix = $base . '/' . $default_lang . '/';
+            if (strpos($url, $prefix) === 0) {
+                return $base . '/' . $lang . '/' . substr($url, strlen($prefix));
+            }
+        }
+    }
+    return get_permalink($post_id);
+};
 
 $studio_stickers = array();
 if (post_type_exists('stickers')) {
@@ -102,7 +135,7 @@ if (post_type_exists('stickers')) {
         <div class="hero-link">
             <p class="link-text"><?php echo nl2br(esc_html($artist_intro_text)); ?></p>
             <span class="link-icon icon icon-bnomio"></span>
-            <button id="enter-artist" class="link-button button"><?php echo esc_html__('Coming soon', 'binomio'); ?></button>
+            <button id="enter-artist" class="link-button button"><?php echo esc_html(bnm_t('home_artist_enter', 'Coming soon')); ?></button>
         </div>
         <div class="hero-content">
             <img
@@ -110,7 +143,7 @@ if (post_type_exists('stickers')) {
                 alt="Bnomio Artist"
                 class="content-image">
             <div class="content-projectlist">
-                <h2 class="list-title"><?php echo esc_html__('Recent Projects', 'binomio'); ?></h2>
+                <h2 class="list-title"><?php echo esc_html(bnm_t('home_artist_projects', 'Recent Projects')); ?></h2>
                 <ul class="projectlist">
                     <?php foreach ($artist_featured_projects as $project) : ?>
                         <li class="project-item">
@@ -118,7 +151,7 @@ if (post_type_exists('stickers')) {
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <a href="<?php echo esc_url($artist_projects_url); ?>" class="button"><?php echo esc_html__('All projects', 'binomio'); ?></a>
+                <a href="<?php echo esc_url($artist_projects_url); ?>" class="button"><?php echo esc_html(bnm_t('home_artist_all', 'All projects')); ?></a>
             </div>
             <div class="content-projects">
                 <?php foreach (array_slice($artist_featured_projects, 0, 6) as $project) : ?>
@@ -151,12 +184,12 @@ if (post_type_exists('stickers')) {
                             <?php if (!empty($project_description_text)) : ?>
                                 <p class="item-description"><?php echo esc_html($project_description_text); ?></p>
                             <?php endif; ?>
-                            <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button"><?php echo esc_html__('See project', 'binomio'); ?></a>
+                            <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button"><?php echo esc_html(bnm_t('home_see_project', 'See project')); ?></a>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
-            <button class="exit-button button"><?php echo esc_html__('Go Back', 'binomio'); ?></button>
+            <button class="exit-button button"><?php echo esc_html(bnm_t('home_go_back', 'Go Back')); ?></button>
         </div>
     </div>
     <div class="nointeract-zone"></div>
@@ -168,7 +201,7 @@ if (post_type_exists('stickers')) {
         <div class="hero-link">
             <p class="link-text"><?php echo nl2br(esc_html($studio_intro_text)); ?></p>
             <span class="link-icon icon icon-bnomiostudio"></span>
-            <button id="enter-studio" class="link-button button"><?php echo esc_html__('Enter', 'binomio'); ?></button>
+            <button id="enter-studio" class="link-button button"><?php echo esc_html(bnm_t('home_studio_enter', 'Enter')); ?></button>
         </div>
         <?php if (!empty($studio_stickers)) : ?>
             <div class="studio-stickers" aria-hidden="true">
@@ -210,7 +243,7 @@ if (post_type_exists('stickers')) {
                 alt="Bnomio Studio"
                 class="content-image">
             <div class="content-projectlist">
-                <h2 class="list-title"><?php echo esc_html__('Recent Projects', 'binomio'); ?></h2>
+                <h2 class="list-title"><?php echo esc_html(bnm_t('home_studio_projects', 'Recent Projects')); ?></h2>
                 <ul class="projectlist">
                     <?php foreach ($studio_featured_projects as $project) : ?>
                         <li class="project-item">
@@ -218,7 +251,7 @@ if (post_type_exists('stickers')) {
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <a href="<?php echo esc_url($studio_projects_url); ?>" class="button"><?php echo esc_html__('All projects', 'binomio'); ?></a>
+                <a href="<?php echo esc_url($studio_projects_url); ?>" class="button"><?php echo esc_html(bnm_t('home_studio_all', 'All projects')); ?></a>
             </div>
             <div class="content-projects">
                 <?php foreach (array_slice($studio_featured_projects, 0, 6) as $project) : ?>
@@ -251,7 +284,7 @@ if (post_type_exists('stickers')) {
                             <?php if (!empty($project_description_text)) : ?>
                                 <p class="item-description"><?php echo esc_html($project_description_text); ?></p>
                             <?php endif; ?>
-                            <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button"><?php echo esc_html__('See project', 'binomio'); ?></a>
+                            <a href="<?php echo esc_url($project_permalink); ?>" class="button item-button"><?php echo esc_html(bnm_t('home_see_project', 'See project')); ?></a>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -262,13 +295,13 @@ if (post_type_exists('stickers')) {
                         alt="The Studio">
                     </div>
                     <div class="card-info">
-                        <h3 class="item-title text-h1"><?php echo nl2br(esc_html__('The\nStudio', 'binomio')); ?></h3>
+                        <h3 class="item-title text-h1"><?php echo nl2br(esc_html(bnm_t('home_studio_name', "The\nStudio"))); ?></h3>
                         <a href="https://www.instagram.com/bnomio.studio" class="item-link">@bnomio.studio</a>
-                        <a href="<?php echo esc_url($studio_about_url); ?>" class="button item-button"><?php echo esc_html__('About', 'binomio'); ?></a>
+                        <a href="<?php echo esc_url($studio_about_url); ?>" class="button item-button"><?php echo esc_html(bnm_t('home_studio_about', 'About')); ?></a>
                     </div>
                 </div>
             </div>
-            <button class="exit-button button"><?php echo esc_html__('Go Back', 'binomio'); ?></button>
+            <button class="exit-button button"><?php echo esc_html(bnm_t('home_go_back', 'Go Back')); ?></button>
         </div>
         <div class="hero-footer">
             <div class="footer-main">
@@ -279,7 +312,7 @@ if (post_type_exists('stickers')) {
                     </a>
                 </div>
                 <div class="footer-info">
-                    <p><?php echo esc_html__('BNOMIO | COPYRIGHT 2025 ALL RIGHTS RESERVED', 'binomio'); ?></p>
+                    <p><?php echo esc_html(bnm_t('footer_copyright', 'BNOMIO | COPYRIGHT 2025 ALL RIGHTS RESERVED')); ?></p>
                 </div>
             </div>
         </div>

@@ -35,6 +35,8 @@ require_once get_stylesheet_directory() . '/inc/component-loader.php';
 require_once get_stylesheet_directory() . '/inc/post-type-proyectos.php';
 require_once get_stylesheet_directory() . '/inc/post-type-cases.php';
 require_once get_stylesheet_directory() . '/inc/post-type-stickers.php';
+require_once get_stylesheet_directory() . '/inc/forms-manager.php';
+require_once get_stylesheet_directory() . '/inc/theme-strings.php';
 
 // Ocultar el editor de contenido en páginas (solo usar constructor de componentes)
 add_action('admin_init', 'binomio_hide_editor_on_pages');
@@ -472,9 +474,29 @@ add_filter('pll_check_canonical_url', function ($redirect_url, $language) {
         return $redirect_url;
     }
 
+    // CPTs that exist only in the default language (no Polylang duplicates)
     $multilingual_cpts = array('projects', 'proyectos', 'cases');
     if (in_array($post->post_type, $multilingual_cpts, true)) {
         return false;
+    }
+
+    // Pages: if there is no translated version for the requested language,
+    // let page.php handle the fallback instead of redirecting to the default language.
+    if ($post->post_type === 'page' && function_exists('pll_get_post') && function_exists('pll_default_language')) {
+        $requested_lang = pll_get_post_language($post->ID, 'slug');
+        $default_lang   = pll_default_language('slug');
+        // If we are on the default-language post but the URL has a secondary lang
+        // prefix it means Polylang couldn't find the translation — suppress redirect.
+        if ($requested_lang === $default_lang) {
+            $uri = isset($_SERVER['REQUEST_URI']) ? strtok((string) $_SERVER['REQUEST_URI'], '?') : '';
+            if (function_exists('pll_languages_list')) {
+                foreach (pll_languages_list() as $lang_slug) {
+                    if ($lang_slug !== $default_lang && strpos($uri, '/' . $lang_slug . '/') === 0) {
+                        return false;
+                    }
+                }
+            }
+        }
     }
 
     return $redirect_url;

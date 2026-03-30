@@ -145,11 +145,11 @@ foreach ($panels as $panel) {
             </div>
             <div class="content-row">
                 <div class="content-item content-topleft">
-                    <h1 class="text-h1"><?php echo esc_html__('Archive', 'binomio'); ?></h1>
-                    <h2 class="text-h3"><?php echo esc_html__('A selection of past works', 'binomio'); ?></h2>
+                    <h1 class="text-h1"><?php echo esc_html(bnm_t('archive_cases_title', 'Archive')); ?></h1>
+                    <h2 class="text-h3"><?php echo esc_html(bnm_t('archive_cases_subtitle', 'A selection of past works')); ?></h2>
                 </div>
                 <div class="content-item content-topright">
-                    <p class="body-small"><?php echo esc_html($current_division === 'studio' ? __('Studio archive cases', 'binomio') : __('Artist archive cases', 'binomio')); ?></p>
+                    <p class="body-small"><?php echo esc_html($current_division === 'studio' ? bnm_t('archive_cases_studio', 'Studio archive cases') : bnm_t('archive_cases_artist', 'Artist archive cases')); ?></p>
                 </div>
             </div>
             <div class="decoration-row">
@@ -182,7 +182,7 @@ foreach ($panels as $panel) {
                             <?php endforeach; ?>
                         </ul>
                     <?php else : ?>
-                        <p class="body-small"><?php echo esc_html__('No hay cases para mostrar.', 'binomio'); ?></p>
+                        <p class="body-small"><?php echo esc_html(bnm_t('archive_cases_empty', 'No hay cases para mostrar.')); ?></p>
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
@@ -216,10 +216,10 @@ foreach ($panels as $panel) {
             <div class="modal-pagination <?php echo esc_attr($theme_class); ?>">
                 <button class="pagination-item modal-prev">
                     <span class="icon icon-chevronleft"></span>
-                    <span class="text"><?php echo esc_html__('Prev', 'binomio'); ?></span>
+                    <span class="text"><?php echo esc_html(bnm_t('archive_prev', 'Prev')); ?></span>
                 </button>
                 <button class="pagination-item modal-next">
-                    <span class="text"><?php echo esc_html__('Next', 'binomio'); ?></span>
+                    <span class="text"><?php echo esc_html(bnm_t('archive_next', 'Next')); ?></span>
                     <span class="icon icon-chevronright"></span>
                 </button>
             </div>
