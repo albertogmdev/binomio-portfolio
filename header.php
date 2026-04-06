@@ -60,10 +60,10 @@
             </a>
             <button class="header-burger icon icon-burger"></button>
             <div class="header-links">
-                <a class="link" href="<?php echo esc_url($collections_url); ?>"><?php echo esc_html__('Collections', 'binomio'); ?></a>
-                <a class="link" href="<?php echo esc_url($archive_url); ?>"><?php echo esc_html__('Archive', 'binomio'); ?></a>
-                <a class="link" href="<?php echo esc_url($about_url); ?>"><?php echo esc_html__('About', 'binomio'); ?></a>
-                <a class="link" href="<?php echo esc_url($contact_url); ?>"><?php echo esc_html__('Contact', 'binomio'); ?></a>
+                <a class="link" href="<?php echo esc_url($collections_url); ?>"><?php echo esc_html(bnm_t('nav_collections', 'Collections')); ?></a>
+                <a class="link" href="<?php echo esc_url($archive_url); ?>"><?php echo esc_html(bnm_t('nav_archive', 'Archive')); ?></a>
+                <a class="link" href="<?php echo esc_url($about_url); ?>"><?php echo esc_html(bnm_t('nav_about', 'About')); ?></a>
+                <a class="link" href="<?php echo esc_url($contact_url); ?>"><?php echo esc_html(bnm_t('nav_contact', 'Contact')); ?></a>
             </div>
         </nav>
         <div id="container">

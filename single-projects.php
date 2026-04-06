@@ -174,7 +174,7 @@ endif;
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
-                <p class="credits-title body-large">[ <?php echo esc_html__('CREDITS', 'binomio'); ?> ]</p>
+                <p class="credits-title body-large">[ <?php echo esc_html(bnm_t('single_credits', 'CREDITS')); ?> ]</p>
                 <div class="credits-content body-small">
                     <?= $creditos ?>
                 </div>
@@ -184,7 +184,7 @@ endif;
     <?php if (is_array($related) && !empty($related)) : ?>
         <section class="section-related">
             <div class="container">
-                <p class="related-title text-h3">[ <?php echo esc_html__('OTHER PROJECTS', 'binomio'); ?> ]</p>
+                <p class="related-title text-h3">[ <?php echo esc_html(bnm_t('single_other', 'OTHER PROJECTS')); ?> ]</p>
                 <div class="related-grid">
                     <?php foreach ($related as $related_item) : ?>
                         <?php

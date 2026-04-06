@@ -30,6 +30,7 @@ function binomio_register_post_type_cases() {
         'show_in_rest' => false,
         'has_archive' => false,
         'menu_icon' => 'dashicons-portfolio',
+        'menu_position' => 26,
         'rewrite' => false,
         'supports' => array('title'),
     );

@@ -4,6 +4,15 @@
 <?php
 // Obtener los componentes de la página
 $components = carbon_get_the_post_meta( 'crb_page_components' );
+
+// Si el post actual (idioma secundario, duplicado Polylang) no tiene componentes,
+// leer del post en el idioma por defecto, que es donde se configura el constructor.
+if ( empty( $components ) && function_exists( 'pll_get_post' ) && function_exists( 'pll_default_language' ) ) {
+    $source_id = pll_get_post( get_the_ID(), pll_default_language() );
+    if ( $source_id && $source_id !== get_the_ID() ) {
+        $components = carbon_get_post_meta( $source_id, 'crb_page_components' );
+    }
+}
 ?>
 
 <div id="page-<?php the_ID(); ?>" class="page-builder">

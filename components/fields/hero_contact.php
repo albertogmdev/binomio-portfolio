@@ -6,6 +6,7 @@
  */
 
 use TranslatableCarbonFields\Fields\Field;
+use Carbon_Fields\Field as CRB_Field;
 
 return Field::resolve(array(
     Field::make('text', 'hero_title', __('Título', 'binomio'))

@@ -33,13 +33,13 @@
                 </a>
             </div>
             <div class="footer-info">
-                <p><?php echo esc_html__('BNOMIO | COPYRIGHT 2025 ALL RIGHTS RESERVED', 'binomio'); ?></p>
+                <p><?php echo esc_html(bnm_t('footer_copyright', 'BNOMIO | COPYRIGHT 2025 ALL RIGHTS RESERVED')); ?></p>
             </div>
         </div>
         <div class="footer-navigation theme--artist">
             <ul class="navigation-left">
-                <li><a class="link <?= is_studio() ? 'link--active' : '' ?>" href="<?php echo esc_url($studio_url); ?>"><?php echo esc_html__('Studio zone', 'binomio'); ?></a></li>
-                <li><a class="link <?= is_artist() ? 'link--active' : '' ?>" href="<?php echo esc_url($artist_url); ?>"><?php echo esc_html__('Artist zone', 'binomio'); ?></a></li>
+                <li><a class="link <?= is_studio() ? 'link--active' : '' ?>" href="<?php echo esc_url($studio_url); ?>"><?php echo esc_html(bnm_t('nav_studio_zone', 'Studio zone')); ?></a></li>
+                <li><a class="link <?= is_artist() ? 'link--active' : '' ?>" href="<?php echo esc_url($artist_url); ?>"><?php echo esc_html(bnm_t('nav_artist_zone', 'Artist zone')); ?></a></li>
             </ul>
             <ul class="navigation-right">
                 <?php foreach ($language_items as $language_item) : ?>

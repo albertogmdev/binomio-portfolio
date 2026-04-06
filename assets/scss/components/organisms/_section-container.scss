@@ -1,0 +1,67 @@
+@use '../../abstracts' as *;
+
+// ─── Section Container ────────────────────────────────────────────────────────
+
+.section-hero {
+    .content-columns {
+        display: grid;
+        grid-template-columns: repeat(var(--cols-d, 1), 1fr);
+        align-items: var(--col-align, stretch);
+        justify-content: var(--col-justify, start);
+        gap: 0;
+        padding: 24px 100px;
+
+        // Dirección
+        &--row-reverse {
+            direction: rtl;
+            > * { direction: ltr; }
+        }
+
+        // Span por columna (desktop)
+        @for $i from 1 through 4 {
+            .col-span-d-#{$i} { grid-column: span #{$i}; }
+        }
+
+        .content-col {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        // Span por columna (mobile — se sobreescribe en breakpoint)
+        .col-span-m-full   { /* se aplica en mobile */ }
+        .col-span-m-hidden { /* se aplica en mobile */ }
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .section-hero .content-columns {
+        padding: 24px 40px;
+    }
+}
+
+@media screen and (max-width: $tablet) {
+    .section-hero .content-columns {
+        padding: 24px;
+    }
+}
+
+@media screen and (max-width: $mobile) {
+    .section-hero {
+        .content-columns {
+            grid-template-columns: repeat(var(--cols-m, 1), 1fr);
+            padding: 24px 0;
+
+            &--row-reverse-mobile {
+                direction: rtl;
+                > * { direction: ltr; }
+            }
+
+            @for $i from 1 through 4 {
+                .col-span-d-#{$i} { grid-column: unset; }
+            }
+
+            .col-span-m-full   { grid-column: 1 / -1; }
+            .col-span-m-hidden { display: none; }
+        }
+    }
+}
