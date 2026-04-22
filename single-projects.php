@@ -65,10 +65,17 @@ endif;
                             <?php foreach ($links as $link) : ?>
                                 <?php
                                 $link_text = tcf_item($link, 'texto');
-                                $link_url = tcf_url($link['url'] ?? '');
+                                $raw_url = $link['url'] ?? '';
+                                if ($raw_url !== '' && !preg_match('/^(?:[a-z][a-z0-9+\-.]*:|\/\/|#|\?)/i', $raw_url)) {
+                                    $raw_url = 'https://' . $raw_url;
+                                }
+                                $link_url = tcf_url($raw_url);
 
                                 if ($link_url === '') {
                                     continue;
+                                }
+                                if (!preg_match('#^https?://#i', $link_url)) {
+                                    $link_url = 'https://' . $link_url;
                                 }
                                 ?>
                                 <a

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html 
     <?php language_attributes(); ?> 
-    <?php blankslate_schema_type(); ?>
     <?php echo is_admin_bar_showing() ? 'style="margin-top: 32px;"' : '' ?>
 >   
 

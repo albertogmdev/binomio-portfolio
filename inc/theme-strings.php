@@ -126,6 +126,12 @@ add_action('carbon_fields_register_fields', function () {
     $fields = array_merge($fields, $pair('single_credits', 'Sección Credits',       ['es' => 'CRÉDITOS',       'en' => 'CREDITS']));
     $fields = array_merge($fields, $pair('single_other',   'Sección Other Projects',['es' => 'OTROS PROYECTOS','en' => 'OTHER PROJECTS']));
 
+    // ---- 404 --------------------------------------------------------------
+    $fields[] = Field::make('separator', 'sep_404', __('Página 404', 'binomio'));
+    $fields = array_merge($fields, $pair('404_subtitle', 'Subtítulo',   ['es' => 'Página no encontrada',                                            'en' => 'Page not found']));
+    $fields = array_merge($fields, $pair('404_desc',     'Descripción', ['es' => 'La página que buscas no existe o ha sido movida.',                'en' => 'The page you are looking for does not exist or has been moved.']));
+    $fields = array_merge($fields, $pair('404_cta',      'Botón volver',['es' => 'Volver al inicio',                                               'en' => 'Back to home']));
+
     // ---- Footer -----------------------------------------------------------
     $fields[] = Field::make('separator', 'sep_footer', __('Footer', 'binomio'));
     $fields = array_merge($fields, $pair('footer_copyright', 'Copyright', ['*' => 'BNOMIO | COPYRIGHT 2025 ALL RIGHTS RESERVED']));

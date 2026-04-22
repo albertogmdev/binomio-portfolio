@@ -5,12 +5,12 @@
     $studio_url = function_exists('binomio_get_localized_page_url')
         ? binomio_get_localized_page_url(
             array(
-                'es' => array('estudio'),
+                'es' => array('studio'),
                 'en' => array('studio'),
             ),
-            '/estudio/'
+            '/studio/'
         )
-        : home_url('/estudio/');
+        : home_url('/studio/');
     $artist_url = function_exists('binomio_get_localized_page_url')
         ? binomio_get_localized_page_url(
             array(
