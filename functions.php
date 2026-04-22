@@ -31,6 +31,43 @@ if (!class_exists('TranslatableCarbonFields\\Fields\\Field')) {
     class_alias('TCF_Field_Fallback', 'TranslatableCarbonFields\\Fields\\Field');
 }
 
+// Fallbacks para Translatable_Field y Translatable cuando el plugin translatable-carbon-fields está inactivo
+if (!class_exists('Translatable_Field')) {
+    class Translatable_Field {
+        private $type, $key, $label;
+
+        private function __construct($type, $key, $label) {
+            $this->type  = $type;
+            $this->key   = $key;
+            $this->label = $label;
+        }
+
+        public static function make($type, $key, $label) {
+            return new self($type, $key, $label);
+        }
+
+        public function base_field() {
+            return \Carbon_Fields\Field::make($this->type, $this->key, $this->label);
+        }
+    }
+}
+
+if (!class_exists('Translatable')) {
+    class Translatable {
+        public static function fields($items, $config = array()) {
+            $fields = array();
+            foreach ((array) $items as $item) {
+                if ($item instanceof Translatable_Field) {
+                    $fields[] = $item->base_field();
+                } elseif ($item instanceof \Carbon_Fields\Field\Field) {
+                    $fields[] = $item;
+                }
+            }
+            return $fields;
+        }
+    }
+}
+
 require_once get_stylesheet_directory() . '/inc/component-loader.php';
 require_once get_stylesheet_directory() . '/inc/post-type-proyectos.php';
 require_once get_stylesheet_directory() . '/inc/post-type-cases.php';
@@ -90,6 +127,9 @@ if (!function_exists('tcf_meta')) {
 // Cargar estilos
 add_action('wp_enqueue_scripts', 'binomio_enqueue_components_styles');
 function binomio_enqueue_components_styles() {
+    // Cargar CSS principal
+    wp_enqueue_style('binomio-css', get_stylesheet_directory_uri() . '/assets/css/main.css', array(), '1.0.0');
+
     // Cargar jQuery (incluido en WordPress)
     wp_enqueue_script('jquery');
 
@@ -99,25 +139,27 @@ function binomio_enqueue_components_styles() {
 
 if (!function_exists('tcf_get_current_language')) {
     function tcf_get_current_language() {
+        // The URL prefix is the source of truth for CPTs that use a single post
+        // with Carbon Fields translations (no Polylang duplicates), because
+        // pll_current_language() may return false for custom rewrite rules that
+        // don't include a lang query var, falling through to determine_locale()
+        // and returning the default language even on /en/ URLs.
+        $uri = isset($_SERVER['REQUEST_URI']) ? strtok((string) $_SERVER['REQUEST_URI'], '?') : '';
+        if ($uri !== '' && function_exists('pll_languages_list')) {
+            $registered_langs = pll_languages_list();
+            if (is_array($registered_langs)) {
+                foreach ($registered_langs as $lang_slug) {
+                    if (strpos($uri, '/' . $lang_slug . '/') === 0 || $uri === '/' . $lang_slug) {
+                        return $lang_slug;
+                    }
+                }
+            }
+        }
+
         if (function_exists('pll_current_language')) {
             $language = pll_current_language('slug');
 
             if (is_string($language) && $language !== '') {
-                // pll_current_language() returns the post's assigned language, not
-                // necessarily the language of the current URL. For CPTs that use a
-                // single post with Carbon Fields translations (no Polylang duplicates),
-                // the URL prefix is the source of truth.
-                $uri = isset($_SERVER['REQUEST_URI']) ? strtok((string) $_SERVER['REQUEST_URI'], '?') : '';
-                if ($uri !== '' && function_exists('pll_languages_list')) {
-                    $registered_langs = pll_languages_list();
-                    if (is_array($registered_langs)) {
-                        foreach ($registered_langs as $lang_slug) {
-                            if (strpos($uri, '/' . $lang_slug . '/') === 0 || $uri === '/' . $lang_slug) {
-                                return $lang_slug;
-                            }
-                        }
-                    }
-                }
                 return $language;
             }
         }
@@ -211,39 +253,82 @@ if (!function_exists('binomio_get_localized_page_url')) {
 
 if (!function_exists('binomio_get_language_switcher_items')) {
     function binomio_get_language_switcher_items() {
-        if (function_exists('pll_the_languages')) {
-            $languages = pll_the_languages(array(
-                'raw' => 1,
-                'hide_if_empty' => 0,
-                'hide_if_no_translation' => 0,
-            ));
-
-            if (is_array($languages) && !empty($languages)) {
-                $items = array();
-
-                foreach ($languages as $language) {
-                    $slug = isset($language['slug']) ? strtoupper((string) $language['slug']) : '';
-
-                    if ($slug === '') {
-                        continue;
-                    }
-
-                    $items[] = array(
-                        'label' => $slug,
-                        'url' => isset($language['url']) ? (string) $language['url'] : '',
-                        'current' => !empty($language['current_lang']),
-                    );
-                }
-
-                if (!empty($items)) {
-                    return $items;
-                }
-            }
+        if (!function_exists('pll_the_languages')) {
+            return array(
+                array(
+                    'label' => strtoupper(binomio_get_current_language()),
+                    'url' => '',
+                    'current' => true,
+                ),
+            );
         }
 
-        return array(
+        $languages = pll_the_languages(array(
+            'raw' => 1,
+            'hide_if_empty' => 0,
+            'hide_if_no_translation' => 0,
+        ));
+
+        if (!is_array($languages) || empty($languages)) {
+            return array(
+                array(
+                    'label' => strtoupper(binomio_get_current_language()),
+                    'url' => '',
+                    'current' => true,
+                ),
+            );
+        }
+
+        // For CPTs without Polylang duplicates (projects, cases) and division archives,
+        // Polylang returns the language home URL instead of the current page URL.
+        // In those cases, build the URL by swapping the language prefix in the current URI.
+        $needs_prefix_swap = is_singular(array('projects', 'cases'))
+            || is_post_type_archive(array('projects', 'cases'))
+            || get_query_var('division') !== '';
+
+        $current_lang    = binomio_get_current_language();
+        $current_uri     = isset($_SERVER['REQUEST_URI']) ? strtok((string) $_SERVER['REQUEST_URI'], '?') : '/';
+        $default_lang    = function_exists('pll_default_language') ? (string) pll_default_language('slug') : '';
+
+        $items = array();
+
+        foreach ($languages as $language) {
+            $slug = isset($language['slug']) ? (string) $language['slug'] : '';
+
+            if ($slug === '') {
+                continue;
+            }
+
+            if ($needs_prefix_swap) {
+                // Strip current language prefix from URI (handles both prefixed and prefix-less default lang).
+                $path = $current_uri;
+
+                if ($current_lang !== '' && strpos($path, '/' . $current_lang . '/') === 0) {
+                    $path = substr($path, strlen('/' . $current_lang));
+                } elseif ($path === '/' . $current_lang || $path === '/' . $current_lang . '/') {
+                    $path = '/';
+                }
+
+                // If the target language is the default and Polylang serves it without prefix, omit prefix.
+                if ($slug === $default_lang && $default_lang !== '') {
+                    $url = home_url($path);
+                } else {
+                    $url = home_url('/' . $slug . $path);
+                }
+            } else {
+                $url = isset($language['url']) ? (string) $language['url'] : '';
+            }
+
+            $items[] = array(
+                'label'   => strtoupper($slug),
+                'url'     => $url,
+                'current' => !empty($language['current_lang']),
+            );
+        }
+
+        return !empty($items) ? $items : array(
             array(
-                'label' => strtoupper(binomio_get_current_language()),
+                'label' => strtoupper($current_lang),
                 'url' => '',
                 'current' => true,
             ),
@@ -309,11 +394,9 @@ if (!function_exists('binomio_get_route_slug')) {
 
         $route_map = array(
             'studio' => array(
-                'es' => 'estudio',
                 'default' => 'studio',
             ),
             'projects' => array(
-                'es' => 'proyectos',
                 'default' => 'projects',
             ),
             'cases' => array(
@@ -441,9 +524,7 @@ if (!function_exists('is_studio')) {
             return true;
         }
 
-        $path = binomio_get_request_path();
-
-        return preg_match('#(^|/)(' . preg_quote(binomio_get_route_slug('studio', 'en'), '#') . '|' . preg_quote(binomio_get_route_slug('studio', 'es'), '#') . ')(/|$)#', $path) === 1;
+        return is_page('studio');
     }
 }
 
@@ -461,10 +542,19 @@ if (!function_exists('is_artist')) {
     }
 }
 
-// Prevent Polylang from redirecting project/case posts to their assigned language.
-// These CPTs use a single post per item (stored in 'es') with Carbon Fields translations,
-// so they must be accessible under any language URL prefix without a canonical redirect.
+// Prevent Polylang from redirecting project/case posts and archives to their assigned
+// language. These CPTs use a single post per item (stored in 'es') with Carbon Fields
+// translations, so they must be accessible under any language URL prefix (or none) without
+// a canonical redirect.
 add_filter('pll_check_canonical_url', function ($redirect_url, $language) {
+    // Suppress redirect for CPT archives (e.g. /studio/projects/ without language prefix).
+    $multilingual_cpts = array('projects', 'proyectos', 'cases');
+    foreach ($multilingual_cpts as $cpt) {
+        if (is_post_type_archive($cpt)) {
+            return false;
+        }
+    }
+
     if (!is_singular()) {
         return $redirect_url;
     }
@@ -475,7 +565,6 @@ add_filter('pll_check_canonical_url', function ($redirect_url, $language) {
     }
 
     // CPTs that exist only in the default language (no Polylang duplicates)
-    $multilingual_cpts = array('projects', 'proyectos', 'cases');
     if (in_array($post->post_type, $multilingual_cpts, true)) {
         return false;
     }
@@ -501,3 +590,21 @@ add_filter('pll_check_canonical_url', function ($redirect_url, $language) {
 
     return $redirect_url;
 }, 10, 2);
+
+// Prevent Polylang from rewriting our custom CPT archive rules.
+// binomio_add_localized_rewrite_rule already registers all language-prefixed variants
+// (no prefix, /es/, /en/). If Polylang also processes them it drops the no-prefix rule
+// when "force language in URL for the default language" is active.
+add_filter('pll_modify_rewrite_rule', function ($modify, $rule_array, $filter, $cpt_archive) {
+    $rule_value = reset($rule_array);
+
+    if (
+        is_string($rule_value)
+        && preg_match('#post_type=(projects|cases)#', $rule_value)
+        && strpos($rule_value, 'name=') === false
+    ) {
+        return false; // Leave the rule untouched; Polylang will keep the original.
+    }
+
+    return $modify;
+}, 10, 4);

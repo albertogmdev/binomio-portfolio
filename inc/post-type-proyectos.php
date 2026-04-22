@@ -183,7 +183,7 @@ function binomio_validate_proyectos_division_url() {
 
 add_action('init', 'binomio_flush_proyectos_rewrites_once', 30);
 function binomio_flush_proyectos_rewrites_once() {
-    $rewrite_version = 'projects_division_rewrite_v7';
+    $rewrite_version = 'projects_division_rewrite_v8';
 
     if (get_option('binomio_rewrite_version') === $rewrite_version) {
         return;
