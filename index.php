@@ -203,6 +203,7 @@ if (post_type_exists('stickers')) {
             <span class="link-icon icon icon-bnomiostudio"></span>
             <button id="enter-studio" class="link-button button"><?php echo esc_html(bnm_t('home_studio_enter', 'Enter')); ?></button>
         </div>
+        <div class="hero-content">
         <?php if (!empty($studio_stickers)) : ?>
             <div class="studio-stickers" aria-hidden="true">
                 <?php foreach ($studio_stickers as $sticker) : ?>
@@ -218,26 +219,29 @@ if (post_type_exists('stickers')) {
                     $mobile_size = (float) carbon_get_post_meta($sticker->ID, 'sticker_size_mobile');
                     $initial_x = (float) carbon_get_post_meta($sticker->ID, 'sticker_initial_x');
                     $initial_y = (float) carbon_get_post_meta($sticker->ID, 'sticker_initial_y');
+                    $initial_x_mobile = (float) carbon_get_post_meta($sticker->ID, 'sticker_initial_x_mobile');
+                    $initial_y_mobile = (float) carbon_get_post_meta($sticker->ID, 'sticker_initial_y_mobile');
                     $rotation = (float) carbon_get_post_meta($sticker->ID, 'sticker_rotation');
                     $z_index = (int) carbon_get_post_meta($sticker->ID, 'sticker_z_index');
 
                     $desktop_size = $desktop_size > 0 ? $desktop_size : 180;
                     $mobile_size = $mobile_size > 0 ? $mobile_size : 120;
-                    $initial_x = ($initial_x >= 0 && $initial_x <= 100) ? $initial_x : 50;
-                    $initial_y = ($initial_y >= 0 && $initial_y <= 100) ? $initial_y : 50;
+                    $initial_x = $initial_x !== 0.0 ? $initial_x : 50;
+                    $initial_y = $initial_y !== 0.0 ? $initial_y : 50;
+                    $initial_x_mobile = $initial_x_mobile !== 0.0 ? $initial_x_mobile : $initial_x;
+                    $initial_y_mobile = $initial_y_mobile !== 0.0 ? $initial_y_mobile : $initial_y;
                     $z_index = $z_index > 0 ? $z_index : 1;
                     ?>
                     <div
                         class="studio-sticker"
                         data-sticker-id="<?php echo esc_attr((string) $sticker->ID); ?>"
-                        style="--sticker-size-desktop: <?php echo esc_attr((string) $desktop_size); ?>px; --sticker-size-mobile: <?php echo esc_attr((string) $mobile_size); ?>px; --sticker-x: <?php echo esc_attr((string) $initial_x); ?>%; --sticker-y: <?php echo esc_attr((string) $initial_y); ?>%; --sticker-rotation: <?php echo esc_attr((string) $rotation); ?>deg; --sticker-z: <?php echo esc_attr((string) $z_index); ?>;"
+                        style="--sticker-size-desktop: <?php echo esc_attr((string) $desktop_size); ?>px; --sticker-size-mobile: <?php echo esc_attr((string) $mobile_size); ?>px; --sticker-x: <?php echo esc_attr((string) $initial_x); ?>%; --sticker-y: <?php echo esc_attr((string) $initial_y); ?>%; --sticker-x-mobile: <?php echo esc_attr((string) $initial_x_mobile); ?>%; --sticker-y-mobile: <?php echo esc_attr((string) $initial_y_mobile); ?>%; --sticker-rotation: <?php echo esc_attr((string) $rotation); ?>deg; --sticker-z: <?php echo esc_attr((string) $z_index); ?>;"
                     >
                         <img src="<?php echo esc_url($sticker_image_url); ?>" alt="<?php echo esc_attr(get_the_title($sticker->ID)); ?>">
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        <div class="hero-content">
             <img
                 src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/studio-head.png"
                 alt="Bnomio Studio"
