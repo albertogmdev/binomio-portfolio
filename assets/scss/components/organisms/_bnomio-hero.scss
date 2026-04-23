@@ -268,43 +268,53 @@
             transform: translate(50%, -50%);
         }
 
-        .studio-stickers {
-            position: absolute;
-            inset: 0;
-            z-index: 6;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease-in-out;
+        &.entered {
+        }
+    }
 
-            .studio-sticker {
+    .studio-hero {
+        .hero-content {
+            .studio-stickers {
                 position: absolute;
-                left: var(--sticker-x);
-                top: var(--sticker-y);
-                width: var(--sticker-size-desktop, 180px);
-                z-index: var(--sticker-z, 1);
-                transform: rotate(var(--sticker-rotation, 0deg));
-                cursor: grab;
-                -webkit-user-select: none;
-                user-select: none;
+                inset: 0;
+                z-index: 6;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease-in-out;
 
-                &.is-dragging {
-                    cursor: grabbing;
-                }
+                .studio-sticker {
+                    position: absolute;
+                    left: var(--sticker-x);
+                    top: var(--sticker-y);
+                    width: var(--sticker-size-desktop, 180px);
+                    z-index: var(--sticker-z, 1);
+                    transform: rotate(var(--sticker-rotation, 0deg));
+                    cursor: grab;
+                    -webkit-user-select: none;
+                    user-select: none;
 
-                img {
-                    display: block;
-                    width: 100%;
-                    height: auto;
-                    pointer-events: none;
+                    &.is-dragging {
+                        cursor: grabbing;
+                    }
+
+                    img {
+                        display: block;
+                        width: 100%;
+                        height: auto;
+                        pointer-events: none;
+                    }
                 }
             }
         }
+    }
+}
 
-        &.entered {
-            .studio-stickers {
-                opacity: 1;
-                pointer-events: all;
-            }
+.studio-entered {
+    .studio-hero .hero-content .studio-stickers {
+        opacity: 1;
+
+        .studio-sticker {
+            pointer-events: auto;
         }
     }
 }
@@ -452,11 +462,11 @@
             }
         }
 
-        .studio-hero {
-            .studio-stickers {
-                .studio-sticker {
-                    width: var(--sticker-size-mobile, 120px);
-                }
+        .studio-hero .hero-content .studio-stickers {
+            .studio-sticker {
+                width: var(--sticker-size-mobile, 120px);
+                left: var(--sticker-x-mobile, var(--sticker-x));
+                top: var(--sticker-y-mobile, var(--sticker-y));
             }
         }
     }

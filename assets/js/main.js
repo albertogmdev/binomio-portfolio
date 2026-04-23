@@ -124,6 +124,8 @@
                 hero.addClass('entered');
                 $('body').addClass('studio-entered');
                 $('body').addClass('theme--studio');
+                document.documentElement.style.overflow = 'hidden';
+                document.documentElement.style.height = '100dvh';
                 centerImages();
 
                 // Agregar listener para scroll horizontal con rueda
@@ -148,6 +150,8 @@
             $('.exit-button').on('click', function () {
                 $('body').removeClass('studio-entered artist-entered');
                 $('.bnomio-hero--half').removeClass('entered noactive active');
+                document.documentElement.style.overflow = '';
+                document.documentElement.style.height = '';
                 centerImages();
 
                 isExiting = true;
@@ -289,7 +293,7 @@
         }
 
         function initStudioStickers() {
-            const stickersLayer = document.querySelector('.studio-hero .studio-stickers');
+            const stickersLayer = document.querySelector('.studio-hero .hero-content .studio-stickers');
             if (!stickersLayer) return;
 
             const stickers = Array.from(stickersLayer.querySelectorAll('.studio-sticker'));
