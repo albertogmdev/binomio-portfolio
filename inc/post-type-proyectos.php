@@ -227,7 +227,8 @@ function binomio_register_proyectos_fields() {
                     'development' => __('Development', 'binomio'),
                     'website' => __('Website', 'binomio'),
                 )),
-            Field::make('image', 'proyecto_portada', __('Portada', 'binomio')),
+            Field::make('media_gallery', 'proyecto_portada', __('Portada (max. 2 imágenes)', 'binomio'))
+                ->set_max(2),
             Field::make('media_gallery', 'proyecto_full_assets', __('Galería Fullwidth', 'binomio')),
             Field::make('media_gallery', 'proyecto_galeria_assets', __('Galería', 'binomio')),
             Field::make('rich_text', 'proyecto_creditos', __('Créditos', 'binomio')),

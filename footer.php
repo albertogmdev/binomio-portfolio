@@ -27,7 +27,7 @@
     <footer id="footer" class="" role="contentinfo">
         <div class="footer-main">
             <div class="footer-socials">
-                <a href="https://www.instagram.com/bnomio" target="_blank" class="social-link">
+                <a href="https://www.instagram.com/bnomio" target="_blank" rel="noopener noreferrer" class="social-link">
                     <span class="icon icon-instagram"></span>
                     <p class="social-text">@BNOMIO</p>
                 </a>
@@ -39,7 +39,7 @@
         <div class="footer-navigation theme--artist">
             <ul class="navigation-left">
                 <li><a class="link <?= is_studio() ? 'link--active' : '' ?>" href="<?php echo esc_url($studio_url); ?>"><?php echo esc_html(bnm_t('nav_studio_zone', 'Studio zone')); ?></a></li>
-                <li><a class="link <?= is_artist() ? 'link--active' : '' ?>" href="<?php echo esc_url($artist_url); ?>"><?php echo esc_html(bnm_t('nav_artist_zone', 'Artist zone')); ?></a></li>
+                <!-- <li><a class="link <?= is_artist() ? 'link--active' : '' ?>" href="<?php echo esc_url($artist_url); ?>"><?php echo esc_html(bnm_t('nav_artist_zone', 'Artist zone')); ?></a></li> -->
             </ul>
             <ul class="navigation-right">
                 <?php foreach ($language_items as $language_item) : ?>

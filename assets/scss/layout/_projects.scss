@@ -22,12 +22,31 @@
     .section-frontimage {
         margin-bottom: $sectionSpacing;
 
+        .frontimage-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
         .frontimage {
             display: block;
             width: 100%;
             height: auto;
-            max-width: 800px;
-            margin: 0 auto;
+        }
+
+        &--single {
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+            }
+        }
+
+        &--double {
+            .frontimage-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
         }
     }
 
@@ -54,6 +73,7 @@
                 flex-wrap: wrap;
                 gap: 20px;
                 align-items: stretch;
+                justify-content: center;
 
                 .gallery-item {
                     display: block;
@@ -67,7 +87,8 @@
                         object-fit: cover;
                     }
 
-                    &--video {
+                    &--video,
+                    &--gif {
                         flex: 0 1 100%;
                         max-width: 800px;
                         margin: 0 auto;
@@ -127,6 +148,13 @@
 
         .section-frontimage {
             margin-bottom: $sectionSpacing;
+
+            &--double {
+                .frontimage-grid {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                }
+            }
         }
 
         .section-fullgallery {

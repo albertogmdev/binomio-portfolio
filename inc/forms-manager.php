@@ -501,6 +501,7 @@ function bnm_render_form_shortcode($atts) {
                 $label       = esc_html(tcf_item($field, 'field_label') ?: $name);
                 $placeholder = esc_attr(tcf_item($field, 'field_placeholder'));
                 $default     = esc_attr(tcf_item($field, 'field_default'));
+                $default_textarea = esc_textarea(tcf_item($field, 'field_default'));
                 $options_raw = tcf_item($field, 'field_options');
                 $type        = $field['field_type'] ?? 'text';
                 $required    = ($field['field_required'] ?? '') === 'yes';
@@ -521,7 +522,7 @@ function bnm_render_form_shortcode($atts) {
                             placeholder="<?php echo $placeholder; ?>"
                             <?php echo $req_attr; ?>
                             rows="5"
-                        ><?php echo $default; ?></textarea>
+                        ><?php echo $default_textarea; ?></textarea>
 
                     <?php elseif ($type === 'select') :
                         $options = array_filter(array_map('trim', explode(',', $options_raw)));

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Binomio Theme Functions
  */
@@ -6,24 +7,35 @@
 use Carbon_Fields\Container;
 
 add_action('after_setup_theme', 'binomio_theme_setup');
-function binomio_theme_setup() {
+function binomio_theme_setup()
+{
     load_theme_textdomain('binomio', get_stylesheet_directory() . '/languages');
+
+    // Registrar menús del tema
+    register_nav_menus(array(
+        'studio_menu' => __('Menú Studio', 'binomio'),
+        'artist_menu' => __('Menú Artist', 'binomio'),
+    ));
 }
 
 // Cargar Carbon Fields
 add_action('after_setup_theme', 'binomio_load_carbon_fields');
-function binomio_load_carbon_fields() {
+function binomio_load_carbon_fields()
+{
     \Carbon_Fields\Carbon_Fields::boot();
 }
 
 // Cargar el sistema de componentes
 if (!class_exists('TranslatableCarbonFields\\Fields\\Field')) {
-    class TCF_Field_Fallback {
-        public static function make($type, $key, $label) {
+    class TCF_Field_Fallback
+    {
+        public static function make($type, $key, $label)
+        {
             return \Carbon_Fields\Field::make($type, $key, $label);
         }
 
-        public static function resolve($items) {
+        public static function resolve($items)
+        {
             return (array) $items;
         }
     }
@@ -33,28 +45,34 @@ if (!class_exists('TranslatableCarbonFields\\Fields\\Field')) {
 
 // Fallbacks para Translatable_Field y Translatable cuando el plugin translatable-carbon-fields está inactivo
 if (!class_exists('Translatable_Field')) {
-    class Translatable_Field {
+    class Translatable_Field
+    {
         private $type, $key, $label;
 
-        private function __construct($type, $key, $label) {
+        private function __construct($type, $key, $label)
+        {
             $this->type  = $type;
             $this->key   = $key;
             $this->label = $label;
         }
 
-        public static function make($type, $key, $label) {
+        public static function make($type, $key, $label)
+        {
             return new self($type, $key, $label);
         }
 
-        public function base_field() {
+        public function base_field()
+        {
             return \Carbon_Fields\Field::make($this->type, $this->key, $this->label);
         }
     }
 }
 
 if (!class_exists('Translatable')) {
-    class Translatable {
-        public static function fields($items, $config = array()) {
+    class Translatable
+    {
+        public static function fields($items, $config = array())
+        {
             $fields = array();
             foreach ((array) $items as $item) {
                 if ($item instanceof Translatable_Field) {
@@ -77,21 +95,24 @@ require_once get_stylesheet_directory() . '/inc/theme-strings.php';
 
 // Ocultar el editor de contenido en páginas (solo usar constructor de componentes)
 add_action('admin_init', 'binomio_hide_editor_on_pages');
-function binomio_hide_editor_on_pages() {
+function binomio_hide_editor_on_pages()
+{
     // Ocultar el editor en todas las páginas
     remove_post_type_support('page', 'editor');
 }
 
 // Permitir subida de archivos SVG
 add_filter('upload_mimes', 'binomio_allow_svg_upload');
-function binomio_allow_svg_upload($mimes) {
+function binomio_allow_svg_upload($mimes)
+{
     $mimes['svg'] = 'image/svg+xml';
     return $mimes;
 }
 
 // Validar archivos SVG al subir
 add_filter('wp_check_filetype_and_ext', 'binomio_check_svg_filetype', 10, 4);
-function binomio_check_svg_filetype($data, $file, $filename, $mimes) {
+function binomio_check_svg_filetype($data, $file, $filename, $mimes)
+{
     if (strlen($filename) > 4 && strtolower(substr($filename, -4)) === '.svg') {
         $data['type'] = 'image/svg+xml';
         $data['ext'] = 'svg';
@@ -101,32 +122,86 @@ function binomio_check_svg_filetype($data, $file, $filename, $mimes) {
 
 // Fallbacks de traducción — solo activos si el plugin está desactivado
 if (!function_exists('tcf_component')) {
-    function tcf_component($component, $key, $default = '') {
+    function tcf_component($component, $key, $default = '')
+    {
         return isset($component[$key]) ? (string) $component[$key] : (string) $default;
     }
 }
 
 if (!function_exists('tcf_item')) {
-    function tcf_item($item, $key, $default = '') {
+    function tcf_item($item, $key, $default = '')
+    {
         return isset($item[$key]) ? (string) $item[$key] : (string) $default;
     }
 }
 
 if (!function_exists('tcf_url')) {
-    function tcf_url($url) {
+    function tcf_url($url)
+    {
         return (string) $url;
     }
 }
 
+// Fallback para menús cuando no están configurados
+if (!function_exists('binomio_menu_fallback')) {
+    function binomio_menu_fallback()
+    {
+        $collections_url = function_exists('binomio_get_localized_page_url')
+            ? binomio_get_localized_page_url(
+                array(
+                    'es' => array('artistas'),
+                    'en' => array('artists', 'collections'),
+                ),
+                '/artistas/'
+            )
+            : home_url('/artistas/');
+        $archive_url = function_exists('binomio_get_localized_page_url')
+            ? binomio_get_localized_page_url(
+                array(
+                    'es' => array('estudio'),
+                    'en' => array('studio'),
+                ),
+                '/estudio/'
+            )
+            : home_url('/estudio/');
+        $about_url = function_exists('binomio_get_localized_page_url')
+            ? binomio_get_localized_page_url(
+                array(
+                    'es' => array('sobre-mi', 'sobre-nosotros', 'acerca-de', 'about'),
+                    'en' => array('about'),
+                ),
+                '/about/'
+            )
+            : home_url('/about/');
+        $contact_url = function_exists('binomio_get_localized_page_url')
+            ? binomio_get_localized_page_url(
+                array(
+                    'es' => array('contacto'),
+                    'en' => array('contact'),
+                ),
+                '/contacto/'
+            )
+            : home_url('/contacto/');
+?>
+        <a class="link" href="<?php echo esc_url($collections_url); ?>"><?php echo esc_html(bnm_t('nav_collections', 'Collections')); ?></a>
+        <a class="link" href="<?php echo esc_url($archive_url); ?>"><?php echo esc_html(bnm_t('nav_archive', 'Archive')); ?></a>
+        <a class="link" href="<?php echo esc_url($about_url); ?>"><?php echo esc_html(bnm_t('nav_about', 'About')); ?></a>
+        <a class="link" href="<?php echo esc_url($contact_url); ?>"><?php echo esc_html(bnm_t('nav_contact', 'Contact')); ?></a>
+<?php
+    }
+}
+
 if (!function_exists('tcf_meta')) {
-    function tcf_meta($post_id, $key, $translations_key = 'content_translations') {
+    function tcf_meta($post_id, $key, $translations_key = 'content_translations')
+    {
         return (string) carbon_get_post_meta($post_id, $key);
     }
 }
 
 // Cargar estilos
 add_action('wp_enqueue_scripts', 'binomio_enqueue_components_styles');
-function binomio_enqueue_components_styles() {
+function binomio_enqueue_components_styles()
+{
     // Cargar CSS principal
     wp_enqueue_style('binomio-css', get_stylesheet_directory_uri() . '/assets/css/main.css', array(), '1.0.0');
 
@@ -138,7 +213,8 @@ function binomio_enqueue_components_styles() {
 }
 
 if (!function_exists('tcf_get_current_language')) {
-    function tcf_get_current_language() {
+    function tcf_get_current_language()
+    {
         // The URL prefix is the source of truth for CPTs that use a single post
         // with Carbon Fields translations (no Polylang duplicates), because
         // pll_current_language() may return false for custom rewrite rules that
@@ -177,13 +253,15 @@ if (!function_exists('tcf_get_current_language')) {
 }
 
 if (!function_exists('binomio_get_current_language')) {
-    function binomio_get_current_language() {
+    function binomio_get_current_language()
+    {
         return tcf_get_current_language();
     }
 }
 
 if (!function_exists('binomio_normalize_path_candidates')) {
-    function binomio_normalize_path_candidates($paths) {
+    function binomio_normalize_path_candidates($paths)
+    {
         if (!is_array($paths)) {
             $paths = array($paths);
         }
@@ -205,7 +283,8 @@ if (!function_exists('binomio_normalize_path_candidates')) {
 }
 
 if (!function_exists('binomio_get_localized_page_url')) {
-    function binomio_get_localized_page_url($localized_paths, $fallback_path = '/') {
+    function binomio_get_localized_page_url($localized_paths, $fallback_path = '/')
+    {
         $current_language = binomio_get_current_language();
         $candidate_paths = array();
 
@@ -252,7 +331,8 @@ if (!function_exists('binomio_get_localized_page_url')) {
 }
 
 if (!function_exists('binomio_get_language_switcher_items')) {
-    function binomio_get_language_switcher_items() {
+    function binomio_get_language_switcher_items()
+    {
         if (!function_exists('pll_the_languages')) {
             return array(
                 array(
@@ -337,7 +417,8 @@ if (!function_exists('binomio_get_language_switcher_items')) {
 }
 
 if (!function_exists('tcf_get_language_slugs')) {
-    function tcf_get_language_slugs() {
+    function tcf_get_language_slugs()
+    {
         if (function_exists('pll_languages_list')) {
             $languages = pll_languages_list();
 
@@ -351,13 +432,15 @@ if (!function_exists('tcf_get_language_slugs')) {
 }
 
 if (!function_exists('binomio_get_language_slugs')) {
-    function binomio_get_language_slugs() {
+    function binomio_get_language_slugs()
+    {
         return tcf_get_language_slugs();
     }
 }
 
 if (!function_exists('binomio_get_request_path')) {
-    function binomio_get_request_path() {
+    function binomio_get_request_path()
+    {
         $request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
         $path = trim((string) parse_url($request_uri, PHP_URL_PATH), '/');
         $language_slugs = binomio_get_language_slugs();
@@ -387,7 +470,8 @@ if (!function_exists('binomio_get_request_path')) {
 }
 
 if (!function_exists('binomio_get_route_slug')) {
-    function binomio_get_route_slug($route, $language = null) {
+    function binomio_get_route_slug($route, $language = null)
+    {
         if (!is_string($language) || $language === '') {
             $language = binomio_get_current_language();
         }
@@ -417,7 +501,8 @@ if (!function_exists('binomio_get_route_slug')) {
 }
 
 if (!function_exists('binomio_get_projects_archive_path')) {
-    function binomio_get_projects_archive_path($division = 'artist', $language = null) {
+    function binomio_get_projects_archive_path($division = 'artist', $language = null)
+    {
         $projects_slug = binomio_get_route_slug('projects', $language);
 
         if ($division === 'studio') {
@@ -429,13 +514,15 @@ if (!function_exists('binomio_get_projects_archive_path')) {
 }
 
 if (!function_exists('binomio_get_projects_archive_url')) {
-    function binomio_get_projects_archive_url($division = 'artist', $language = null) {
+    function binomio_get_projects_archive_url($division = 'artist', $language = null)
+    {
         return home_url(user_trailingslashit(binomio_get_projects_archive_path($division, $language)));
     }
 }
 
 if (!function_exists('binomio_path_matches')) {
-    function binomio_path_matches($path, $candidates) {
+    function binomio_path_matches($path, $candidates)
+    {
         $path = trim((string) $path, '/');
 
         foreach ((array) $candidates as $candidate) {
@@ -449,7 +536,8 @@ if (!function_exists('binomio_path_matches')) {
 }
 
 if (!function_exists('binomio_add_localized_rewrite_rule')) {
-    function binomio_add_localized_rewrite_rule($path, $query, $after = 'top') {
+    function binomio_add_localized_rewrite_rule($path, $query, $after = 'top')
+    {
         $path = trim((string) $path, '/');
 
         if ($path === '') {
@@ -471,7 +559,8 @@ if (!function_exists('binomio_add_localized_rewrite_rule')) {
 }
 
 if (!function_exists('binomio_get_post_language')) {
-    function binomio_get_post_language($post_id) {
+    function binomio_get_post_language($post_id)
+    {
         $post_id = (int) $post_id;
 
         if ($post_id <= 0) {
@@ -491,7 +580,8 @@ if (!function_exists('binomio_get_post_language')) {
 }
 
 if (!function_exists('binomio_get_translated_post_id')) {
-    function binomio_get_translated_post_id($post_id, $language = null) {
+    function binomio_get_translated_post_id($post_id, $language = null)
+    {
         $post_id = (int) $post_id;
 
         if ($post_id <= 0) {
@@ -515,7 +605,8 @@ if (!function_exists('binomio_get_translated_post_id')) {
 }
 
 if (!function_exists('is_studio')) {
-    function is_studio() {
+    function is_studio()
+    {
         if (is_front_page() || is_home()) {
             return false;
         }
@@ -524,17 +615,26 @@ if (!function_exists('is_studio')) {
             return true;
         }
 
+        if (strpos($_SERVER['REQUEST_URI'], '/studio') !== false) {
+            return true;
+        }
+
         return is_page('studio');
     }
 }
 
 if (!function_exists('is_artist')) {
-    function is_artist() {
+    function is_artist()
+    {
         if (is_front_page() || is_home()) {
             return false;
         }
 
         if (get_query_var('division') === 'artist') {
+            return true;
+        }
+
+        if (strpos($_SERVER['REQUEST_URI'], '/artist') !== false) {
             return true;
         }
 

@@ -19,7 +19,8 @@ if (have_posts()) :
         $descripcion = tcf_meta($post_id, 'proyecto_descripcion', 'proyecto_translations');
         $links = carbon_get_post_meta($post_id, 'proyecto_links');
         $tags = carbon_get_post_meta($post_id, 'proyecto_tags');
-        $portada = carbon_get_post_meta($post_id, 'proyecto_portada');
+        $portadas = carbon_get_post_meta($post_id, 'proyecto_portada');
+        $portadas = is_array($portadas) ? array_filter($portadas) : array();
         $full_gallery = carbon_get_post_meta($post_id, 'proyecto_full_assets');
         $gallery = carbon_get_post_meta($post_id, 'proyecto_galeria_assets');
         $creditos = tcf_meta($post_id, 'proyecto_creditos', 'proyecto_translations');
@@ -43,7 +44,7 @@ endif;
                     <?php endif; ?>
                 </div>
                 <div class="content-item content-topright">
-                    <p class="body-small"><?= $descripcion ?></p>
+                    <p class="body-small"><?= wp_kses_post($descripcion) ?></p>
                 </div>
             </div>
             <div class="decoration-row">
@@ -97,13 +98,19 @@ endif;
             </div>
         </div>
     </section>
-    <?php if (!empty($portada)) : ?>
-        <section class="section-frontimage">
+    <?php if (!empty($portadas)) : ?>
+        <section class="section-frontimage section-frontimage--<?= count($portadas) === 2 ? 'double' : 'single' ?>">
             <div class="container">
-                <img
-                    src="<?= esc_url(wp_get_attachment_url($portada)) ?>"
-                    alt="<?= esc_attr($titulo) ?> portada"
-                    class="frontimage" />
+                <div class="frontimage-grid">
+                    <?php foreach ($portadas as $portada_id) : ?>
+                        <?php if (!empty($portada_id)) : ?>
+                            <img
+                                src="<?= esc_url(wp_get_attachment_url($portada_id)) ?>"
+                                alt="<?= esc_attr($titulo) ?> portada"
+                                class="frontimage" />
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </section>
     <?php endif; ?>
@@ -147,7 +154,7 @@ endif;
                         $asset_url = wp_get_attachment_url($asset_id);
                         if (empty($asset_url)) continue;
                         ?>
-                        <div class="gallery-item gallery-item--<?= !empty($asset_mime) && strpos($asset_mime, 'video/') === 0 ? 'video' : 'image' ?>">
+                        <div class="gallery-item gallery-item--<?= !empty($asset_mime) && strpos($asset_mime, 'video/') === 0 ? 'video' : (strpos($asset_mime, 'image/gif') === 0 ? 'gif' : 'image') ?>">
                             <?php if (!empty($asset_mime) && strpos($asset_mime, 'video/') === 0) : ?>
                                 <video
                                     class="image-item"
@@ -183,7 +190,7 @@ endif;
                 </div>
                 <p class="credits-title body-large">[ <?php echo esc_html(bnm_t('single_credits', 'CREDITS')); ?> ]</p>
                 <div class="credits-content body-small">
-                    <?= $creditos ?>
+                    <?= wp_kses_post($creditos) ?>
                 </div>
             </div>
         </section>
@@ -217,7 +224,7 @@ endif;
 
                         $related_title = get_the_title($related_id);
                         $related_permalink = get_permalink($related_id);
-
+                        
                         $related_featured_image_id = carbon_get_post_meta($related_id, 'proyecto_featured_image');
                         $related_cover_image_id = carbon_get_post_meta($related_id, 'proyecto_portada');
                         $related_image_id = !empty($related_featured_image_id) ? $related_featured_image_id : $related_cover_image_id;

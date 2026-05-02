@@ -60,6 +60,7 @@
         .item-button {
             display: block;
             margin: 0px auto;
+            color: $white;
         }
     }
 
@@ -138,6 +139,14 @@
             max-height: unset;
             height: 100%;
             width: 100%;
+
+            .card-info .item-button {
+                color: $textPrimary;
+
+                &:hover {
+                    color: $background;
+                }
+            }
 
             .card-image {
                 height: auto;

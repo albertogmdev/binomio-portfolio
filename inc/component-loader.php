@@ -82,13 +82,26 @@ class Binomio_Component_Loader {
      * @param array $data Datos del componente
      */
     public static function render_component($component_type, $data) {
-        $template_path = get_stylesheet_directory() . '/components/templates/' . $component_type . '.php';
-        
+        // Hardening: sólo permitir nombres con [a-z0-9_-] para prevenir LFI / path traversal
+        if (!is_string($component_type) || !preg_match('/^[a-z0-9_-]+$/i', $component_type)) {
+            echo '<!-- Componente inválido -->';
+            return;
+        }
+
+        $templates_dir = realpath(get_stylesheet_directory() . '/components/templates');
+        $template_path = realpath($templates_dir . '/' . $component_type . '.php');
+
+        // Verificar que el path resuelto esté dentro del directorio de plantillas
+        if (!$templates_dir || !$template_path || strpos($template_path, $templates_dir . DIRECTORY_SEPARATOR) !== 0) {
+            echo '<!-- Componente ' . esc_html($component_type) . ' no encontrado -->';
+            return;
+        }
+
         if (!file_exists($template_path)) {
             echo '<!-- Componente ' . esc_html($component_type) . ' no encontrado -->';
             return;
         }
-        
+
         $component = $data;
         include $template_path;
     }

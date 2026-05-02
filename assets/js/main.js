@@ -124,6 +124,8 @@
                 hero.addClass('entered');
                 $('body').addClass('studio-entered');
                 $('body').addClass('theme--studio');
+                $('body').removeClass('theme--artist');
+                $('#menu-artist-es, #menu-artist-en, #menu-artist').addClass('menu--inactive');
                 document.documentElement.style.overflow = 'hidden';
                 document.documentElement.style.height = '100dvh';
                 centerImages();

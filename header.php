@@ -59,10 +59,37 @@
             </a>
             <button class="header-burger icon icon-burger"></button>
             <div class="header-links">
-                <a class="link" href="<?php echo esc_url($collections_url); ?>"><?php echo esc_html(bnm_t('nav_collections', 'Collections')); ?></a>
-                <a class="link" href="<?php echo esc_url($archive_url); ?>"><?php echo esc_html(bnm_t('nav_archive', 'Archive')); ?></a>
-                <a class="link" href="<?php echo esc_url($about_url); ?>"><?php echo esc_html(bnm_t('nav_about', 'About')); ?></a>
-                <a class="link" href="<?php echo esc_url($contact_url); ?>"><?php echo esc_html(bnm_t('nav_contact', 'Contact')); ?></a>
+                <?php 
+                    // Determinar si es studio o artist
+                    $is_studio = is_studio() || (isset($_GET['studio_section']) && $_GET['studio_section'] == '1');
+                    $menu_location = $is_studio ? 'studio_menu' : 'artist_menu';
+                    
+                    // Mostrar el menú correspondiente
+                    if (is_studio() || is_artist()) {
+                        wp_nav_menu(array(
+                            'theme_location' => $menu_location,
+                            'container' => false,
+                            'fallback_cb' => 'binomio_menu_fallback',
+                            'link_before' => '<span class="link">',
+                            'link_after' => '</span>',
+                        ));
+                    } else {
+                        wp_nav_menu(array(
+                            'theme_location' => 'studio_menu',
+                            'container' => false,
+                            'fallback_cb' => 'binomio_menu_fallback',
+                            'link_before' => '<span class="link">',
+                            'link_after' => '</span>',
+                        ));
+                        wp_nav_menu(array(
+                            'theme_location' => 'artist_menu',
+                            'container' => false,
+                            'fallback_cb' => 'binomio_menu_fallback',
+                            'link_before' => '<span class="link">',
+                            'link_after' => '</span>',
+                        ));
+                    }
+                ?>
             </div>
         </nav>
         <div id="container">

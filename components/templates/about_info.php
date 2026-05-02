@@ -31,7 +31,7 @@ $show_downloads = !empty($component['about_info_show_downloads']);
                 <?php endif; ?>
                 <?php if ($content) : ?>
                     <div class="content-text body-small ">
-                        <?= $content ?>
+                        <?= wp_kses_post($content) ?>
                     </div>
                 <?php endif; ?>
                 <div class="content-footer">

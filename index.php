@@ -128,7 +128,7 @@ if (post_type_exists('stickers')) {
 <section class="bnomio-hero">
     <div class="bnomio-hero--half artist-hero theme--artist">
         <img
-            src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/studio-head.png"
+            src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/artist-head.png"
             alt="bnomio Studio"
             class="hero-image"
             style="right: -1000px;">
@@ -310,7 +310,7 @@ if (post_type_exists('stickers')) {
         <div class="hero-footer">
             <div class="footer-main">
                 <div class="footer-socials">
-                    <a href="https://www.instagram.com/bnomio.studio" target="_blank" class="social-link">
+                    <a href="https://www.instagram.com/bnomio.studio" target="_blank" rel="noopener noreferrer" class="social-link">
                         <span class="icon icon-instagram"></span>
                         <p class="social-text">@BNOMIO.STUDIO</p>
                     </a>
