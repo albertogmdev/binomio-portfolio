@@ -123,7 +123,7 @@ h6 {
     display: block;
 
     &--inactive {
-      display: none;
+      display: none !important;
     }
   }
 }
@@ -133,7 +133,7 @@ h6 {
   #header {
     .header-logo {
       .icon-bnomio {
-        display: none;
+        display: none !important;
       }
 
       .icon-bnomiostudio {
@@ -152,7 +152,7 @@ h6 {
       }
 
       .icon-bnomiostudio {
-        display: none;
+        display: none !important;
       }
     }
   }

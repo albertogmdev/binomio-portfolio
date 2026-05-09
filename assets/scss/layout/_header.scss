@@ -56,3 +56,133 @@
         }
     }
 }
+
+// Mobile menu animations
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutToRight {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+// Mobile menu styles
+.mobile-menu {
+    position: fixed;
+    top: 0px;
+    right: 0;
+    width: 100%;
+    background: $background;
+    transform: translateX(100%);
+    padding-top: 80px;
+    padding-bottom: 20px;
+    transition: transform 0.3s ease-in-out;
+    pointer-events: none;
+    z-index: 10;
+
+    @media screen and (min-width: calc($mobile + 1px)) {
+        display: none;
+    }
+
+    .mobile-menu-content {
+        height: 100%;
+        overflow-y: auto;
+        padding: 0 20px;
+
+        .menu {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            align-items: flex-start;
+
+            &--inactive {
+                display: none;
+            }
+
+            li {
+                list-style: none;
+
+                a {
+                    text-decoration: none;
+                    color: $textPrimary;
+                    font-size: 16px;
+                    display: inline-block;
+                    white-space: nowrap;
+
+                    .link {
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+    }
+
+    &.opened {
+        transform: translateX(0);
+        pointer-events: auto;
+        animation: slideInFromRight 0.3s ease-in-out;
+    }
+
+    &.closed {
+        animation: slideOutToRight 0.3s ease-in-out;
+    }
+}
+
+.mobile-menu-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+
+    @media screen and (min-width: calc($mobile + 1px)) {
+        display: none;
+    }
+
+    &.opened {
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    &.closed {
+        animation: fadeOut 0.3s ease-in-out;
+    }
+}
