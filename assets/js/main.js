@@ -9,8 +9,34 @@
         initTabs();
         initModals();
         initHero();
+        initMainPage();
         initStudioStickers();
         initMobileMenu();
+
+        function enableHorizontalScroll(element) {
+            element.addEventListener('wheel', function (e) {
+                if (window.innerWidth <= tablet) return;
+
+                const absX = Math.abs(e.deltaX);
+                const absY = Math.abs(e.deltaY);
+
+                // Scroll horizontal (trackpad)
+                if (absX > absY) return;
+
+                // Comprobar si es scroll vertical
+                const maxScrollLeft = element.scrollWidth - element.clientWidth;
+                const currentScrollLeft = element.scrollLeft;
+                const scrollingToRight = e.deltaY > 0;
+                const scrollingToLeft = e.deltaY < 0;
+                const canScrollRight = currentScrollLeft < maxScrollLeft;
+                const canScrollLeft = currentScrollLeft > 0;
+
+                if ((scrollingToRight && canScrollRight) || (scrollingToLeft && canScrollLeft)) {
+                    e.preventDefault();
+                    element.scrollLeft += e.deltaY;
+                }
+            }, { passive: false });
+        }
 
         function openModal(modal) {
             if (!modal.hasClass('opened')) {
@@ -30,414 +56,399 @@
             else $('body').addClass('theme--artist');
         }
 
-        function initHero() {
-            let resizeTimeout;
-            let isExiting = false;
+        function initMainPage() {
+            const staticHero = $('.bnomio-hero--static');
+            if (staticHero.length === 0) return;
+            
+            const heroHalf = staticHero.find('.bnomio-hero--half')[0];
+            if (!heroHalf) return;
+            
+            enableHorizontalScroll(heroHalf);
+        }
 
-            const centerImages = () => {
-                // Centrar las imagenes cuando se ha seleccionado un lado
-                if ($('.bnomio-hero--half.entered').length > 0) {
-                    const hero = $(`.bnomio-hero--half.entered`);
-                    const heroImage = hero.find('.hero-image');
+            function initHero() {
+                let resizeTimeout;
+                let isExiting = false;
 
-                    // Desktop > izquierda, Mobile > centro
-                    heroImage.css('left', window.innerWidth <= tablet ?
-                        `calc(50% - ${heroImage.width() / 2}px)`
-                        :
-                        '0'
-                    );
-                    heroImage.css('right', 'unset');
+                const centerImages = () => {
+                    // Centrar las imagenes cuando se ha seleccionado un lado
+                    if ($('.bnomio-hero--half.entered').length > 0) {
+                        const hero = $(`.bnomio-hero--half.entered`);
+                        const heroImage = hero.find('.hero-image');
+
+                        // Desktop > izquierda, Mobile > centro
+                        heroImage.css('left', window.innerWidth <= tablet ?
+                            `calc(50% - ${heroImage.width() / 2}px)`
+                            :
+                            '0'
+                        );
+                        heroImage.css('right', 'unset');
+                    }
+                    else {
+                        const studioImage = $('.studio-hero .hero-image')
+                        const artistImage = $('.artist-hero .hero-image')
+
+                        studioImage.css('left', `-${studioImage.width() / 2}px`);
+                        studioImage.css('right', 'unset');
+                        studioImage.css('opacity', '1');
+                        artistImage.css('right', `-${artistImage.width() / 2}px`);
+                        artistImage.css('left', 'unset');
+                        artistImage.css('opacity', '1');
+                    }
                 }
-                else {
+
+                const enableHero = () => {
+                    $('.bnomio-hero--half').addClass('enabled');
+                }
+
+                $('.bnomio-hero--half').hover(function () {
+                    if (window.innerWidth <= tablet || $(this).hasClass('entered') || isExiting) return;
+
+                    $('.bnomio-hero--half').removeClass('active');
+                    $('.bnomio-hero--half').addClass('noactive');
+                    $(this).removeClass('noactive');
+                    $(this).addClass('active');
+
                     const studioImage = $('.studio-hero .hero-image')
                     const artistImage = $('.artist-hero .hero-image')
+                    if ($(this).hasClass('studio-hero')) {
+                        studioImage.css('left', `calc(33% - ${$(studioImage).width() / 2}px)`);
+                        studioImage.css('right', 'unset');
+                        artistImage.css('right', `calc(-${$(artistImage).width()}px)`);
+                        artistImage.css('left', 'unset');
 
-                    studioImage.css('left', `-${studioImage.width() / 2}px`);
-                    studioImage.css('right', 'unset');
-                    studioImage.css('opacity', '1');
-                    artistImage.css('right', `-${artistImage.width() / 2}px`);
-                    artistImage.css('left', 'unset');
-                    artistImage.css('opacity', '1');
-                }
-            }
-
-            const enableHero = () => {
-                $('.bnomio-hero--half').addClass('enabled');
-            }
-
-            const enableHorizontalScroll = (element) => {
-                element.addEventListener('wheel', function (e) {
-                    if (window.innerWidth <= tablet) return;
-
-                    const absX = Math.abs(e.deltaX);
-                    const absY = Math.abs(e.deltaY);
-
-                    // Scroll horizontal (trackpad)
-                    if (absX > absY) return;
-
-                    // Comprobar si es scroll vertical
-                    const maxScrollLeft = element.scrollWidth - element.clientWidth;
-                    const currentScrollLeft = element.scrollLeft;
-                    const scrollingToRight = e.deltaY > 0;
-                    const scrollingToLeft = e.deltaY < 0;
-                    const canScrollRight = currentScrollLeft < maxScrollLeft;
-                    const canScrollLeft = currentScrollLeft > 0;
-
-                    if ((scrollingToRight && canScrollRight) || (scrollingToLeft && canScrollLeft)) {
-                        e.preventDefault();
-                        element.scrollLeft += e.deltaY;
+                    } else {
+                        artistImage.css('right', `calc(33% - ${$(artistImage).width() / 2}px)`);
+                        artistImage.css('left', 'unset');
+                        studioImage.css('left', `calc(-${$(studioImage).width()}px)`);
+                        studioImage.css('right', 'unset');
                     }
-                }, { passive: false });
-            }
+                }, function () {
+                    if (window.innerWidth <= tablet || $(this).hasClass('entered') || isExiting) return;
 
-            $('.bnomio-hero--half').hover(function () {
-                if (window.innerWidth <= tablet || $(this).hasClass('entered') || isExiting) return;
+                    $('.bnomio-hero--half').removeClass('noactive');
+                    $(this).removeClass('active');
 
-                $('.bnomio-hero--half').removeClass('active');
-                $('.bnomio-hero--half').addClass('noactive');
-                $(this).removeClass('noactive');
-                $(this).addClass('active');
+                    centerImages();
+                })
 
-                const studioImage = $('.studio-hero .hero-image')
-                const artistImage = $('.artist-hero .hero-image')
-                if ($(this).hasClass('studio-hero')) {
-                    studioImage.css('left', `calc(33% - ${$(studioImage).width() / 2}px)`);
-                    studioImage.css('right', 'unset');
-                    artistImage.css('right', `calc(-${$(artistImage).width()}px)`);
-                    artistImage.css('left', 'unset');
+                $('#enter-studio').on('click', function () {
+                    const hero = $('.studio-hero');
 
-                } else {
-                    artistImage.css('right', `calc(33% - ${$(artistImage).width() / 2}px)`);
-                    artistImage.css('left', 'unset');
-                    studioImage.css('left', `calc(-${$(studioImage).width()}px)`);
-                    studioImage.css('right', 'unset');
-                }
-            }, function () {
-                if (window.innerWidth <= tablet || $(this).hasClass('entered') || isExiting) return;
+                    $('.bnomio-hero--half').removeClass('active');
 
-                $('.bnomio-hero--half').removeClass('noactive');
-                $(this).removeClass('active');
+                    hero.addClass('entered');
+                    $('body').addClass('studio-entered');
+                    $('body').addClass('theme--studio');
+                    $('body').removeClass('theme--artist');
+                    $('.menu:not([id*="menu-studio"])').addClass('menu--inactive');
+                    document.documentElement.style.overflow = 'hidden';
+                    document.documentElement.style.height = '100dvh';
+                    centerImages();
 
-                centerImages();
-            })
+                    // Agregar listener para scroll horizontal con rueda
+                    const element = hero[0];
+                    enableHorizontalScroll(element);
+                })
 
-            $('#enter-studio').on('click', function () {
-                const hero = $('.studio-hero');
+                $('#enter-artist').on('click', function () {
+                    // TODO - Coming soon, remove when implemented
+                    return;
+                })
 
-                $('.bnomio-hero--half').removeClass('active');
+                setTimeout(centerImages, 1000);
+                setTimeout(enableHero, 1500);
 
-                hero.addClass('entered');
-                $('body').addClass('studio-entered');
-                $('body').addClass('theme--studio');
-                $('body').removeClass('theme--artist');
-                $('.menu:not([id*="menu-studio"])').addClass('menu--inactive');
-                document.documentElement.style.overflow = 'hidden';
-                document.documentElement.style.height = '100dvh';
-                centerImages();
-
-                // Agregar listener para scroll horizontal con rueda
-                const element = hero[0];
-                enableHorizontalScroll(element);
-            })
-
-            $('#enter-artist').on('click', function () {
-                // TODO - Coming soon, remove when implemented
-                return;
-            })
-
-            setTimeout(centerImages, 1000);
-            setTimeout(enableHero, 1500);
-
-            $(window).on('resize', function () {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(centerImages, 500);
-            });
-
-            // TODO - Borrar solo para debug
-            $('.exit-button').on('click', function () {
-                $('body').removeClass('studio-entered artist-entered');
-                $('.bnomio-hero--half').removeClass('entered noactive active');
-                document.documentElement.style.overflow = '';
-                document.documentElement.style.height = '';
-                centerImages();
-
-                isExiting = true;
-                setTimeout(() => { isExiting = false }, 1000);
-            });
-        }
-
-        function initModals() {
-            /// Funcionalidad común
-            // Cerrar modal clickando en boton
-            $('.modal .modal-close').on('click', function (e) {
-                e.preventDefault();
-                const modal = $(this).closest('.modal');
-
-                toggleModal(modal);
-            });
-            // Cerrar modal clickando fuera del contenido
-            $('.modal').on('click', function (e) {
-                if ($(e.target).closest('.modal-main').length === 0) {
-                    e.preventDefault();
-                    toggleModal($(this));
-                }
-            });
-
-            generateArchiveModals();
-        }
-
-        function initTabs() {
-            $('.tabs .tab').on('click', function (e) {
-                e.preventDefault();
-                const panel = $(this).data('panel');
-                const group = $(this).data('group');
-
-                $(`.tabs .tab[data-group="${group}"]`).removeClass('selected');
-                $(this).addClass('selected');
-
-                if (!panel) return;
-                $(`.content-panel.${group}`).addClass('hidden-panel');
-                $(`#${panel}`).removeClass('hidden-panel');
-            });
-        }
-
-        function generateArchiveModals() {
-            const modal = $('#archive-modal');
-            const casesModalData = window.BINOMIO_CASES_MODAL_DATA || null;
-
-            if (!casesModalData || modal.length === 0) {
-                $('.item-list .link-info').on('click', function (e) {
-                    e.preventDefault();
-                    
-                    console.warn("No data for cases modal. Check info in WP admin or contact support.");
+                $(window).on('resize', function () {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(centerImages, 500);
                 });
 
-                return;
+                // TODO - Borrar solo para debug
+                $('.exit-button').on('click', function () {
+                    $('body').removeClass('studio-entered artist-entered');
+                    $('.bnomio-hero--half').removeClass('entered noactive active');
+                    document.documentElement.style.overflow = '';
+                    document.documentElement.style.height = '';
+                    centerImages();
+
+                    isExiting = true;
+                    setTimeout(() => { isExiting = false }, 1000);
+                });
             }
 
-            const modalImage = modal.find('.archive-modal-image');
-            const modalTitle = modal.find('.modal-title');
-            const modalSubtitle = modal.find('.modal-subtitle');
-            const modalDescription = modal.find('.modal-description');
-            const modalButtons = modal.find('.modal-buttons');
-            const modalPrev = modal.find('.modal-prev');
-            const modalNext = modal.find('.modal-next');
+            function initModals() {
+                /// Funcionalidad común
+                // Cerrar modal clickando en boton
+                $('.modal .modal-close').on('click', function (e) {
+                    e.preventDefault();
+                    const modal = $(this).closest('.modal');
 
-            let activePanel = null;
-            let activeIndex = 0;
+                    toggleModal(modal);
+                });
+                // Cerrar modal clickando fuera del contenido
+                $('.modal').on('click', function (e) {
+                    if ($(e.target).closest('.modal-main').length === 0) {
+                        e.preventDefault();
+                        toggleModal($(this));
+                    }
+                });
 
-            const renderCaseItem = (panelId, index) => {
-                const panelCases = Array.isArray(casesModalData[panelId]) ? casesModalData[panelId] : [];
-                if (!panelCases.length) return;
+                generateArchiveModals();
+            }
 
-                activePanel = panelId;
-                activeIndex = Math.max(0, Math.min(index, panelCases.length - 1));
+            function initTabs() {
+                $('.tabs .tab').on('click', function (e) {
+                    e.preventDefault();
+                    const panel = $(this).data('panel');
+                    const group = $(this).data('group');
 
-                const caseItem = panelCases[activeIndex];
+                    $(`.tabs .tab[data-group="${group}"]`).removeClass('selected');
+                    $(this).addClass('selected');
 
-                modalTitle.text(caseItem.title || '');
-                modalSubtitle.text(caseItem.subtitle || '');
-                modalDescription.html(caseItem.content || '');
+                    if (!panel) return;
+                    $(`.content-panel.${group}`).addClass('hidden-panel');
+                    $(`#${panel}`).removeClass('hidden-panel');
+                });
+            }
 
-                if (caseItem.image) {
-                    modalImage.attr('src', caseItem.image);
-                    modalImage.attr('alt', caseItem.title || '');
-                    modalImage.show();
-                } else {
-                    modalImage.hide();
-                }
+            function generateArchiveModals() {
+                const modal = $('#archive-modal');
+                const casesModalData = window.BINOMIO_CASES_MODAL_DATA || null;
 
-                modalButtons.empty();
-                if (Array.isArray(caseItem.links)) {
-                    caseItem.links.forEach((link) => {
-                        if (!link || !link.url) return;
+                if (!casesModalData || modal.length === 0) {
+                    $('.item-list .link-info').on('click', function (e) {
+                        e.preventDefault();
 
-                        const button = $('<a></a>')
-                            .addClass('button')
-                            .attr('href', link.url)
-                            .attr('target', '_blank')
-                            .attr('rel', 'noopener noreferrer')
-                            .text(link.text || 'Ver más');
-
-                        modalButtons.append(button);
+                        console.warn("No data for cases modal. Check info in WP admin or contact support.");
                     });
+
+                    return;
                 }
 
-                const hasMultiple = panelCases.length > 1;
-                modalPrev.prop('disabled', !hasMultiple);
-                modalNext.prop('disabled', !hasMultiple);
-            };
+                const modalImage = modal.find('.archive-modal-image');
+                const modalTitle = modal.find('.modal-title');
+                const modalSubtitle = modal.find('.modal-subtitle');
+                const modalDescription = modal.find('.modal-description');
+                const modalButtons = modal.find('.modal-buttons');
+                const modalPrev = modal.find('.modal-prev');
+                const modalNext = modal.find('.modal-next');
 
-            $('.item-list .link-info[data-panel][data-case-index]').on('click', function (e) {
-                e.preventDefault();
+                let activePanel = null;
+                let activeIndex = 0;
 
-                const panelId = $(this).data('panel');
-                const caseIndex = parseInt($(this).data('case-index'), 10) || 0;
+                const renderCaseItem = (panelId, index) => {
+                    const panelCases = Array.isArray(casesModalData[panelId]) ? casesModalData[panelId] : [];
+                    if (!panelCases.length) return;
 
-                renderCaseItem(panelId, caseIndex);
-                openModal(modal);
-            });
+                    activePanel = panelId;
+                    activeIndex = Math.max(0, Math.min(index, panelCases.length - 1));
 
-            modalPrev.on('click', function (e) {
-                e.preventDefault();
+                    const caseItem = panelCases[activeIndex];
 
-                const panelCases = Array.isArray(casesModalData[activePanel]) ? casesModalData[activePanel] : [];
-                if (panelCases.length < 2) return;
+                    modalTitle.text(caseItem.title || '');
+                    modalSubtitle.text(caseItem.subtitle || '');
+                    modalDescription.html(caseItem.content || '');
 
-                const nextIndex = (activeIndex - 1 + panelCases.length) % panelCases.length;
-                renderCaseItem(activePanel, nextIndex);
-            });
+                    if (caseItem.image) {
+                        modalImage.attr('src', caseItem.image);
+                        modalImage.attr('alt', caseItem.title || '');
+                        modalImage.show();
+                    } else {
+                        modalImage.hide();
+                    }
 
-            modalNext.on('click', function (e) {
-                e.preventDefault();
+                    modalButtons.empty();
+                    if (Array.isArray(caseItem.links)) {
+                        caseItem.links.forEach((link) => {
+                            if (!link || !link.url) return;
 
-                const panelCases = Array.isArray(casesModalData[activePanel]) ? casesModalData[activePanel] : [];
-                if (panelCases.length < 2) return;
+                            const button = $('<a></a>')
+                                .addClass('button')
+                                .attr('href', link.url)
+                                .attr('target', '_blank')
+                                .attr('rel', 'noopener noreferrer')
+                                .text(link.text || 'Ver más');
 
-                const nextIndex = (activeIndex + 1) % panelCases.length;
-                renderCaseItem(activePanel, nextIndex);
-            });
-        }
+                            modalButtons.append(button);
+                        });
+                    }
 
-        function initStudioStickers() {
-            const stickersLayer = document.querySelector('.studio-hero .hero-content .studio-stickers');
-            if (!stickersLayer) return;
+                    const hasMultiple = panelCases.length > 1;
+                    modalPrev.prop('disabled', !hasMultiple);
+                    modalNext.prop('disabled', !hasMultiple);
+                };
 
-            const stickers = Array.from(stickersLayer.querySelectorAll('.studio-sticker'));
-            if (stickers.length === 0) return;
+                $('.item-list .link-info[data-panel][data-case-index]').on('click', function (e) {
+                    e.preventDefault();
 
-            let zIndexCounter = stickers.reduce((maxZ, sticker) => {
-                const currentZ = parseInt(window.getComputedStyle(sticker).zIndex, 10);
-                return Number.isNaN(currentZ) ? maxZ : Math.max(maxZ, currentZ);
-            }, 10);
+                    const panelId = $(this).data('panel');
+                    const caseIndex = parseInt($(this).data('case-index'), 10) || 0;
 
-            const placeSticker = (sticker, clientX, clientY, pointerOffsetX, pointerOffsetY) => {
-                const layerRect = stickersLayer.getBoundingClientRect();
-                const nextLeft = clientX - layerRect.left - pointerOffsetX;
-                const nextTop = clientY - layerRect.top - pointerOffsetY;
-                const maxLeft = Math.max(0, layerRect.width - sticker.offsetWidth);
-                const maxTop = Math.max(0, layerRect.height - sticker.offsetHeight);
+                    renderCaseItem(panelId, caseIndex);
+                    openModal(modal);
+                });
 
-                const boundedLeft = Math.min(Math.max(0, nextLeft), maxLeft);
-                const boundedTop = Math.min(Math.max(0, nextTop), maxTop);
+                modalPrev.on('click', function (e) {
+                    e.preventDefault();
 
-                sticker.style.left = `${boundedLeft}px`;
-                sticker.style.top = `${boundedTop}px`;
-                sticker.style.setProperty('--sticker-x', 'unset');
-                sticker.style.setProperty('--sticker-y', 'unset');
-            };
+                    const panelCases = Array.isArray(casesModalData[activePanel]) ? casesModalData[activePanel] : [];
+                    if (panelCases.length < 2) return;
 
-            stickers.forEach((sticker) => {
-                sticker.style.touchAction = 'none';
+                    const nextIndex = (activeIndex - 1 + panelCases.length) % panelCases.length;
+                    renderCaseItem(activePanel, nextIndex);
+                });
 
-                sticker.addEventListener('pointerdown', (event) => {
-                    if (event.button !== 0 && event.pointerType === 'mouse') return;
+                modalNext.on('click', function (e) {
+                    e.preventDefault();
 
-                    event.preventDefault();
+                    const panelCases = Array.isArray(casesModalData[activePanel]) ? casesModalData[activePanel] : [];
+                    if (panelCases.length < 2) return;
 
-                    // Lock current CSS position to px (offsetLeft/Top ignores transforms)
-                    const currentLeft = sticker.offsetLeft;
-                    const currentTop = sticker.offsetTop;
-                    sticker.style.left = `${currentLeft}px`;
-                    sticker.style.top = `${currentTop}px`;
+                    const nextIndex = (activeIndex + 1) % panelCases.length;
+                    renderCaseItem(activePanel, nextIndex);
+                });
+            }
+
+            function initStudioStickers() {
+                const stickersLayer = document.querySelector('.studio-hero .hero-content .studio-stickers');
+                if (!stickersLayer) return;
+
+                const stickers = Array.from(stickersLayer.querySelectorAll('.studio-sticker'));
+                if (stickers.length === 0) return;
+
+                let zIndexCounter = stickers.reduce((maxZ, sticker) => {
+                    const currentZ = parseInt(window.getComputedStyle(sticker).zIndex, 10);
+                    return Number.isNaN(currentZ) ? maxZ : Math.max(maxZ, currentZ);
+                }, 10);
+
+                const placeSticker = (sticker, clientX, clientY, pointerOffsetX, pointerOffsetY) => {
+                    const layerRect = stickersLayer.getBoundingClientRect();
+                    const nextLeft = clientX - layerRect.left - pointerOffsetX;
+                    const nextTop = clientY - layerRect.top - pointerOffsetY;
+                    const maxLeft = Math.max(0, layerRect.width - sticker.offsetWidth);
+                    const maxTop = Math.max(0, layerRect.height - sticker.offsetHeight);
+
+                    const boundedLeft = Math.min(Math.max(0, nextLeft), maxLeft);
+                    const boundedTop = Math.min(Math.max(0, nextTop), maxTop);
+
+                    sticker.style.left = `${boundedLeft}px`;
+                    sticker.style.top = `${boundedTop}px`;
                     sticker.style.setProperty('--sticker-x', 'unset');
                     sticker.style.setProperty('--sticker-y', 'unset');
+                };
 
-                    zIndexCounter += 1;
-                    sticker.style.zIndex = String(zIndexCounter);
-                    sticker.classList.add('is-dragging');
+                stickers.forEach((sticker) => {
+                    sticker.style.touchAction = 'none';
 
-                    // Pointer offset relative to CSS position, not visual bounding box
-                    const layerRect = stickersLayer.getBoundingClientRect();
-                    const pointerOffsetX = event.clientX - layerRect.left - currentLeft;
-                    const pointerOffsetY = event.clientY - layerRect.top - currentTop;
+                    sticker.addEventListener('pointerdown', (event) => {
+                        if (event.button !== 0 && event.pointerType === 'mouse') return;
 
-                    const onPointerMove = (moveEvent) => {
-                        placeSticker(sticker, moveEvent.clientX, moveEvent.clientY, pointerOffsetX, pointerOffsetY);
-                    };
+                        event.preventDefault();
 
-                    const stopDragging = () => {
-                        sticker.classList.remove('is-dragging');
-                        sticker.releasePointerCapture(event.pointerId);
-                        sticker.removeEventListener('pointermove', onPointerMove);
-                        sticker.removeEventListener('pointerup', stopDragging);
-                        sticker.removeEventListener('pointercancel', stopDragging);
-                    };
+                        // Lock current CSS position to px (offsetLeft/Top ignores transforms)
+                        const currentLeft = sticker.offsetLeft;
+                        const currentTop = sticker.offsetTop;
+                        sticker.style.left = `${currentLeft}px`;
+                        sticker.style.top = `${currentTop}px`;
+                        sticker.style.setProperty('--sticker-x', 'unset');
+                        sticker.style.setProperty('--sticker-y', 'unset');
 
-                    sticker.setPointerCapture(event.pointerId);
-                    sticker.addEventListener('pointermove', onPointerMove);
-                    sticker.addEventListener('pointerup', stopDragging);
-                    sticker.addEventListener('pointercancel', stopDragging);
+                        zIndexCounter += 1;
+                        sticker.style.zIndex = String(zIndexCounter);
+                        sticker.classList.add('is-dragging');
+
+                        // Pointer offset relative to CSS position, not visual bounding box
+                        const layerRect = stickersLayer.getBoundingClientRect();
+                        const pointerOffsetX = event.clientX - layerRect.left - currentLeft;
+                        const pointerOffsetY = event.clientY - layerRect.top - currentTop;
+
+                        const onPointerMove = (moveEvent) => {
+                            placeSticker(sticker, moveEvent.clientX, moveEvent.clientY, pointerOffsetX, pointerOffsetY);
+                        };
+
+                        const stopDragging = () => {
+                            sticker.classList.remove('is-dragging');
+                            sticker.releasePointerCapture(event.pointerId);
+                            sticker.removeEventListener('pointermove', onPointerMove);
+                            sticker.removeEventListener('pointerup', stopDragging);
+                            sticker.removeEventListener('pointercancel', stopDragging);
+                        };
+
+                        sticker.setPointerCapture(event.pointerId);
+                        sticker.addEventListener('pointermove', onPointerMove);
+                        sticker.addEventListener('pointerup', stopDragging);
+                        sticker.addEventListener('pointercancel', stopDragging);
+                    });
                 });
-            });
-        }
+            }
 
-        function initMobileMenu() {
-            const burger = $('.header-burger');
-            const mobileMenu = $('.mobile-menu');
-            const mobileMenuIcon = $('.header-burger.icon');
-            const mobileMenuBackdrop = $('.mobile-menu-backdrop');
-            const mobileMenuContent = $('.mobile-menu-content');
-            let isMenuOpen = false;
+            function initMobileMenu() {
+                const burger = $('.header-burger');
+                const mobileMenu = $('.mobile-menu');
+                const mobileMenuIcon = $('.header-burger.icon');
+                const mobileMenuBackdrop = $('.mobile-menu-backdrop');
+                const mobileMenuContent = $('.mobile-menu-content');
+                let isMenuOpen = false;
 
-            // Toggle menu
-            const toggleMenu = () => {
-                isMenuOpen = !isMenuOpen;
+                // Toggle menu
+                const toggleMenu = () => {
+                    isMenuOpen = !isMenuOpen;
 
-                if (isMenuOpen) {
-                    openMobileMenu();
-                } else {
-                    closeMobileMenu();
-                }
-            };
+                    if (isMenuOpen) {
+                        openMobileMenu();
+                    } else {
+                        closeMobileMenu();
+                    }
+                };
 
-            const openMobileMenu = () => {
-                mobileMenu.removeClass('closed').addClass('opened');
-                mobileMenuBackdrop.removeClass('closed').addClass('opened');
-                mobileMenuIcon.addClass('icon-close').removeClass('icon-burger');
-                $('body').addClass('noscroll');
-            };
+                const openMobileMenu = () => {
+                    mobileMenu.removeClass('closed').addClass('opened');
+                    mobileMenuBackdrop.removeClass('closed').addClass('opened');
+                    mobileMenuIcon.addClass('icon-close').removeClass('icon-burger');
+                    $('body').addClass('noscroll');
+                };
 
-            const closeMobileMenu = () => {
-                mobileMenu.removeClass('opened').addClass('closed');
-                mobileMenuBackdrop.removeClass('opened').addClass('closed');
-                mobileMenuIcon.addClass('icon-burger').removeClass('icon-close');
-                $('body').removeClass('noscroll');
+                const closeMobileMenu = () => {
+                    mobileMenu.removeClass('opened').addClass('closed');
+                    mobileMenuBackdrop.removeClass('opened').addClass('closed');
+                    mobileMenuIcon.addClass('icon-burger').removeClass('icon-close');
+                    $('body').removeClass('noscroll');
 
-                // Reset closed state after animation
-                setTimeout(() => {
-                    mobileMenu.removeClass('closed');
-                    mobileMenuBackdrop.removeClass('closed');
-                }, 300);
-            };
+                    // Reset closed state after animation
+                    setTimeout(() => {
+                        mobileMenu.removeClass('closed');
+                        mobileMenuBackdrop.removeClass('closed');
+                    }, 300);
+                };
 
-            // Click on burger button
-            burger.on('click', function (e) {
-                e.preventDefault();
-                toggleMenu();
-            });
-
-            // Click on backdrop
-            mobileMenuBackdrop.on('click', function (e) {
-                if (isMenuOpen) {
+                // Click on burger button
+                burger.on('click', function (e) {
+                    e.preventDefault();
                     toggleMenu();
-                }
-            });
+                });
 
-            // Click on menu items (close menu)
-            mobileMenuContent.find('a').on('click', function () {
-                if (isMenuOpen) {
-                    toggleMenu();
-                }
-            });
+                // Click on backdrop
+                mobileMenuBackdrop.on('click', function (e) {
+                    if (isMenuOpen) {
+                        toggleMenu();
+                    }
+                });
 
-            // Close menu on large screens
-            $(window).on('resize', function () {
-                if (window.innerWidth > mobile && isMenuOpen) {
-                    isMenuOpen = true;
-                    closeMobileMenu();
-                }
-            });
-        }
-    });
+                // Click on menu items (close menu)
+                mobileMenuContent.find('a').on('click', function () {
+                    if (isMenuOpen) {
+                        toggleMenu();
+                    }
+                });
+
+                // Close menu on large screens
+                $(window).on('resize', function () {
+                    if (window.innerWidth > mobile && isMenuOpen) {
+                        isMenuOpen = true;
+                        closeMobileMenu();
+                    }
+                });
+            }
+        });
 })(jQuery);
