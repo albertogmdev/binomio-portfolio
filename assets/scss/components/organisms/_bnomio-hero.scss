@@ -476,3 +476,20 @@
         }
     }
 }
+
+// Variante estática: renderiza un único half ya en estado entered (main_page component)
+.bnomio-hero--static {
+    .bnomio-hero--half {
+        position: relative;
+        width: 100% !important;
+        height: 100dvh;
+    }
+
+    .studio-hero .hero-content .studio-stickers {
+        opacity: 1;
+
+        .studio-sticker {
+            pointer-events: auto;
+        }
+    }
+}

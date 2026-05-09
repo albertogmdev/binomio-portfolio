@@ -182,11 +182,19 @@ if (!function_exists('binomio_menu_fallback')) {
                 '/contacto/'
             )
             : home_url('/contacto/');
+
+        $current_url = trailingslashit(home_url(strtok((string) $_SERVER['REQUEST_URI'], '?')));
+
+        $is_active = function ($url) use ($current_url) {
+            return trailingslashit($url) === $current_url ? ' current-menu-item' : '';
+        };
 ?>
-        <a class="link" href="<?php echo esc_url($collections_url); ?>"><?php echo esc_html(bnm_t('nav_collections', 'Collections')); ?></a>
-        <a class="link" href="<?php echo esc_url($archive_url); ?>"><?php echo esc_html(bnm_t('nav_archive', 'Archive')); ?></a>
-        <a class="link" href="<?php echo esc_url($about_url); ?>"><?php echo esc_html(bnm_t('nav_about', 'About')); ?></a>
-        <a class="link" href="<?php echo esc_url($contact_url); ?>"><?php echo esc_html(bnm_t('nav_contact', 'Contact')); ?></a>
+        <ul class="menu">
+            <li class="menu-item<?php echo esc_attr($is_active($collections_url)); ?>"><a href="<?php echo esc_url($collections_url); ?>"><span class="link"><?php echo esc_html(bnm_t('nav_collections', 'Collections')); ?></span></a></li>
+            <li class="menu-item<?php echo esc_attr($is_active($archive_url)); ?>"><a href="<?php echo esc_url($archive_url); ?>"><span class="link"><?php echo esc_html(bnm_t('nav_archive', 'Archive')); ?></span></a></li>
+            <li class="menu-item<?php echo esc_attr($is_active($about_url)); ?>"><a href="<?php echo esc_url($about_url); ?>"><span class="link"><?php echo esc_html(bnm_t('nav_about', 'About')); ?></span></a></li>
+            <li class="menu-item<?php echo esc_attr($is_active($contact_url)); ?>"><a href="<?php echo esc_url($contact_url); ?>"><span class="link"><?php echo esc_html(bnm_t('nav_contact', 'Contact')); ?></span></a></li>
+        </ul>
 <?php
     }
 }

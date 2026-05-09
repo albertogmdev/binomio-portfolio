@@ -13,9 +13,19 @@ if ( empty( $components ) && function_exists( 'pll_get_post' ) && function_exist
         $components = carbon_get_post_meta( $source_id, 'crb_page_components' );
     }
 }
+
+$has_main_page = false;
+foreach ( (array) $components as $_c ) {
+    if ( isset( $_c['_type'] ) && $_c['_type'] === 'main_page' ) {
+        $has_main_page = true;
+        break;
+    }
+}
+$GLOBALS['binomio_has_main_page'] = $has_main_page;
+$wrapper_class = $has_main_page ? 'page-builder page-builder--main-page' : 'page-builder';
 ?>
 
-<div id="page-<?php the_ID(); ?>" class="page-builder">
+<div id="page-<?php the_ID(); ?>" class="<?php echo esc_attr( $wrapper_class ); ?>">
     <?php if ( ! empty( $components ) ) {
         // Si hay componentes, renderizarlos
         foreach ( $components as $component ) {

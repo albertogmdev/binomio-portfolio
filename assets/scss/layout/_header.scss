@@ -30,8 +30,32 @@
         align-items: center;
         gap: 24px;
 
+        li {
+            list-style: none;
+
+            &.current-menu-item .link::after,
+            &:hover .link::after {
+                width: 70%;
+            }
+        }
+
         .link {
             color: $background;
+            position: relative;
+            border-bottom: none !important;
+
+            &::after {
+                content: '';
+                display: block;
+                position: absolute;
+                bottom: -3px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 1px;
+                background-color: currentColor;
+                transition: width 0.25s ease-in-out;
+            }
         }
     }
 
@@ -138,10 +162,39 @@
                     font-size: 16px;
                     display: inline-block;
                     white-space: nowrap;
+                    transition: opacity 0.2s ease-in-out;
 
                     .link {
                         display: inline-block;
+                        position: relative;
+                        padding-bottom: 5px;
+                        border-bottom: none !important;
+
+                        &::after {
+                            content: '';
+                            display: block;
+                            position: absolute;
+                            bottom: 0px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 0;
+                            height: 1px;
+                            background-color: currentColor;
+                            transition: width 0.25s ease-in-out;
+                        }
                     }
+                }
+
+                &:hover a,
+                &.current-menu-item a,
+                &.current_page_item a {
+                    opacity: 1;
+                }
+
+                &:hover a .link::after,
+                &.current-menu-item a .link::after,
+                &.current_page_item a .link::after {
+                    width: 70%;
                 }
             }
         }

@@ -1,6 +1,6 @@
 </main>
 </div>
-<?php if (!is_front_page()) : ?>
+<?php if (!is_front_page() && empty($GLOBALS['binomio_has_main_page'])) : ?>
     <?php
     $studio_url = function_exists('binomio_get_localized_page_url')
         ? binomio_get_localized_page_url(
