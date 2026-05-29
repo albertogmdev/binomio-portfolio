@@ -3,7 +3,6 @@
 .collection-card {
     position: relative;
     padding: 10px;
-    z-index: 2;
 
     >a {
         pointer-events: none;
@@ -32,6 +31,7 @@
         opacity: 0;
         pointer-events: none;
         transition: opacity .1s ease-in-out;
+        mix-blend-mode: difference;
 
         .item-title {
             text-align: center;

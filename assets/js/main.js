@@ -132,8 +132,9 @@
                     centerImages();
                 })
 
-                $('#enter-studio').on('click', function () {
-                    const hero = $('.studio-hero');
+                $('.studio-hero').on('click', function (e) {
+                    const hero = $(this);
+                    if (hero.hasClass('entered') || isExiting) return;
 
                     $('.bnomio-hero--half').removeClass('active');
 
@@ -158,6 +159,7 @@
 
                 setTimeout(centerImages, 1000);
                 setTimeout(enableHero, 1500);
+                setTimeout(() => { $('.bnomio-hero').addClass('icons-ready'); }, 1000);
 
                 $(window).on('resize', function () {
                     clearTimeout(resizeTimeout);
@@ -165,7 +167,8 @@
                 });
 
                 // TODO - Borrar solo para debug
-                $('.exit-button').on('click', function () {
+                $('.exit-button').on('click', function (e) {
+                    e.stopPropagation();
                     $('body').removeClass('studio-entered artist-entered');
                     $('.bnomio-hero--half').removeClass('entered noactive active');
                     document.documentElement.style.overflow = '';

@@ -10,7 +10,6 @@
     display: block;
     @extend .text-button;
     color: $textPrimary;
-    border: 1px solid $decoration;
     background-color: $tagBackground;
     padding: 10px 12px;
     text-transform: uppercase;

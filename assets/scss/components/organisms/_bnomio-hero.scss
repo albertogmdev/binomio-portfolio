@@ -39,6 +39,12 @@
     width: 100%;
     min-height: 100dvh;
 
+    &.icons-ready {
+        .bnomio-hero--half:not(.noactive) .link-icon {
+            opacity: 1;
+        }
+    }
+
     .nointeract-zone {
         display: block;
         position: absolute;
@@ -69,8 +75,8 @@
         .hero-image {
             display: block;
             width: auto;
-            height: 90%;
-            max-width: 50vw;
+            height: 100%;
+            max-width: 55vw;
             object-fit: contain;
             object-position: bottom;
             pointer-events: none;
@@ -90,7 +96,7 @@
         .hero-link {
             position: absolute;
             top: 50%;
-            opacity: 0;
+            opacity: 1;
             pointer-events: none;
             z-index: 3;
             transition: all 0.5s ease-in-out;
@@ -112,6 +118,14 @@
                 width: auto;
                 margin-bottom: 20px;
                 background-color: $textPrimary;
+                opacity: 0;
+                transition: opacity 1s ease-in-out;
+            }
+
+            .link-button {
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.5s ease-in-out;
             }
         }
 
@@ -214,15 +228,23 @@
             width: 75%;
 
             .hero-link {
-                opacity: 1;
-                pointer-events: auto;
                 transform: translate(0%, -50%);
                 transition-delay: 0.2s;
+
+                .link-button {
+                    opacity: 1;
+                    pointer-events: auto;
+                }
             }
         }
 
         &.noactive {
             width: 25%;
+
+            .link-icon {
+                opacity: 0 !important;
+                transition: opacity 0.15s ease-in-out !important;
+            }
         }
 
         // Image transition
@@ -256,12 +278,17 @@
 
         .hero-link {
             left: 10vw;
-            transform: translate(-50%, -50%);
+            transform: translate(0%, -50%);
         }
     }
 
     .studio-hero {
         right: 0px;
+        cursor: pointer;
+
+        &.entered {
+            cursor: default;
+        }
 
         .hero-image {
             left: -1000px;
@@ -270,7 +297,7 @@
 
         .hero-link {
             right: 10vw;
-            transform: translate(50%, -50%);
+            transform: translate(0%, -50%);
         }
 
         &.entered {
@@ -402,6 +429,11 @@
 
                 .link-icon {
                     display: none;
+                }
+
+                .link-button {
+                    opacity: 1;
+                    pointer-events: auto;
                 }
             }
 

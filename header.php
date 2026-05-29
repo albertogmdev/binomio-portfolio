@@ -93,7 +93,10 @@
         </div>
 
         <nav id="header" role="navigation" <?php echo is_admin_bar_showing() ? 'style="top: 32px;"' : '' ?>>
-            <a href="<?php echo esc_url(home_url('/')); ?>" class="header-logo">
+            <?php
+                $logo_url = is_studio() ? $archive_url : (is_artist() ? $collections_url : home_url('/'));
+            ?>
+            <a href="<?php echo esc_url($logo_url); ?>" class="header-logo">
                 <span class="icon icon-bnomio"></span>
                 <span class="icon icon-bnomiostudio"></span>
             </a>
