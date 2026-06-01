@@ -201,6 +201,10 @@ function binomio_register_proyectos_fields() {
             Field::make('checkbox', 'proyecto_featured_home', __('Mostrar en home (featured)', 'binomio')),
             Field::make('image', 'proyecto_featured_image', __('Imagen destacada', 'binomio')),
             Field::make('text', 'proyecto_featured_order', __('Orden en home', 'binomio')),
+            Field::make('text', 'proyecto_featured_aspect', __('Aspect ratio', 'binomio'))
+                ->set_attribute('placeholder', 'ej: 16/9'),
+            Field::make('text', 'proyecto_featured_width', __('Ancho', 'binomio'))
+                ->set_attribute('placeholder', 'ej: 300px')
         )));
 
     Container::make('post_meta', __('Datos del Proyecto', 'binomio'))
@@ -230,7 +234,11 @@ function binomio_register_proyectos_fields() {
             Field::make('media_gallery', 'proyecto_portada', __('Portada (max. 2 imágenes)', 'binomio'))
                 ->set_max(2),
             Field::make('media_gallery', 'proyecto_full_assets', __('Galería Fullwidth', 'binomio')),
-            Field::make('media_gallery', 'proyecto_galeria_assets', __('Galería', 'binomio')),
+            Field::make('complex', 'proyecto_galeria_assets', __('Galería', 'binomio'))
+                ->add_fields(array(
+                    \Carbon_Fields\Field::make('image', 'asset_id', __('Imagen / Vídeo', 'binomio')),
+                    \Carbon_Fields\Field::make('checkbox', 'asset_fullwidth', __('Fullwidth (2 col)', 'binomio')),
+                )),
             Field::make('rich_text', 'proyecto_creditos', __('Créditos', 'binomio')),
             Field::make('association', 'proyecto_related', __('Relacionados', 'binomio'))
                 ->set_types(array(

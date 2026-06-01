@@ -6,6 +6,8 @@
 $title = tcf_component($component, 'hero_title');
 $subtitle = tcf_component($component, 'hero_subtitle');
 $text = tcf_component($component, 'hero_text');
+$text_font = isset($component['hero_text_font']) ? $component['hero_text_font'] : 'regular';
+$text_class = 'body-small' . ($text_font === 'bold' ? ' alter-font' : '');
 $links = isset($component['hero_links']) && is_array($component['hero_links']) ? $component['hero_links'] : array();
 $normalized_links = array();
 
@@ -49,7 +51,7 @@ foreach ($links as $link) {
             </div>
             <div class="content-item content-topright">
                 <?php if ($text !== '') : ?>
-                    <div class="body-small"><?php echo wp_kses_post($text); ?></div>
+                    <div class="<?php echo esc_attr($text_class); ?>"><?php echo wp_kses_post($text); ?></div>
                 <?php endif; ?>
                 <?php if (!empty($normalized_links)) : ?>
                     <div class="link-container">

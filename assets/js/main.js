@@ -166,8 +166,8 @@
                     resizeTimeout = setTimeout(centerImages, 500);
                 });
 
-                // TODO - Borrar solo para debug
-                $('.exit-button').on('click', function (e) {
+                // Back tab — exit hero on home page
+                $('.back-tab.home-back').on('click', function (e) {
                     e.stopPropagation();
                     $('body').removeClass('studio-entered artist-entered');
                     $('.bnomio-hero--half').removeClass('entered noactive active');

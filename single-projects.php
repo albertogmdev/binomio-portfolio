@@ -148,13 +148,18 @@ endif;
         <section class="section-gallery">
             <div class="container">
                 <div class="gallery-grid">
-                    <?php foreach ($gallery as $asset_id) : ?>
+                    <?php foreach ($gallery as $item) : ?>
                         <?php
+                        $asset_id = isset($item['asset_id']) ? (int) $item['asset_id'] : 0;
+                        $is_fullwidth = !empty($item['asset_fullwidth']);
+                        if (empty($asset_id)) continue;
                         $asset_mime = get_post_mime_type($asset_id);
                         $asset_url = wp_get_attachment_url($asset_id);
                         if (empty($asset_url)) continue;
+                        $type_class = !empty($asset_mime) && strpos($asset_mime, 'video/') === 0 ? 'video' : (strpos($asset_mime, 'image/gif') === 0 ? 'gif' : 'image');
+                        $fw_class = $is_fullwidth ? ' gallery-item--full' : '';
                         ?>
-                        <div class="gallery-item gallery-item--<?= !empty($asset_mime) && strpos($asset_mime, 'video/') === 0 ? 'video' : (strpos($asset_mime, 'image/gif') === 0 ? 'gif' : 'image') ?>">
+                        <div class="gallery-item gallery-item--<?= $type_class . $fw_class ?>">
                             <?php if (!empty($asset_mime) && strpos($asset_mime, 'video/') === 0) : ?>
                                 <video
                                     class="image-item"

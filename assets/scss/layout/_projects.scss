@@ -99,6 +99,11 @@
                         flex: 0 1 calc(50% - 10px);
                         aspect-ratio: 590 / 790;
                     }
+
+                    &--full {
+                        flex: 0 1 100% !important;
+                        aspect-ratio: unset !important;
+                    }
                 }
             }
         }

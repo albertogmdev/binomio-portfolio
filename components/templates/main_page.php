@@ -190,6 +190,7 @@ if ($section === 'studio') {
                 </ul>
                 <a href="<?php echo esc_url($projects_url); ?>" class="button"><?php echo esc_html(bnm_t('home_studio_all', 'All projects')); ?></a>
             </div>
+            <span class="scroll-indicator">Scroll <span class="icon icon-arrowright"></span></span>
             <div class="content-projects">
                 <?php foreach (array_slice($featured_projects, 0, 6) as $project) : ?>
                     <?php
@@ -203,8 +204,15 @@ if ($section === 'studio') {
                     $project_subtitle       = is_array($project_tags) ? implode(' · ', $project_tags) : '';
                     $project_description    = tcf_meta($project->ID, 'proyecto_descripcion', 'proyecto_translations');
                     $project_description_text = wp_trim_words(wp_strip_all_tags((string) $project_description), 16, '...');
+                    $project_aspect = carbon_get_post_meta($project->ID, 'proyecto_featured_aspect');
+                    $project_width  = carbon_get_post_meta($project->ID, 'proyecto_featured_width');
+                    $card_classes = 'collection-card collection-card--displayed';
+                    $card_style_parts = [];
+                    if (!empty($project_aspect)) { $card_classes .= ' collection-card--custom-aspect'; $card_style_parts[] = '--card-aspect-ratio: ' . esc_attr($project_aspect); }
+                    if (!empty($project_width))  { $card_classes .= ' collection-card--custom-width';  $card_style_parts[] = '--card-width: ' . esc_attr($project_width); }
+                    $card_style = !empty($card_style_parts) ? implode('; ', $card_style_parts) : '';
                     ?>
-                    <div class="collection-card collection-card--displayed">
+                    <div class="<?php echo esc_attr($card_classes); ?>"<?php echo $card_style ? ' style="' . $card_style . '"' : ''; ?>>
                         <a href="<?php echo esc_url($project_permalink); ?>">
                             <?php if (!empty($project_image_url)) : ?>
                                 <img class="card-image" src="<?php echo esc_url($project_image_url); ?>" alt="<?php echo esc_attr($project_title); ?>">
@@ -247,6 +255,12 @@ if ($section === 'studio') {
                 </div>
             </div>
         </div>
+
+        <a class="back-tab static-back" href="<?php echo esc_url(home_url('/')); ?>" aria-label="Back">
+            <span class="back-tab-preview">
+                <span class="icon icon-arrowleft"></span>
+            </span>
+        </a>
     </div>
 
     <?php else : ?>
@@ -278,6 +292,7 @@ if ($section === 'studio') {
                 </ul>
                 <a href="<?php echo esc_url($projects_url); ?>" class="button"><?php echo esc_html(bnm_t('home_artist_all', 'All projects')); ?></a>
             </div>
+            <span class="scroll-indicator">Scroll <span class="icon icon-arrowright"></span></span>
             <div class="content-projects">
                 <?php foreach (array_slice($featured_projects, 0, 6) as $project) : ?>
                     <?php
@@ -291,8 +306,15 @@ if ($section === 'studio') {
                     $project_subtitle       = is_array($project_tags) ? implode(' · ', $project_tags) : '';
                     $project_description    = tcf_meta($project->ID, 'proyecto_descripcion', 'proyecto_translations');
                     $project_description_text = wp_trim_words(wp_strip_all_tags((string) $project_description), 16, '...');
+                    $project_aspect = carbon_get_post_meta($project->ID, 'proyecto_featured_aspect');
+                    $project_width  = carbon_get_post_meta($project->ID, 'proyecto_featured_width');
+                    $card_classes = 'collection-card collection-card--displayed';
+                    $card_style_parts = [];
+                    if (!empty($project_aspect)) { $card_classes .= ' collection-card--custom-aspect'; $card_style_parts[] = '--card-aspect-ratio: ' . esc_attr($project_aspect); }
+                    if (!empty($project_width))  { $card_classes .= ' collection-card--custom-width';  $card_style_parts[] = '--card-width: ' . esc_attr($project_width); }
+                    $card_style = !empty($card_style_parts) ? implode('; ', $card_style_parts) : '';
                     ?>
-                    <div class="collection-card collection-card--displayed">
+                    <div class="<?php echo esc_attr($card_classes); ?>"<?php echo $card_style ? ' style="' . $card_style . '"' : ''; ?>>
                         <a href="<?php echo esc_url($project_permalink); ?>">
                             <?php if (!empty($project_image_url)) : ?>
                                 <img class="card-image" src="<?php echo esc_url($project_image_url); ?>" alt="<?php echo esc_attr($project_title); ?>">
@@ -325,6 +347,12 @@ if ($section === 'studio') {
                 </div>
             </div>
         </div>
+
+        <a class="back-tab static-back" href="<?php echo esc_url(home_url('/')); ?>" aria-label="Back">
+            <span class="back-tab-preview">
+                <span class="icon icon-arrowleft"></span>
+            </span>
+        </a>
     </div>
 
     <?php endif; ?>

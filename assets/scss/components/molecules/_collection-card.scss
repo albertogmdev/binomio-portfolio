@@ -85,6 +85,17 @@
         width: auto;
         height: 60dvh;
         max-height: 60dvh;
+
+        &.collection-card--custom-aspect {
+            aspect-ratio: var(--card-aspect-ratio);
+        }
+
+        &.collection-card--custom-width {
+            width: var(--card-width);
+            height: auto;
+            max-height: unset;
+            aspect-ratio: var(--card-aspect-ratio, 258 / 376);
+        }
     }
 }
 
@@ -122,6 +133,7 @@
 
         .card-info {
             display: none;
+            mix-blend-mode: normal;
         }
 
         &:hover,

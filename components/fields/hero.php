@@ -16,6 +16,13 @@ return Field::resolve(array(
 
     Field::make('rich_text', 'hero_text', __('Texto', 'binomio')),
 
+    Field::make('select', 'hero_text_font', __('Fuente', 'binomio'))
+        ->set_options(array(
+            'regular' => __('Regular', 'binomio'),
+            'bold'    => __('Bold', 'binomio'),
+        ))
+        ->set_default_value('regular'),
+
     Field::make('complex', 'hero_links', __('Links', 'binomio'))
         ->set_layout('tabbed-vertical')
         ->add_fields(Field::resolve(array(
