@@ -153,3 +153,26 @@ function binomio_get_tag_label($slug) {
 
     return isset($options[$slug]) ? $options[$slug] : '';
 }
+
+/**
+ * Devuelve los nombres legibles de un array de slugs de tags, descartando las
+ * que ya no existan. Útil para subtítulos y listados.
+ *
+ * @param mixed $slugs Array de slugs (o cualquier valor; si no es array → []).
+ * @return array<int,string>
+ */
+function binomio_get_tag_labels($slugs) {
+    if (!is_array($slugs)) {
+        return array();
+    }
+
+    $labels = array();
+    foreach ($slugs as $slug) {
+        $label = binomio_get_tag_label($slug);
+        if ($label !== '') {
+            $labels[] = $label;
+        }
+    }
+
+    return $labels;
+}

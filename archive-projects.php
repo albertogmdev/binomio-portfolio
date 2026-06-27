@@ -27,14 +27,6 @@ $projects_query = new WP_Query(array(
 
 $projects = $projects_query->posts;
 
-$format_tag_label = function ($tag_value) {
-    if ($tag_value === 'ux_ui') {
-        return 'UX/UI';
-    }
-
-    return ucwords(str_replace(array('_', '-'), ' ', (string) $tag_value));
-};
-
 $tag_values = array();
 foreach ($projects as $project) {
     $project_tags = carbon_get_post_meta($project->ID, 'proyecto_tags');
@@ -45,6 +37,11 @@ foreach ($projects as $project) {
     foreach ($project_tags as $tag_value) {
         $tag_value = trim((string) $tag_value);
         if ($tag_value === '') {
+            continue;
+        }
+
+        // Solo tags que sigan existiendo en el CPT (descarta huérfanas).
+        if (binomio_get_tag_label($tag_value) === '') {
             continue;
         }
 
@@ -88,7 +85,7 @@ if (empty($tag_values)) {
                 <?php foreach ($tag_values as $index => $tag_value) : ?>
                     <?php
                     $panel_id = 'tag-' . sanitize_title($tag_value);
-                    $tab_label = $tag_value === 'all' ? bnm_t('archive_works_all_tab', 'All') : $format_tag_label($tag_value);
+                    $tab_label = $tag_value === 'all' ? bnm_t('archive_works_all_tab', 'All') : binomio_get_tag_label($tag_value);
                     ?>
                     <div class="tab <?php echo $index === 0 ? 'selected' : ''; ?>" data-panel="<?php echo esc_attr($panel_id); ?>" data-group="collection-list"><?php echo esc_html($tab_label); ?></div>
                 <?php endforeach; ?>
@@ -107,7 +104,8 @@ if (empty($tag_values)) {
                                 continue;
                             }
 
-                            $project_title = get_the_title($project->ID);
+                            $project_custom_title = tcf_meta($project->ID, 'proyecto_titulo', 'proyecto_translations');
+                            $project_title = $project_custom_title !== '' ? $project_custom_title : get_the_title($project->ID);
                             $project_permalink = get_permalink($project->ID);
 
                             $project_featured_image = carbon_get_post_meta($project->ID, 'proyecto_featured_image');
@@ -117,11 +115,9 @@ if (empty($tag_values)) {
 
                             $project_description = tcf_meta($project->ID, 'proyecto_descripcion', 'proyecto_translations');
                             $project_description_text = wp_trim_words(wp_strip_all_tags((string) $project_description), 16, '...');
-
-                            $card_size_class = ($project_index % 4 === 2) ? 'item--twocol' : 'item--onecol';
                             ?>
 
-                            <div class="collection-card item <?php echo esc_attr($card_size_class); ?>">
+                            <div class="collection-card item item--onecol">
                                 <a href="<?php echo esc_url($project_permalink); ?>">
                                     <?php if (!empty($project_image_url)) : ?>
                                         <img

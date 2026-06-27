@@ -52,6 +52,9 @@
         .item-button {
             display: block;
             margin: 0px auto;
+            background-color: $white;
+            color: $background;
+            border-color: $white;
         }
     }
 }

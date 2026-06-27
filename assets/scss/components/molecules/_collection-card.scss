@@ -152,6 +152,14 @@
             height: 100%;
             width: 100%;
 
+            &.collection-card--custom-width,
+            &.collection-card--custom-aspect {
+                width: 100%;
+                height: 100%;
+                max-height: unset;
+                aspect-ratio: unset;
+            }
+
             .card-info .item-button {
                 color: $textPrimary;
 

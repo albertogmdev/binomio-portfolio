@@ -203,8 +203,18 @@ function binomio_register_proyectos_fields() {
             Field::make('text', 'proyecto_featured_order', __('Orden en home', 'binomio')),
             Field::make('text', 'proyecto_featured_aspect', __('Aspect ratio', 'binomio'))
                 ->set_attribute('placeholder', 'ej: 16/9'),
-            Field::make('text', 'proyecto_featured_width', __('Ancho', 'binomio'))
-                ->set_attribute('placeholder', 'ej: 300px')
+            Field::make('text', 'proyecto_featured_width', __('Ancho (px)', 'binomio'))
+                ->set_attribute('placeholder', 'ej: 300')
+        )));
+
+    Container::make('post_meta', __('Datos', 'binomio'))
+        ->where('post_type', '=', 'projects')
+        ->add_fields(Field::resolve(array(
+            Field::make('text', 'proyecto_titulo', __('Título (home / listado)', 'binomio'))
+                ->set_help_text(__('Si se deja vacío se usa el título del proyecto.', 'binomio')),
+            Field::make('rich_text', 'proyecto_descripcion', __('Descripción (home / listado)', 'binomio')),
+            Field::make('set', 'proyecto_tags', __('Tags', 'binomio'))
+                ->set_options(binomio_get_tag_options()),
         )));
 }
 

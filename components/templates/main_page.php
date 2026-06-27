@@ -194,14 +194,15 @@ if ($section === 'studio') {
             <div class="content-projects">
                 <?php foreach (array_slice($featured_projects, 0, 6) as $project) : ?>
                     <?php
-                    $project_title          = get_the_title($project->ID);
+                    $project_custom_title   = tcf_meta($project->ID, 'proyecto_titulo', 'proyecto_translations');
+                    $project_title          = $project_custom_title !== '' ? $project_custom_title : get_the_title($project->ID);
                     $project_permalink      = $get_project_permalink($project->ID);
                     $project_featured_image = carbon_get_post_meta($project->ID, 'proyecto_featured_image');
                     $project_portada        = carbon_get_post_meta($project->ID, 'proyecto_portada');
                     $project_image_id       = !empty($project_featured_image) ? $project_featured_image : $project_portada;
                     $project_image_url      = !empty($project_image_id) ? wp_get_attachment_url($project_image_id) : '';
                     $project_tags           = carbon_get_post_meta($project->ID, 'proyecto_tags');
-                    $project_subtitle       = is_array($project_tags) ? implode(' · ', $project_tags) : '';
+                    $project_subtitle       = implode(' · ', binomio_get_tag_labels($project_tags));
                     $project_description    = tcf_meta($project->ID, 'proyecto_descripcion', 'proyecto_translations');
                     $project_description_text = wp_trim_words(wp_strip_all_tags((string) $project_description), 16, '...');
                     $project_aspect = carbon_get_post_meta($project->ID, 'proyecto_featured_aspect');
@@ -209,7 +210,7 @@ if ($section === 'studio') {
                     $card_classes = 'collection-card collection-card--displayed';
                     $card_style_parts = [];
                     if (!empty($project_aspect)) { $card_classes .= ' collection-card--custom-aspect'; $card_style_parts[] = '--card-aspect-ratio: ' . esc_attr($project_aspect); }
-                    if (!empty($project_width))  { $card_classes .= ' collection-card--custom-width';  $card_style_parts[] = '--card-width: ' . esc_attr($project_width); }
+                    if (!empty($project_width))  { $card_classes .= ' collection-card--custom-width';  $card_style_parts[] = '--card-width: ' . esc_attr($project_width) . 'px'; }
                     $card_style = !empty($card_style_parts) ? implode('; ', $card_style_parts) : '';
                     ?>
                     <div class="<?php echo esc_attr($card_classes); ?>"<?php echo $card_style ? ' style="' . $card_style . '"' : ''; ?>>
@@ -296,14 +297,15 @@ if ($section === 'studio') {
             <div class="content-projects">
                 <?php foreach (array_slice($featured_projects, 0, 6) as $project) : ?>
                     <?php
-                    $project_title          = get_the_title($project->ID);
+                    $project_custom_title   = tcf_meta($project->ID, 'proyecto_titulo', 'proyecto_translations');
+                    $project_title          = $project_custom_title !== '' ? $project_custom_title : get_the_title($project->ID);
                     $project_permalink      = $get_project_permalink($project->ID);
                     $project_featured_image = carbon_get_post_meta($project->ID, 'proyecto_featured_image');
                     $project_portada        = carbon_get_post_meta($project->ID, 'proyecto_portada');
                     $project_image_id       = !empty($project_featured_image) ? $project_featured_image : $project_portada;
                     $project_image_url      = !empty($project_image_id) ? wp_get_attachment_url($project_image_id) : '';
                     $project_tags           = carbon_get_post_meta($project->ID, 'proyecto_tags');
-                    $project_subtitle       = is_array($project_tags) ? implode(' · ', $project_tags) : '';
+                    $project_subtitle       = implode(' · ', binomio_get_tag_labels($project_tags));
                     $project_description    = tcf_meta($project->ID, 'proyecto_descripcion', 'proyecto_translations');
                     $project_description_text = wp_trim_words(wp_strip_all_tags((string) $project_description), 16, '...');
                     $project_aspect = carbon_get_post_meta($project->ID, 'proyecto_featured_aspect');
@@ -311,7 +313,7 @@ if ($section === 'studio') {
                     $card_classes = 'collection-card collection-card--displayed';
                     $card_style_parts = [];
                     if (!empty($project_aspect)) { $card_classes .= ' collection-card--custom-aspect'; $card_style_parts[] = '--card-aspect-ratio: ' . esc_attr($project_aspect); }
-                    if (!empty($project_width))  { $card_classes .= ' collection-card--custom-width';  $card_style_parts[] = '--card-width: ' . esc_attr($project_width); }
+                    if (!empty($project_width))  { $card_classes .= ' collection-card--custom-width';  $card_style_parts[] = '--card-width: ' . esc_attr($project_width) . 'px'; }
                     $card_style = !empty($card_style_parts) ? implode('; ', $card_style_parts) : '';
                     ?>
                     <div class="<?php echo esc_attr($card_classes); ?>"<?php echo $card_style ? ' style="' . $card_style . '"' : ''; ?>>
