@@ -1,0 +1,77 @@
+@use '../../abstracts' as *;
+
+.section-frontimage {
+    .frontimage-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .frontimage {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    // Por defecto (desktop) solo se ve la vista desktop.
+    .frontimage-view--mobile {
+        display: none;
+    }
+
+    .frontimage--double {
+        .frontimage-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+    }
+
+    // Desktop con 2 imágenes: aspect ratio 590/790 recortado.
+    .frontimage-view--desktop.frontimage--double {
+        .frontimage {
+            aspect-ratio: 590 / 790;
+            object-fit: cover;
+        }
+    }
+
+    // Sin espacio entre columnas (Remove column space)
+    &--nogap {
+        .frontimage--double .frontimage-grid {
+            column-gap: 0;
+        }
+    }
+
+    // Fullwidth: rompe el container y ocupa todo el ancho
+    &--fullwidth {
+        .container {
+            max-width: none;
+            margin: 0;
+            padding: 0;
+        }
+    }
+}
+
+@media screen and (max-width: $mobile) {
+    .section-frontimage {
+        // En mobile se ignora el ancho máximo inline.
+        .container {
+            max-width: none !important;
+        }
+
+        // Cambio de vista desktop -> mobile.
+        .frontimage-view--desktop {
+            display: none;
+        }
+
+        .frontimage-view--mobile {
+            display: block;
+        }
+
+        // En mobile el doble va a 1 columna y sin aspect ratio forzado.
+        .frontimage--double {
+            .frontimage-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+}

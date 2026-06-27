@@ -158,7 +158,43 @@
                 })
 
                 setTimeout(centerImages, 1000);
-                setTimeout(enableHero, 1500);
+
+                // La interaccion del hero (hover/click) no se habilita hasta que:
+                //   1) pase el retardo de intro, Y
+                //   2) el usuario mueva el raton (o toque la pantalla).
+                // Asi evitamos que el efecto se dispare solo si el cursor carga
+                // ya situado sobre una mitad. Un fallback garantiza que el usuario
+                // NUNCA quede atrapado sin poder interactuar (touch, foco en otra
+                // ventana, raton inmovil, etc.).
+                let heroDelayPassed = false;
+                let heroUserMoved = false;
+                let heroEnabled = false;
+
+                const tryEnableHero = () => {
+                    if (heroEnabled || !heroDelayPassed || !heroUserMoved) return;
+                    heroEnabled = true;
+                    enableHero();
+                };
+
+                $(document).one('mousemove.heroEnable touchstart.heroEnable', function () {
+                    heroUserMoved = true;
+                    tryEnableHero();
+                });
+
+                setTimeout(() => {
+                    heroDelayPassed = true;
+                    tryEnableHero();
+                }, 1500);
+
+                // Salvavidas: pase lo que pase, habilitar la interaccion para no
+                // dejar al usuario bloqueado sin poder entrar.
+                setTimeout(() => {
+                    if (heroEnabled) return;
+                    heroEnabled = true;
+                    $(document).off('mousemove.heroEnable touchstart.heroEnable');
+                    enableHero();
+                }, 4000);
+
                 setTimeout(() => { $('.bnomio-hero').addClass('icons-ready'); }, 1000);
 
                 $(window).on('resize', function () {

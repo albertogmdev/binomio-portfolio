@@ -1,0 +1,33 @@
+@use '../../abstracts' as *;
+
+.section-credits {
+    .container {
+        .tag-container {
+            justify-content: center;
+        }
+
+        .credits-title,
+        .credits-content {
+            color: $textPrimary;
+            text-align: center;
+        }
+
+        .credits-content {
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .credits-title {
+            margin: 40px auto;
+        }
+
+        .link-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+    }
+}

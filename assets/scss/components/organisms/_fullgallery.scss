@@ -1,0 +1,23 @@
+@use '../../abstracts' as *;
+
+.section-fullgallery {
+    .gallery-grid {
+        display: flex;
+        flex-direction: column;
+        gap: calc($sectionSpacing - 20px);
+
+        .gallery-item {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    }
+}
+
+@media screen and (max-width: $mobile) {
+    .section-fullgallery {
+        .gallery-grid {
+            gap: calc($sectionSpacing--mobile - 20px);
+        }
+    }
+}

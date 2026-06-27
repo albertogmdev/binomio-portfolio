@@ -1,0 +1,84 @@
+@use '../../abstracts' as *;
+
+.section-gallery {
+    .container {
+        .gallery-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: stretch;
+            justify-content: center;
+
+            .gallery-item {
+                display: block;
+                height: auto;
+                margin-bottom: calc($sectionSpacing - 20px);
+
+                .image-item {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                &--video,
+                &--gif {
+                    flex: 0 1 100%;
+                    max-width: 800px;
+                    margin: 0 auto;
+                    margin-bottom: calc($sectionSpacing - 20px);
+                }
+
+                &--image {
+                    flex: 0 1 calc(50% - 10px);
+                    aspect-ratio: 590 / 790;
+                }
+
+                &--full {
+                    flex: 0 1 100% !important;
+                    aspect-ratio: unset !important;
+                }
+            }
+        }
+    }
+
+    // Sin espacio entre columnas (Remove column space)
+    &--nogap {
+        .container {
+            .gallery-grid {
+                column-gap: 0;
+
+                .gallery-item--image {
+                    flex-basis: 50%;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $mobile) {
+    .section-gallery {
+        .container {
+            .gallery-grid {
+                .gallery-item {
+                    margin-bottom: calc($sectionSpacing--mobile - 20px);
+
+                    &--image {
+                        flex: 0 1 100%;
+                        aspect-ratio: 590 / 790;
+                    }
+                }
+            }
+        }
+
+        &--nogap {
+            .container {
+                .gallery-grid {
+                    .gallery-item--image {
+                        flex-basis: 50%;
+                    }
+                }
+            }
+        }
+    }
+}

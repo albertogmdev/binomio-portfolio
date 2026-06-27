@@ -206,49 +206,6 @@ function binomio_register_proyectos_fields() {
             Field::make('text', 'proyecto_featured_width', __('Ancho', 'binomio'))
                 ->set_attribute('placeholder', 'ej: 300px')
         )));
-
-    Container::make('post_meta', __('Datos del Proyecto', 'binomio'))
-        ->where('post_type', '=', 'projects')
-        ->add_fields(Field::resolve(array(
-            Field::make('text', 'proyecto_subtitulo', __('Subtítulo', 'binomio')),
-            Field::make('rich_text', 'proyecto_descripcion', __('Descripción', 'binomio')),
-            Field::make('complex', 'proyecto_links', __('Links', 'binomio'))
-                ->set_layout('tabbed-vertical')
-                ->add_fields(Field::resolve(array(
-                    Field::make('select', 'tipo', __('Tipo de link', 'binomio'))
-                        ->set_options(array(
-                            'web' => __('Web', 'binomio'),
-                            'brandbook' => __('Brandbook', 'binomio'),
-                            'other' => __('Otro', 'binomio'),
-                        )),
-                    Field::make('text', 'texto', __('Texto del link', 'binomio')),
-                    Field::make('text', 'url', __('URL', 'binomio')),
-                ))),
-            Field::make('set', 'proyecto_tags', __('Tags del proyecto', 'binomio'))
-                ->set_options(array(
-                    'branding' => __('Branding', 'binomio'),
-                    'ux_ui' => __('UX/UI', 'binomio'),
-                    'development' => __('Development', 'binomio'),
-                    'website' => __('Website', 'binomio'),
-                )),
-            Field::make('media_gallery', 'proyecto_portada', __('Portada (max. 2 imágenes)', 'binomio'))
-                ->set_max(2),
-            Field::make('media_gallery', 'proyecto_full_assets', __('Galería Fullwidth', 'binomio')),
-            Field::make('complex', 'proyecto_galeria_assets', __('Galería', 'binomio'))
-                ->add_fields(array(
-                    \Carbon_Fields\Field::make('image', 'asset_id', __('Imagen / Vídeo', 'binomio')),
-                    \Carbon_Fields\Field::make('checkbox', 'asset_fullwidth', __('Fullwidth (2 col)', 'binomio')),
-                )),
-            Field::make('rich_text', 'proyecto_creditos', __('Créditos', 'binomio')),
-            Field::make('association', 'proyecto_related', __('Relacionados', 'binomio'))
-                ->set_types(array(
-                    array(
-                        'type' => 'post',
-                        'post_type' => 'projects',
-                    ),
-                ))
-                ->set_max(3),
-        )));
 }
 
 add_filter('use_block_editor_for_post_type', 'binomio_disable_gutenberg_for_proyectos', 10, 2);

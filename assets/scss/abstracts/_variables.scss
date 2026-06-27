@@ -33,6 +33,11 @@ $footerMainHeight: 60px;
 $footerHeight: 98px;
 $footerHeight--mobile: 193px;
 
+/// Section spacing
+/// @type Number
+$sectionSpacing: 80px;
+$sectionSpacing--mobile: 40px;
+
 /// Relative or absolute URL where all assets are served from
 /// @type String
 $base-url: '/wp-content/themes/binomio/assets' !default;

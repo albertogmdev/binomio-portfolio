@@ -1,0 +1,66 @@
+@use '../../abstracts' as *;
+
+.section-showcase {
+    .container {
+        .showcase-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .showcase-icon {
+            display: block;
+            height: auto;
+            max-width: 185px;
+
+            @media screen and (max-width: $mobile) {
+                max-width: 160px;
+            }
+        }
+
+        .showcase-title {
+            max-width: 400px;
+            margin: 0 auto;
+            color: $textPrimary;
+        }
+
+        .showcase-description {
+            max-width: 400px;
+            margin: 0 auto;
+            color: $textSecondary;
+        }
+
+        .showcase-asset {
+            width: 100%;
+            margin: 0 auto;
+            aspect-ratio: 16 / 9;
+
+            img,
+            video {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            // Los vídeos no fuerzan el aspect ratio 16/9 por defecto: se muestran
+            // a su tamaño natural salvo que se defina un aspect ratio manualmente.
+            &--video {
+                aspect-ratio: auto;
+
+                video {
+                    height: auto;
+                    object-fit: contain;
+                }
+
+                &.showcase-asset--has-aspect video {
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}

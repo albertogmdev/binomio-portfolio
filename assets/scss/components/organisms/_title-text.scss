@@ -1,0 +1,16 @@
+@use '../../abstracts' as *;
+
+.section-title-text {
+    .container {
+        .title-text-title,
+        .title-text-content {
+            color: $textPrimary;
+            text-align: center;
+        }
+
+        .title-text-title {
+            text-transform: uppercase;
+            margin: 0 auto 40px;
+        }
+    }
+}

@@ -38,18 +38,31 @@ class Binomio_Component_Loader {
         }
         
         $component_files = glob($components_dir . '/*.php');
-        
+
+        // Etiquetas personalizadas para componentes cuyo nombre derivado del slug
+        // no coincide con el nombre deseado.
+        $label_overrides = array(
+            'fullgallery' => 'FullWidth Gallery',
+        );
+
         foreach ($component_files as $file) {
             $component_name = basename($file, '.php');
             $fields = include $file;
             
             if (is_array($fields)) {
                 self::$components[$component_name] = array(
-                    'name' => ucfirst(str_replace('_', ' ', $component_name)),
+                    'name' => isset($label_overrides[$component_name])
+                        ? $label_overrides[$component_name]
+                        : ucfirst(str_replace('_', ' ', $component_name)),
                     'fields' => $fields,
                 );
             }
         }
+
+        // Ordenar alfabéticamente por nombre visible (conservando los slugs).
+        uasort(self::$components, function ($a, $b) {
+            return strcasecmp($a['name'], $b['name']);
+        });
     }
     
     /**
@@ -67,9 +80,9 @@ class Binomio_Component_Loader {
             $complex_field->add_fields($slug, $component['name'], $component['fields']);
         }
         
-        // Registrar el campo solo en páginas
+        // Registrar el campo en páginas y proyectos
         \Carbon_Fields\Container\Container::make('post_meta', __('Constructor de Página', 'binomio'))
-            ->where('post_type', '=', 'page')
+            ->where('post_type', 'IN', array('page', 'projects'))
             ->add_fields(Field::resolve(array(
                 $complex_field
             )));

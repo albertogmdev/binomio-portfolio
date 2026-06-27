@@ -1,0 +1,95 @@
+@use '../../abstracts' as *;
+
+.marquee {
+    // Ancho de referencia = ancho de container, para que los assets midan el % del
+    // container aunque la marquee sea fullwidth.
+    --ref-width: calc(min(100vw, #{$container-width}) - 160px);
+    --marquee-duration: 40s;
+
+    @media screen and (max-width: $tablet) {
+        --ref-width: calc(min(100vw, #{$container-width}) - 80px);
+    }
+
+    @media screen and (max-width: $mobile) {
+        // En mobile la marquee llega hasta el final (sin padding lateral).
+        --ref-width: 100vw;
+    }
+
+    &--contained {
+        width: 100%;
+        max-width: $container-width;
+        margin: 0 auto;
+        padding: 0 80px;
+
+        @media screen and (max-width: $tablet) {
+            padding: 0 40px;
+        }
+
+        @media screen and (max-width: $mobile) {
+            padding: 0;
+        }
+    }
+
+    &--fullwidth {
+        width: 100%;
+    }
+
+    .marquee-viewport {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .marquee-track {
+        display: flex;
+        width: max-content;
+        align-items: flex-start;
+        animation: marquee-scroll var(--marquee-duration) linear infinite;
+    }
+
+    .marquee-item {
+        flex: 0 0 auto;
+        width: calc(var(--ref-width) * 0.25);
+
+        img,
+        video {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    // Variante con espacio de 80px y tamaños alternos centrados.
+    &--spaced {
+        .marquee-track {
+            align-items: center;
+        }
+
+        .marquee-item {
+            margin-right: 80px;
+
+            &--large {
+                width: calc(var(--ref-width) * 0.4);
+            }
+
+            &--small {
+                width: calc(var(--ref-width) * 0.2);
+            }
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .marquee-track {
+            animation: none;
+        }
+    }
+}
+
+@keyframes marquee-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}

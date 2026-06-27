@@ -1,0 +1,9 @@
+@use '../../abstracts' as *;
+
+.section-tags {
+    .container {
+        .tag-container {
+            justify-content: center;
+        }
+    }
+}
