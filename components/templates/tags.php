@@ -20,8 +20,13 @@ $padding_style = $padding > 0 ? ' style="padding-top:' . $padding . 'px;padding-
 <section class="section-tags"<?php echo $padding_style; ?>>
     <div class="container">
         <div class="tag-container">
-            <?php foreach ($tags as $tag) : ?>
-                <div class="tag"><?php echo esc_html($tag); ?></div>
+            <?php foreach ($tags as $tag) :
+                $tag_label = binomio_get_tag_label($tag);
+                if ($tag_label === '') {
+                    continue;
+                }
+                ?>
+                <div class="tag"><?php echo esc_html($tag_label); ?></div>
             <?php endforeach; ?>
         </div>
     </div>

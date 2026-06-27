@@ -10,12 +10,7 @@ use TranslatableCarbonFields\Fields\Field;
 
 return Field::resolve(array(
     Field::make('set', 'credits_tags', __('Tags', 'binomio'))
-        ->set_options(array(
-            'branding'    => __('Branding', 'binomio'),
-            'ux_ui'       => __('UX/UI', 'binomio'),
-            'development' => __('Development', 'binomio'),
-            'website'     => __('Website', 'binomio'),
-        )),
+        ->set_options(binomio_get_tag_options()),
 
     Field::make('rich_text', 'credits_content', __('Créditos', 'binomio')),
 

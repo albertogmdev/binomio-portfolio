@@ -24,12 +24,7 @@ return Field::resolve(array(
         ->set_default_value('regular'),
 
     Field::make('set', 'hero_tags', __('Tags', 'binomio'))
-        ->set_options(array(
-            'branding'    => __('Branding', 'binomio'),
-            'ux_ui'       => __('UX/UI', 'binomio'),
-            'development' => __('Development', 'binomio'),
-            'website'     => __('Website', 'binomio'),
-        )),
+        ->set_options(binomio_get_tag_options()),
 
     Field::make('complex', 'hero_links', __('Links', 'binomio'))
         ->set_layout('tabbed-vertical')

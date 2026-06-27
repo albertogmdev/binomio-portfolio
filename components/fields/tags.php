@@ -10,12 +10,7 @@ use TranslatableCarbonFields\Fields\Field;
 
 return Field::resolve(array(
     Field::make('set', 'tags_items', __('Tags', 'binomio'))
-        ->set_options(array(
-            'branding'    => __('Branding', 'binomio'),
-            'ux_ui'       => __('UX/UI', 'binomio'),
-            'development' => __('Development', 'binomio'),
-            'website'     => __('Website', 'binomio'),
-        )),
+        ->set_options(binomio_get_tag_options()),
 
     Field::make('text', 'tags_padding', __('Padding (px)', 'binomio'))
         ->set_attribute('type', 'number')

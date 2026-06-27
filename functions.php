@@ -86,6 +86,7 @@ if (!class_exists('Translatable')) {
     }
 }
 
+require_once get_stylesheet_directory() . '/inc/tags-config.php';
 require_once get_stylesheet_directory() . '/inc/component-loader.php';
 require_once get_stylesheet_directory() . '/inc/post-type-proyectos.php';
 require_once get_stylesheet_directory() . '/inc/post-type-cases.php';

@@ -38,8 +38,13 @@ if (empty($tags) && $content === '' && empty($normalized_links)) {
     <div class="container">
         <?php if (!empty($tags)) : ?>
             <div class="tag-container">
-                <?php foreach ($tags as $tag) : ?>
-                    <div class="tag"><?php echo esc_html($tag); ?></div>
+                <?php foreach ($tags as $tag) :
+                    $tag_label = binomio_get_tag_label($tag);
+                    if ($tag_label === '') {
+                        continue;
+                    }
+                    ?>
+                    <div class="tag"><?php echo esc_html($tag_label); ?></div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
