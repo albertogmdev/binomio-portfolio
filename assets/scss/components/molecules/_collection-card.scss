@@ -177,3 +177,15 @@
         }
     }
 }
+
+// Solo desktop: en las cards del hero/home dejamos unicamente title y button
+// (ocultamos tags/subtitle y descripcion).
+@media screen and (min-width: ($tablet + 1)) {
+    .bnomio-hero .collection-card .card-info {
+
+        .item-subtitle,
+        .item-description {
+            display: none;
+        }
+    }
+}

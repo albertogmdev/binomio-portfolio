@@ -142,6 +142,7 @@
                     $('body').addClass('studio-entered');
                     $('body').addClass('theme--studio');
                     $('body').removeClass('theme--artist');
+                    document.title = 'Studio - Bnomio';
                     $('.menu:not([id*="menu-studio"])').addClass('menu--inactive');
                     document.documentElement.style.overflow = 'hidden';
                     document.documentElement.style.height = '100dvh';
@@ -153,6 +154,7 @@
                 })
 
                 $('#enter-artist').on('click', function () {
+                    document.title = 'Artist - Bnomio';
                     // TODO - Coming soon, remove when implemented
                     return;
                 })
@@ -207,6 +209,7 @@
                     e.stopPropagation();
                     $('body').removeClass('studio-entered artist-entered');
                     $('.bnomio-hero--half').removeClass('entered noactive active');
+                    document.title = 'Home - Bnomio';
                     document.documentElement.style.overflow = '';
                     document.documentElement.style.height = '';
                     centerImages();

@@ -13,6 +13,7 @@
 @use 'layout/page-builder';
 @use 'layout/cases';
 @use 'layout/grid';
+@use 'layout/404' as page-404;
 
 // 3. Components
 @use 'components/molecules/button';

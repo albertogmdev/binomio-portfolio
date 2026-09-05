@@ -148,27 +148,29 @@ if ($section === 'studio') {
                     $sticker_image_url = $sticker_image_id > 0 ? wp_get_attachment_url($sticker_image_id) : '';
                     if (empty($sticker_image_url)) continue;
 
-                    $desktop_size    = (float) carbon_get_post_meta($sticker->ID, 'sticker_size_desktop');
-                    $mobile_size     = (float) carbon_get_post_meta($sticker->ID, 'sticker_size_mobile');
-                    $initial_x       = (float) carbon_get_post_meta($sticker->ID, 'sticker_initial_x');
-                    $initial_y       = (float) carbon_get_post_meta($sticker->ID, 'sticker_initial_y');
-                    $initial_x_mobile = (float) carbon_get_post_meta($sticker->ID, 'sticker_initial_x_mobile');
-                    $initial_y_mobile = (float) carbon_get_post_meta($sticker->ID, 'sticker_initial_y_mobile');
-                    $rotation        = (float) carbon_get_post_meta($sticker->ID, 'sticker_rotation');
+                    $desktop_size    = binomio_css_length(carbon_get_post_meta($sticker->ID, 'sticker_size_desktop'), 'px');
+                    $mobile_size     = binomio_css_length(carbon_get_post_meta($sticker->ID, 'sticker_size_mobile'), 'px');
+                    $initial_x       = binomio_css_length(carbon_get_post_meta($sticker->ID, 'sticker_initial_x'), '%');
+                    $initial_y       = binomio_css_length(carbon_get_post_meta($sticker->ID, 'sticker_initial_y'), '%');
+                    $initial_x_mobile = binomio_css_length(carbon_get_post_meta($sticker->ID, 'sticker_initial_x_mobile'), '%');
+                    $initial_y_mobile = binomio_css_length(carbon_get_post_meta($sticker->ID, 'sticker_initial_y_mobile'), '%');
+                    $rotation        = binomio_css_length(carbon_get_post_meta($sticker->ID, 'sticker_rotation'), 'deg');
                     $z_index         = (int) carbon_get_post_meta($sticker->ID, 'sticker_z_index');
 
-                    $desktop_size     = $desktop_size > 0 ? $desktop_size : 180;
-                    $mobile_size      = $mobile_size > 0 ? $mobile_size : 120;
-                    $initial_x        = $initial_x !== 0.0 ? $initial_x : 50;
-                    $initial_y        = $initial_y !== 0.0 ? $initial_y : 50;
-                    $initial_x_mobile = $initial_x_mobile !== 0.0 ? $initial_x_mobile : $initial_x;
-                    $initial_y_mobile = $initial_y_mobile !== 0.0 ? $initial_y_mobile : $initial_y;
+                    // Defaults cuando el campo esta vacio.
+                    $desktop_size     = $desktop_size !== '' ? $desktop_size : '180px';
+                    $mobile_size      = $mobile_size !== '' ? $mobile_size : '120px';
+                    $initial_x        = $initial_x !== '' ? $initial_x : '50%';
+                    $initial_y        = $initial_y !== '' ? $initial_y : '50%';
+                    $initial_x_mobile = $initial_x_mobile !== '' ? $initial_x_mobile : $initial_x;
+                    $initial_y_mobile = $initial_y_mobile !== '' ? $initial_y_mobile : $initial_y;
+                    $rotation         = $rotation !== '' ? $rotation : '0deg';
                     $z_index          = $z_index > 0 ? $z_index : 1;
                     ?>
                     <div
                         class="studio-sticker"
                         data-sticker-id="<?php echo esc_attr((string) $sticker->ID); ?>"
-                        style="--sticker-size-desktop: <?php echo esc_attr((string) $desktop_size); ?>px; --sticker-size-mobile: <?php echo esc_attr((string) $mobile_size); ?>px; --sticker-x: <?php echo esc_attr((string) $initial_x); ?>%; --sticker-y: <?php echo esc_attr((string) $initial_y); ?>%; --sticker-x-mobile: <?php echo esc_attr((string) $initial_x_mobile); ?>%; --sticker-y-mobile: <?php echo esc_attr((string) $initial_y_mobile); ?>%; --sticker-rotation: <?php echo esc_attr((string) $rotation); ?>deg; --sticker-z: <?php echo esc_attr((string) $z_index); ?>; touch-action: none;"
+                        style="--sticker-size-desktop: <?php echo esc_attr($desktop_size); ?>; --sticker-size-mobile: <?php echo esc_attr($mobile_size); ?>; --sticker-x: <?php echo esc_attr($initial_x); ?>; --sticker-y: <?php echo esc_attr($initial_y); ?>; --sticker-x-mobile: <?php echo esc_attr($initial_x_mobile); ?>; --sticker-y-mobile: <?php echo esc_attr($initial_y_mobile); ?>; --sticker-rotation: <?php echo esc_attr($rotation); ?>; --sticker-z: <?php echo esc_attr((string) $z_index); ?>; touch-action: none;"
                     >
                         <img src="<?php echo esc_url($sticker_image_url); ?>" alt="<?php echo esc_attr(get_the_title($sticker->ID)); ?>">
                     </div>
@@ -249,6 +251,10 @@ if ($section === 'studio') {
                     <a href="https://www.instagram.com/bnomio.studio" target="_blank" rel="noopener noreferrer" class="social-link">
                         <span class="icon icon-instagram"></span>
                         <p class="social-text">@BNOMIO.STUDIO</p>
+                    </a>
+                    <a href="https://www.linkedin.com/company/bnomio-studio" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+                        <span class="icon icon-linkedin"></span>
+                        <p class="social-text">BNOMIO STUDIO</p>
                     </a>
                 </div>
                 <div class="footer-info">
@@ -342,6 +348,10 @@ if ($section === 'studio') {
                     <a href="https://www.instagram.com/bnomio" target="_blank" rel="noopener noreferrer" class="social-link">
                         <span class="icon icon-instagram"></span>
                         <p class="social-text">@BNOMIO</p>
+                    </a>
+                    <a href="https://www.linkedin.com/company/bnomio" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+                        <span class="icon icon-linkedin"></span>
+                        <p class="social-text">BNOMIO</p>
                     </a>
                 </div>
                 <div class="footer-info">

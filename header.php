@@ -16,12 +16,12 @@
         $collections_url = function_exists('binomio_get_localized_page_url')
             ? binomio_get_localized_page_url(
                 array(
-                    'es' => array('artistas'),
-                    'en' => array('artists', 'collections'),
+                    'es' => array('artist', 'artistas'),
+                    'en' => array('artist', 'artists', 'collections'),
                 ),
-                '/artistas/'
+                '/artist/'
             )
-            : home_url('/artistas/');
+            : home_url('/artist/');
         $archive_url = function_exists('binomio_get_localized_page_url')
             ? binomio_get_localized_page_url(
                 array(

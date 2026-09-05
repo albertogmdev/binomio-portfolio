@@ -1,0 +1,45 @@
+@use '../abstracts' as *;
+
+body.error404 {
+    #wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100dvh;
+    }
+
+    #container {
+        flex: 1 0 auto;
+    }
+
+    #footer {
+        flex-shrink: 0;
+    }
+
+    // El header colorea logo/links con $background (charcoal); sin blend quedan
+    // en negro. Usamos $inverted (blanco en artist, charcoal en studio) para
+    // que se lean en ambos temas.
+    #header {
+        mix-blend-mode: normal;
+
+        .header-logo .icon {
+            background-color: $inverted;
+        }
+
+        .header-links .menu .link {
+            color: $inverted;
+        }
+
+        .header-burger {
+            background-color: $inverted;
+        }
+    }
+}
+
+.page-404 {
+    padding-top: calc($navbarHeight + 40px);
+
+    .button {
+        margin-top: 24px;
+    }
+}
+

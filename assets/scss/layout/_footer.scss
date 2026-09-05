@@ -13,6 +13,9 @@
         mix-blend-mode: difference;
 
         .footer-socials {
+            display: flex;
+            gap: 24px;
+
             .social-link {
                 display: flex;
                 align-items: center;

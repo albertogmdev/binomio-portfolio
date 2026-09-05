@@ -11,11 +11,26 @@ function binomio_theme_setup()
 {
     load_theme_textdomain('binomio', get_stylesheet_directory() . '/languages');
 
+    // Deja que WordPress/Yoast generen la etiqueta <title>
+    add_theme_support('title-tag');
+
     // Registrar menús del tema
     register_nav_menus(array(
         'studio_menu' => __('Menú Studio', 'binomio'),
         'artist_menu' => __('Menú Artist', 'binomio'),
     ));
+}
+
+// Título fijo para la portada (compatible con y sin Yoast)
+add_filter('pre_get_document_title', 'binomio_front_page_title', 20);
+add_filter('wpseo_title', 'binomio_front_page_title', 20);
+function binomio_front_page_title($title)
+{
+    if (is_front_page() || is_home()) {
+        return 'Home - Bnomio';
+    }
+
+    return $title;
 }
 
 // Cargar Carbon Fields
@@ -150,12 +165,12 @@ if (!function_exists('binomio_menu_fallback')) {
         $collections_url = function_exists('binomio_get_localized_page_url')
             ? binomio_get_localized_page_url(
                 array(
-                    'es' => array('artistas'),
-                    'en' => array('artists', 'collections'),
+                    'es' => array('artist', 'artistas'),
+                    'en' => array('artist', 'artists', 'collections'),
                 ),
-                '/artistas/'
+                '/artist/'
             )
-            : home_url('/artistas/');
+            : home_url('/artist/');
         $archive_url = function_exists('binomio_get_localized_page_url')
             ? binomio_get_localized_page_url(
                 array(
@@ -650,6 +665,38 @@ if (!function_exists('is_artist')) {
         return !is_studio();
     }
 }
+
+if (!function_exists('binomio_css_length')) {
+    /**
+     * Devuelve un valor CSS con unidad. Si el campo ya trae una unidad valida
+     * (px, %, dvh, vw, rem, calc()...) se respeta; si es un numero pelado se le
+     * anade $default_unit. Cualquier otra cosa cae a numero + unidad por defecto.
+     */
+    function binomio_css_length($raw, $default_unit = 'px')
+    {
+        $raw = trim((string) $raw);
+
+        if ($raw === '') {
+            return '';
+        }
+
+        // calc()/clamp()/min()/max(): permitir tal cual.
+        if (preg_match('/^(calc|clamp|min|max)\([^;{}]*\)$/i', $raw)) {
+            return $raw;
+        }
+
+        // Numero con unidad conocida opcional.
+        if (preg_match('/^(-?\d*\.?\d+)\s*(px|%|dvh|dvw|dvmin|dvmax|svh|svw|lvh|lvw|vh|vw|vmin|vmax|rem|em|ch|cqw|cqh|cqmin|cqmax)?$/i', $raw, $matches)) {
+            $number = $matches[1];
+            $unit   = !empty($matches[2]) ? $matches[2] : $default_unit;
+            return $number . $unit;
+        }
+
+        // Entrada no reconocida: numero + unidad por defecto.
+        return (string) (float) $raw . $default_unit;
+    }
+}
+
 
 // Prevent Polylang from redirecting project/case posts and archives to their assigned
 // language. These CPTs use a single post per item (stored in 'es') with Carbon Fields

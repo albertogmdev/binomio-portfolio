@@ -70,3 +70,7 @@
     @include mask-icon(url("#{$base-url}/images/icon-instagram.svg"));
 }
 
+.icon-linkedin {
+    @include mask-icon(url("#{$base-url}/images/icon-linkedin.svg"));
+}
+

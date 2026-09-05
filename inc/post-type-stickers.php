@@ -60,12 +60,12 @@ function binomio_register_stickers_fields() {
         ->add_fields(array(
             Field::make('checkbox', 'sticker_show_in_home', __('Mostrar en home', 'binomio')),
             Field::make('image', 'sticker_image', __('Imagen del sticker', 'binomio')),
-            Field::make('text', 'sticker_size_desktop', __('Tamaño desktop (px)', 'binomio')),
-            Field::make('text', 'sticker_size_mobile', __('Tamaño mobile (px)', 'binomio')),
-            Field::make('text', 'sticker_initial_x', __('Posición X inicial desktop (%)', 'binomio')),
-            Field::make('text', 'sticker_initial_y', __('Posición Y inicial desktop (%)', 'binomio')),
-            Field::make('text', 'sticker_initial_x_mobile', __('Posición X inicial mobile (%)', 'binomio')),
-            Field::make('text', 'sticker_initial_y_mobile', __('Posición Y inicial mobile (%)', 'binomio')),
+            Field::make('text', 'sticker_size_desktop', __('Tamaño desktop (px por defecto; admite dvh, vw, rem, calc()...)', 'binomio')),
+            Field::make('text', 'sticker_size_mobile', __('Tamaño mobile (px por defecto; admite dvh, vw, rem, calc()...)', 'binomio')),
+            Field::make('text', 'sticker_initial_x', __('Posición X inicial desktop (% por defecto; admite dvw, px...)', 'binomio')),
+            Field::make('text', 'sticker_initial_y', __('Posición Y inicial desktop (% por defecto; admite dvh, px...)', 'binomio')),
+            Field::make('text', 'sticker_initial_x_mobile', __('Posición X inicial mobile (% por defecto; admite dvw, px...)', 'binomio')),
+            Field::make('text', 'sticker_initial_y_mobile', __('Posición Y inicial mobile (% por defecto; admite dvh, px...)', 'binomio')),
             Field::make('text', 'sticker_rotation', __('Rotación inicial (deg)', 'binomio')),
             Field::make('text', 'sticker_z_index', __('Capa inicial (z-index)', 'binomio')),
         ));

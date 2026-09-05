@@ -14,22 +14,33 @@
     $artist_url = function_exists('binomio_get_localized_page_url')
         ? binomio_get_localized_page_url(
             array(
-                'es' => array('artistas'),
-                'en' => array('artists', 'collections'),
+                'es' => array('artist', 'artistas'),
+                'en' => array('artist', 'artists', 'collections'),
             ),
-            '/artistas/'
+            '/artist/'
         )
-        : home_url('/artistas/');
+        : home_url('/artist/');
     $language_items = function_exists('binomio_get_language_switcher_items')
         ? binomio_get_language_switcher_items()
         : array();
     ?>
     <footer id="footer" class="" role="contentinfo">
         <div class="footer-main">
+            <?php
+            $is_studio_zone = function_exists('is_studio') && is_studio();
+            $footer_ig_url  = $is_studio_zone ? 'https://www.instagram.com/bnomio.studio' : 'https://www.instagram.com/bnomio';
+            $footer_ig_text = $is_studio_zone ? '@BNOMIO.STUDIO' : '@BNOMIO';
+            $footer_li_url  = $is_studio_zone ? 'https://www.linkedin.com/company/bnomio-studio' : 'https://www.linkedin.com/company/bnomio';
+            $footer_li_text = $is_studio_zone ? 'BNOMIO STUDIO' : 'BNOMIO';
+            ?>
             <div class="footer-socials">
-                <a href="https://www.instagram.com/bnomio" target="_blank" rel="noopener noreferrer" class="social-link">
+                <a href="<?php echo esc_url($footer_ig_url); ?>" target="_blank" rel="noopener noreferrer" class="social-link">
                     <span class="icon icon-instagram"></span>
-                    <p class="social-text">@BNOMIO</p>
+                    <p class="social-text"><?php echo esc_html($footer_ig_text); ?></p>
+                </a>
+                <a href="<?php echo esc_url($footer_li_url); ?>" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+                    <span class="icon icon-linkedin"></span>
+                    <p class="social-text"><?php echo esc_html($footer_li_text); ?></p>
                 </a>
             </div>
             <div class="footer-info">
