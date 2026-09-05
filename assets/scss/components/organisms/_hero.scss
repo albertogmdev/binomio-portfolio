@@ -1,5 +1,16 @@
 @use '../../abstracts' as *;
 
+// Texto del hero con la opcion "bold": fuente druk.
+.alter-font {
+    font-family: $druk;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.theme--studio .alter-font {
+    color: $emphasis;
+}
+
 .section-hero {
     .container {
         .content-row {

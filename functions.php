@@ -383,10 +383,12 @@ if (!function_exists('binomio_get_language_switcher_items')) {
             );
         }
 
-        // For CPTs without Polylang duplicates (projects, cases) and division archives,
-        // Polylang returns the language home URL instead of the current page URL.
-        // In those cases, build the URL by swapping the language prefix in the current URI.
-        $needs_prefix_swap = is_singular(array('projects', 'cases'))
+        // For CPTs without Polylang duplicates (projects, cases), pages built with
+        // Carbon Fields translations and division archives, Polylang returns the
+        // language home URL instead of the current page URL. In those cases, build
+        // the URL by swapping the language prefix in the current URI.
+        $needs_prefix_swap = is_page()
+            || is_singular(array('projects', 'cases'))
             || is_post_type_archive(array('projects', 'cases'))
             || get_query_var('division') !== '';
 
