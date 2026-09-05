@@ -38,9 +38,6 @@ class Binomio_Component_Loader {
         }
         
         $component_files = glob($components_dir . '/*.php');
-
-        // Etiquetas personalizadas para componentes cuyo nombre derivado del slug
-        // no coincide con el nombre deseado.
         $label_overrides = array(
             'fullgallery' => 'FullWidth Gallery',
         );

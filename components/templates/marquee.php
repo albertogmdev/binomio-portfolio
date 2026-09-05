@@ -9,7 +9,6 @@
 $asset_ids = isset($component['marquee_assets']) && is_array($component['marquee_assets']) ? array_filter($component['marquee_assets']) : array();
 $fullwidth = !empty($component['marquee_fullwidth']);
 
-// Resolvemos los assets válidos una sola vez.
 $assets = array();
 foreach ($asset_ids as $asset_id) {
     $asset_id = (int) $asset_id;

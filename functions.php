@@ -11,7 +11,6 @@ function binomio_theme_setup()
 {
     load_theme_textdomain('binomio', get_stylesheet_directory() . '/languages');
 
-    // Deja que WordPress/Yoast generen la etiqueta <title>
     add_theme_support('title-tag');
 
     // Registrar menús del tema
@@ -21,7 +20,6 @@ function binomio_theme_setup()
     ));
 }
 
-// Título fijo para la portada (compatible con y sin Yoast)
 add_filter('pre_get_document_title', 'binomio_front_page_title', 20);
 add_filter('wpseo_title', 'binomio_front_page_title', 20);
 function binomio_front_page_title($title)
@@ -383,10 +381,6 @@ if (!function_exists('binomio_get_language_switcher_items')) {
             );
         }
 
-        // For CPTs without Polylang duplicates (projects, cases), pages built with
-        // Carbon Fields translations and division archives, Polylang returns the
-        // language home URL instead of the current page URL. In those cases, build
-        // the URL by swapping the language prefix in the current URI.
         $needs_prefix_swap = is_page()
             || is_singular(array('projects', 'cases'))
             || is_post_type_archive(array('projects', 'cases'))
@@ -428,7 +422,9 @@ if (!function_exists('binomio_get_language_switcher_items')) {
             $items[] = array(
                 'label'   => strtoupper($slug),
                 'url'     => $url,
-                'current' => !empty($language['current_lang']),
+                'current' => $needs_prefix_swap
+                    ? ($slug === $current_lang)
+                    : !empty($language['current_lang']),
             );
         }
 
@@ -669,11 +665,6 @@ if (!function_exists('is_artist')) {
 }
 
 if (!function_exists('binomio_css_length')) {
-    /**
-     * Devuelve un valor CSS con unidad. Si el campo ya trae una unidad valida
-     * (px, %, dvh, vw, rem, calc()...) se respeta; si es un numero pelado se le
-     * anade $default_unit. Cualquier otra cosa cae a numero + unidad por defecto.
-     */
     function binomio_css_length($raw, $default_unit = 'px')
     {
         $raw = trim((string) $raw);
@@ -682,7 +673,6 @@ if (!function_exists('binomio_css_length')) {
             return '';
         }
 
-        // calc()/clamp()/min()/max(): permitir tal cual.
         if (preg_match('/^(calc|clamp|min|max)\([^;{}]*\)$/i', $raw)) {
             return $raw;
         }
@@ -699,11 +689,6 @@ if (!function_exists('binomio_css_length')) {
     }
 }
 
-
-// Prevent Polylang from redirecting project/case posts and archives to their assigned
-// language. These CPTs use a single post per item (stored in 'es') with Carbon Fields
-// translations, so they must be accessible under any language URL prefix (or none) without
-// a canonical redirect.
 add_filter('pll_check_canonical_url', function ($redirect_url, $language) {
     // Suppress redirect for CPT archives (e.g. /studio/projects/ without language prefix).
     $multilingual_cpts = array('projects', 'proyectos', 'cases');
@@ -727,13 +712,9 @@ add_filter('pll_check_canonical_url', function ($redirect_url, $language) {
         return false;
     }
 
-    // Pages: if there is no translated version for the requested language,
-    // let page.php handle the fallback instead of redirecting to the default language.
     if ($post->post_type === 'page' && function_exists('pll_get_post') && function_exists('pll_default_language')) {
         $requested_lang = pll_get_post_language($post->ID, 'slug');
         $default_lang   = pll_default_language('slug');
-        // If we are on the default-language post but the URL has a secondary lang
-        // prefix it means Polylang couldn't find the translation — suppress redirect.
         if ($requested_lang === $default_lang) {
             $uri = isset($_SERVER['REQUEST_URI']) ? strtok((string) $_SERVER['REQUEST_URI'], '?') : '';
             if (function_exists('pll_languages_list')) {

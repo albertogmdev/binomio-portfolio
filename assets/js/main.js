@@ -76,7 +76,6 @@
                         const hero = $(`.bnomio-hero--half.entered`);
                         const heroImage = hero.find('.hero-image');
 
-                        // Desktop > izquierda, Mobile > centro
                         heroImage.css('left', window.innerWidth <= tablet ?
                             `calc(50% - ${heroImage.width() / 2}px)`
                             :
@@ -161,13 +160,6 @@
 
                 setTimeout(centerImages, 1000);
 
-                // La interaccion del hero (hover/click) no se habilita hasta que:
-                //   1) pase el retardo de intro, Y
-                //   2) el usuario mueva el raton (o toque la pantalla).
-                // Asi evitamos que el efecto se dispare solo si el cursor carga
-                // ya situado sobre una mitad. Un fallback garantiza que el usuario
-                // NUNCA quede atrapado sin poder interactuar (touch, foco en otra
-                // ventana, raton inmovil, etc.).
                 let heroDelayPassed = false;
                 let heroUserMoved = false;
                 let heroEnabled = false;
@@ -188,8 +180,6 @@
                     tryEnableHero();
                 }, 1500);
 
-                // Salvavidas: pase lo que pase, habilitar la interaccion para no
-                // dejar al usuario bloqueado sin poder entrar.
                 setTimeout(() => {
                     if (heroEnabled) return;
                     heroEnabled = true;
@@ -220,7 +210,6 @@
             }
 
             function initModals() {
-                /// Funcionalidad común
                 // Cerrar modal clickando en boton
                 $('.modal .modal-close').on('click', function (e) {
                     e.preventDefault();

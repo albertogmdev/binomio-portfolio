@@ -15,9 +15,6 @@ body.error404 {
         flex-shrink: 0;
     }
 
-    // El header colorea logo/links con $background (charcoal); sin blend quedan
-    // en negro. Usamos $inverted (blanco en artist, charcoal en studio) para
-    // que se lean en ambos temas.
     #header {
         mix-blend-mode: normal;
 

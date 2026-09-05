@@ -6,7 +6,7 @@
 
 get_header();
 
-// Destino segun la zona activa (studio/artist), coherente con is_studio()/JS.
+// Destino segun la zona activa (studio/artist)
 if (function_exists('is_studio') && is_studio()) {
     $home_url = function_exists('binomio_get_localized_page_url')
         ? binomio_get_localized_page_url(
