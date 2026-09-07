@@ -34,6 +34,14 @@
 
                 .content-text {
                     margin: 40px 0px;
+
+                    p {
+                        margin-bottom: 10px;
+
+                        &:last-child {
+                            margin-bottom: 0px;
+                        }
+                    }
                 }
 
                 .content-footer {
