@@ -6,7 +6,7 @@
     display: inline-block;
     padding: 10px 0px;
     color: $textLink;
-    border-bottom: 1px solid transparent;
+    border-bottom: 2px solid transparent;
     cursor: pointer;
     transition: all $transition;
 
@@ -23,13 +23,18 @@
 .tabs {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 24px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: stable both-edges;
+    padding-bottom: 8px;
 
     &:before {
         content: '';
         position: absolute;
-        bottom: -0.5px;
+        bottom: 8px;
         left: 50%;
         transform: translateX(-50%);
         width: 100vw;
